@@ -691,6 +691,10 @@ details.more>.card,details.more>.grid{margin-top:14px}
   input[type=text],input[type=number],input[type=date],select,textarea,.typein{font-size:16px}   /* stops iOS zooming in on focus */
   .daybar{bottom:calc(72px + env(safe-area-inset-bottom));padding:8px 8px 8px 12px;gap:8px}
   .daybar .db-dots{display:none}
+  .daybar .db-kl{display:none}
+  .mchoice.mlong{grid-template-columns:1fr}
+  .mchoice.mlong .choice{min-height:0;text-align:left;justify-content:flex-start}
+  .daybar .btn{white-space:normal;line-height:1.25;max-width:58%;text-align:left}
   .toast{bottom:calc(84px + env(safe-area-inset-bottom))}
   body.hasday main{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
   .sheet{position:fixed;inset:0;z-index:74;background:rgba(8,10,16,.45);display:none;align-items:flex-end}
@@ -827,7 +831,7 @@ input[type=time]:focus{border-color:var(--accent)}
   width:auto;height:auto;flex:none;font-size:inherit;font-weight:inherit;color:inherit;place-items:normal}
 .ck.done{background:var(--good-bg);border-color:transparent}
 .ckbox{width:28px;height:28px;flex:0 0 28px;border-radius:8px;border:2px solid var(--border-2);display:grid;place-items:center;font-weight:800;color:var(--good);background:var(--surface)}
-.ck.done .ckbox{border-color:var(--good);background:var(--good);color:#fff;animation:pop .3s cubic-bezier(.2,1.6,.4,1)}
+.ck.done .ckbox{border-color:var(--good);background:var(--good);color:#fff}
 .ckbody{flex:1;min-width:0}
 .cklabel{font-weight:640;font-size:14.5px}
 .ck.done .cklabel{color:var(--text-2);text-decoration:line-through;text-decoration-color:var(--good)}
@@ -1909,6 +1913,9 @@ details.more>.achgrid,details.more>.colslots{margin-top:8px}
 .tlh{margin:26px 0 6px}
 .tlphase{margin-bottom:18px}
 .tlph{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;padding:6px 2px;border-bottom:1px solid var(--border);margin-bottom:6px}
+details.tlfold>summary{cursor:pointer;list-style:none} details.tlfold>summary::-webkit-details-marker{display:none}
+details.tlfold>summary b{color:var(--good)} details.tlfold:not([open])>summary{margin-bottom:0}
+details.tlfold{margin-bottom:10px}
 .tlph b{font-size:15px} .tlph span{font-size:12px;color:var(--text-3)} .tlphase.here .tlph b{color:var(--accent)}
 .tlweek{border-radius:12px;margin-bottom:4px}
 .tlweek summary{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;cursor:pointer;list-style:none}
@@ -1923,6 +1930,18 @@ details.more>.achgrid,details.more>.colslots{margin-top:8px}
 .tllist li{padding:3px 0;border-bottom:1px dashed var(--border)} .tllist li.done{color:var(--text-3)} .tllist li.done::before{content:"✓ ";color:var(--good)}
 .tllist small{color:var(--text-3)} .tllist .linkbtn{margin-left:6px}
 @media (max-width:760px){ .tllist{margin-left:16px} .tlst{font-size:11px} }
+.realv{display:inline-block;font-size:12.5px;color:var(--text-2);margin-top:4px} .realv a{font-weight:650;white-space:nowrap}
+.acreal-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--border)} .acreal-row:first-of-type{border-top:0}
+.acreal-row>div{flex:1;min-width:0} .acreal-row b{display:block;font-size:14.5px} .acreal-row small{display:block;font-size:12.5px;color:var(--text-2);line-height:1.45}
+.acreal-row .btn{flex:0 0 auto}
+.acreal-links{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 6px}
+.acreal-links .btn{text-decoration:none;display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:8px 14px} .acreal-links small{font-size:11.5px;font-weight:500;opacity:.85}
+div:has(> .laterrow){margin-bottom:8px !important}
+div:has(> .later-mark){display:none !important}
+details.laterfold{margin-top:22px}
+.laterlist{display:grid;gap:8px;margin-top:10px}
+.laterrow{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px dashed var(--border-2);border-radius:12px;font-size:13.5px;color:var(--text-2)}
+.laterrow span:nth-child(2){flex:1;min-width:0} .laterwk{font-size:11px;font-weight:750;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);white-space:nowrap}
 .gc-part{margin:18px 0 4px;font-size:12px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
 .gl-long{margin:0 0 14px;padding:12px 14px;border-radius:12px;background:var(--warn-bg);color:var(--text);font-size:14px;line-height:1.5;text-align:left}
 .shbar{margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border)}
@@ -1933,6 +1952,78 @@ details.more>.achgrid,details.more>.colslots{margin-top:8px}
 .shbtns .btn.on,#shLoop.on{background:var(--accent-2);color:var(--accent);border-color:var(--accent)}
 @media (max-width:760px){ .rtparts{grid-template-columns:1fr 1fr} .rtgrid{grid-template-columns:1fr} .rttarget{width:100%}
   .dprow{flex-wrap:wrap} .dprow select{flex:1 1 100%;width:100%} .gl-park{margin-left:0} }
+/* ---------- cleaner pages (2026-10-02) ---------- */
+.sh-kana{font-size:15px;color:var(--text-2);margin-top:2px}
+a.btn{text-decoration:none}
+.vstep{font-size:12px;color:var(--text-3)}
+.vmore{display:flex;justify-content:center;padding:12px;background:var(--surface)}
+.abnone{font-size:13.5px;color:var(--text-2);margin:2px 0 6px}
+.abwait{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0 6px;font-size:12.5px;color:var(--text-3)}
+.abw{font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);cursor:pointer}
+.abw:hover{color:var(--text)}
+.kbox.kopen{cursor:pointer} .kbox.kopen:hover{border-color:var(--accent)}
+.kmn{display:grid;place-items:center;pointer-events:none}
+details.libfold{margin-top:14px}
+details.libfold>summary b{font-size:16px}
+details.libfold>.grid{margin-top:8px}
+details.gc-unit>summary{flex-wrap:nowrap}
+details.gc-unit>summary b{font:inherit;letter-spacing:inherit;flex:0 1 auto;min-width:0}
+details.gc-unit>summary span{flex:0 0 auto;white-space:nowrap}
+.campnote{margin:0 0 12px;color:var(--text-2);font-size:14px;line-height:1.55}
+@media (max-width:640px){
+  .vrow{flex-wrap:nowrap;gap:10px;padding:10px 14px}
+  .vrow .g-ja{flex:0 0 auto;max-width:42%;font-size:16px}
+  .vrow .g-r{width:auto;margin-left:auto;flex:0 0 auto;gap:6px}
+  .vrow .vstep{display:none}
+  #pg-vocab .tools input{flex:1 1 100%;min-width:0 !important}
+  #pg-vocab .tools select{flex:1 1 0;min-width:0}
+  #vCount{flex:1 1 100%}
+  .kmn{width:14px;height:14px;font-size:8px;top:2px;right:2px;border-radius:4px}
+}
+/* ---------- effects (2026-10-03): motion that marks a moment ----------
+   When to play is decided in js/core/effects.js. All of it stops with Settings › Animations and effects
+   (html.fx-off) and with the device's reduce-motion setting (the rule further up). */
+html.fx-off *,html.fx-off *::before,html.fx-off *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+#fxLayer{position:fixed;inset:0;pointer-events:none;z-index:210;overflow:hidden}
+/* a page opening: its blocks rise in, one after another */
+@keyframes fxRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.page.pagein>*{animation:fxRise .32s cubic-bezier(.2,.8,.3,1) both}
+.page.pagein>*:nth-child(2){animation-delay:.03s} .page.pagein>*:nth-child(3){animation-delay:.06s} .page.pagein>*:nth-child(4){animation-delay:.09s}
+.page.pagein>*:nth-child(5){animation-delay:.12s} .page.pagein>*:nth-child(6){animation-delay:.15s} .page.pagein>*:nth-child(n+7){animation-delay:.18s}
+.navitem.on .ico{animation:pop .3s cubic-bezier(.2,1.6,.4,1)}
+/* answers: right pops with a ring, wrong shakes */
+@keyframes fxOk{0%{transform:scale(1);box-shadow:0 0 0 0 color-mix(in srgb,var(--good) 45%,transparent)}45%{transform:scale(1.04)}100%{transform:scale(1);box-shadow:0 0 0 12px transparent}}
+@keyframes fxNo{0%,100%{transform:none}18%{transform:translateX(-7px)}36%{transform:translateX(6px)}54%{transform:translateX(-4px)}72%{transform:translateX(3px)}}
+.choice.ok,.pchoice.ok,.typein.ok{animation:fxOk .45s cubic-bezier(.2,1.3,.4,1)}
+.choice.no,.pchoice.no,.typein.no{animation:fxNo .4s ease-out}
+/* a new character or word arriving, and the tick of a finished lesson */
+@keyframes fxGlyph{0%{opacity:0;transform:scale(.6) rotate(-6deg)}60%{opacity:1;transform:scale(1.06) rotate(0)}100%{transform:scale(1)}}
+.teach .t-ja{animation:fxGlyph .42s cubic-bezier(.2,1.2,.4,1)}
+@keyframes fxStamp{0%{transform:scale(.3) rotate(-14deg)}60%{transform:scale(1.18) rotate(3deg)}100%{transform:scale(1)}}
+.empty .big{animation:fxStamp .5s cubic-bezier(.2,1.3,.4,1)}
+/* an item ticked since you last looked, and a new week arriving */
+@keyframes fxTick{0%{transform:scale(1)}30%{transform:scale(1.025)}100%{transform:scale(1)}}
+.cklist .ck.just,.tlrow.just{animation:fxTick .5s ease-out}
+.ck.just .ckbox,.tlrow.just .ckbox{animation:pop .4s cubic-bezier(.2,1.6,.4,1)}
+@keyframes fxNewWeek{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 60%,transparent)}100%{box-shadow:0 0 0 22px transparent}}
+.tlnow.newweek{animation:fxNewWeek 1.1s ease-out}
+.q-streak .fl.ignite{animation:fxStamp .55s cubic-bezier(.2,1.3,.4,1),flame 2.4s ease-in-out .55s infinite}
+/* sparks and cherry petals */
+.fxburst{position:absolute;width:0;height:0}
+.fxburst i{position:absolute;left:-5px;top:-5px;width:10px;height:10px;border-radius:50%;animation:fxSpark .8s cubic-bezier(.12,.75,.3,1) both}
+@keyframes fxSpark{0%{transform:translate(0,0) scale(.5);opacity:1}55%{transform:translate(calc(var(--dx) * .85),calc(var(--dy) * .85)) scale(1);opacity:1}
+  100%{transform:translate(var(--dx),calc(var(--dy) + 10px)) scale(.15);opacity:0}}
+.fxpetals{position:absolute;inset:0}
+.fxpetals i{position:absolute;top:-24px;border-radius:80% 0 80% 0;background:linear-gradient(135deg,#ffe0ec,#ff9ec4);animation:fxPetal linear both}
+@keyframes fxPetal{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(calc(var(--sway) * -.4),54vh) rotate(calc(var(--r) * .5))}100%{transform:translate(var(--sway),110vh) rotate(var(--r))}}
+/* the main button: a light passes over it now and then */
+.prep-go .btn.big{position:relative;overflow:hidden}
+.prep-go .btn.big::after{content:'';position:absolute;top:0;bottom:0;left:-60%;width:40%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.3),transparent);transform:skewX(-18deg);animation:fxShine 5.5s ease-in-out infinite}
+@keyframes fxShine{0%,72%{transform:translateX(0) skewX(-18deg)}100%{transform:translateX(520%) skewX(-18deg)}}
+/* the quiet banner */
+.gpop.mini{padding:9px 14px;border-radius:14px}
+.gpop.mini .gp-i{font-size:20px;color:var(--good)} .gpop.mini b{font-size:13.5px}
 
 </style>
 </head>
@@ -2067,7 +2158,7 @@ details.more>.achgrid,details.more>.colslots{margin-top:8px}
   <div id="romajiNote" class="card" style="display:none;margin-bottom:16px;border-color:var(--warn)">
     <b>Romaji lock is on.</b> Readings are hidden once a character is mastered. After kana is automatic, romaji slows you down.
   </div>
-  <div id="kanaBrowse">
+  <div id="kanaBrowse" data-later-home>
     <div class="card" style="margin-bottom:20px">
       <b>Start here if you have never read Japanese.</b>
       <p style="margin:7px 0 0;color:var(--text-2);font-size:13.5px">
@@ -2413,6 +2504,10 @@ details.more>.achgrid,details.more>.colslots{margin-top:8px}
           <input type="checkbox" id="setLock"> Romaji lock — hide romaji once kana is learned</label>
         <label style="display:flex;gap:10px;align-items:center;font-size:14px">
           <input type="checkbox" id="setSound"> Sound effects on answers</label>
+        <label style="display:flex;gap:10px;align-items:flex-start;font-size:14px">
+          <input type="checkbox" id="setFx"> Animations and effects <span class="hint" style="text-align:left;margin:0">(pages easing in, sparks when something is ticked, cherry petals for a finished week; on this device)</span></label>
+        <label style="display:flex;gap:10px;align-items:flex-start;font-size:14px">
+          <input type="checkbox" id="setAllDrills"> Show every drill on every page now <span class="hint" style="text-align:left;margin:0">(otherwise a drill folds to one line until its week on the Timeline)</span></label>
         <label class="fld">Japanese voice
           <div style="display:flex;gap:8px"><select id="setVoice" style="flex:1;min-width:0"></select><button class="btn ghost" id="voiceTest" type="button">Test</button></div>
           <span class="hint" id="voiceNote" style="text-align:left;font-weight:400"></span></label>
@@ -2499,7 +2594,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre></deta
 
 <!-- Scripts, in loading order: one folder per page of the menu (see WHERE-THINGS-ARE.md). They share one
      global scope; a file that uses another while loading comes after it, and the file that starts the app is last. -->
-<script>window.__NF_WEB = 1; window.__NF_BUILD = '2026-10-02T01:38:55.378Z';</script>
+<script>window.__NF_WEB = 1; window.__NF_BUILD = '2026-10-03T22:33:24.598Z';</script>
 <script>
 /* ================= Nihongo Flow — core: storage, FSRS, helpers ================= */
 'use strict';
@@ -2819,7 +2914,10 @@ const SFX = (() => {
     correct()  { if (!on) return; blip(660, 0, 0.09, 'sine', .06); blip(990, 0.07, 0.11, 'sine', .05); },
     wrong()    { if (!on) return; blip(196, 0, 0.16, 'triangle', .06); blip(165, 0.06, 0.18, 'triangle', .05); },
     combo(n)   { if (!on) return; const base = 520 + Math.min(n, 12) * 45; blip(base, 0, 0.07, 'square', .035); },
-    complete() { if (!on) return; [523, 659, 784, 1047].forEach((f, i) => blip(f, i * 0.085, 0.18, 'sine', .06)); },
+    // every activity ends by calling this, so the sparks for "finished" start here too (js/core/effects.js), sound on or off
+    complete() { if (typeof FX !== 'undefined') setTimeout(() => FX.done(), 90);
+      if (typeof dayflowActivityEnd === 'function') setTimeout(dayflowActivityEnd, 0);
+      if (!on) return; [523, 659, 784, 1047].forEach((f, i) => blip(f, i * 0.085, 0.18, 'sine', .06)); },
     levelUp()  { if (!on) return; [440, 554, 659, 880].forEach((f, i) => blip(f, i * 0.1, 0.26, 'triangle', .07)); },
     tick()     { if (!on) return; blip(880, 0, 0.03, 'square', .022); },
   };
@@ -2850,6 +2948,86 @@ function ruby(fg) {
 /* katakana -> hiragana */
 const kata2hira = s => s.replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60));
 const isKanji = c => c >= '一' && c <= '鿿';
+
+</script>
+<script>
+/* ================= Nihongo Flow — effects: small animations that mark a moment =================
+   A goal ticked, a lesson finished, a week done: a few sparks, cherry petals, a short banner.
+   Everything here is decoration. Nothing is saved or counted, and all of it switches off with
+   Settings › "Animations and effects" or the device's own reduce-motion setting. The motion
+   itself is CSS (css/app.css, "effects"); this file only decides when.                      */
+'use strict';
+
+const FX = (() => {
+  const calm = () => (typeof S !== 'undefined' && S.cfg && S.cfg.fx === false) || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const layer = () => { let l = $('#fxLayer'); if (!l) { l = el('div'); l.id = 'fxLayer'; l.setAttribute('aria-hidden', 'true'); document.body.appendChild(l); } return l; };
+  const counted = new Set();                              // numbers that have counted up once since the app opened
+  return {
+    /** are effects allowed right now? */
+    get on() { return !calm(); },
+    /** Settings: the class that stops the CSS motion when effects are off */
+    apply() { document.documentElement.classList.toggle('fx-off', S.cfg.fx === false); },
+
+    /** sparks flying out from an element (the middle of the screen without one) */
+    burst(at, opts) {
+      if (calm()) return;
+      const o = opts || {}, r = at && at.getBoundingClientRect ? at.getBoundingClientRect() : null;
+      if (at && (!r || !r.width || r.bottom < 0 || r.top > innerHeight)) return;          // not on screen: nothing to mark
+      const x = r ? r.left + r.width / 2 : innerWidth / 2, y = r ? r.top + r.height / 2 : innerHeight * 0.35;
+      const n = o.n || 12, colors = o.colors || ['#ffd93d', '#6bcb77', '#7c8cff', '#ff9f1c', '#ff7eb6'];
+      const host = el('div', 'fxburst'); host.style.left = x + 'px'; host.style.top = y + 'px';
+      for (let i = 0; i < n; i++) {
+        const a = (i / n) * Math.PI * 2 + Math.random() * 0.5, d = (o.size || 46) * (0.6 + Math.random() * 0.7), s = el('i');
+        s.style.cssText = `--dx:${Math.round(Math.cos(a) * d)}px;--dy:${Math.round(Math.sin(a) * d)}px;background:${colors[i % colors.length]};animation-delay:${Math.round(Math.random() * 60)}ms`;
+        host.appendChild(s);
+      }
+      layer().appendChild(host); setTimeout(() => host.remove(), 1000);
+    },
+
+    /** cherry petals drifting down for a few seconds */
+    petals(n) {
+      if (calm()) return;
+      const host = el('div', 'fxpetals');
+      for (let i = 0; i < (n || 26); i++) {
+        const p = el('i'), size = 9 + Math.random() * 9;
+        p.style.cssText = `left:${(Math.random() * 100).toFixed(1)}%;width:${size.toFixed(1)}px;height:${(size * 0.8).toFixed(1)}px;--sway:${Math.round((Math.random() - 0.5) * 160)}px;`
+          + `--r:${Math.round(180 + Math.random() * 540)}deg;animation-duration:${(3.2 + Math.random() * 2.6).toFixed(2)}s;animation-delay:${(Math.random() * 1.6).toFixed(2)}s;opacity:${(0.65 + Math.random() * 0.35).toFixed(2)}`;
+        host.appendChild(p);
+      }
+      layer().appendChild(host); setTimeout(() => host.remove(), 7800);
+    },
+
+    /** a number counting up to its value, the first time it is shown after the app opens (key names it) */
+    count(node, to, key, ms) {
+      if (counted.has(key)) return;
+      counted.add(key);                                   // first showing only, whether or not there was a number to count
+      if (!node || !(to > 0) || calm()) return;
+      const t0 = performance.now(), dur = ms || 700, fmt = v => Math.round(v).toLocaleString();
+      const step = now => {
+        if (!node.isConnected) return;
+        const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+        node.textContent = fmt(to * e);
+        if (p < 1) requestAnimationFrame(step);
+      };
+      node.textContent = '0'; requestAnimationFrame(step);
+    },
+
+    /** a short banner at the top, quieter than an achievement: no sound, gone in three seconds */
+    note(icon, title, sub) {
+      let host = $('#gamePops'); if (!host) { host = el('div'); host.id = 'gamePops'; host.setAttribute('role', 'status'); document.body.appendChild(host); }
+      const p = el('div', 'gpop mini');
+      p.innerHTML = `<span class="gp-i">${esc(icon)}</span><div><b>${esc(title)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</div>`;
+      host.appendChild(p); p.onclick = () => p.remove();
+      setTimeout(() => p.classList.add('out'), 2800); setTimeout(() => p.remove(), 3300);
+    },
+
+    /** an activity has just finished: sparks from its "complete" heading (the first one that is on screen) */
+    done() {
+      const at = $$('.page.on .teach .tag, .page.on .empty .big').find(e => { const r = e.getBoundingClientRect(); return r.width > 0 && r.bottom > 0 && r.top < innerHeight; });
+      if (at) this.burst(at, { n: 14, size: 60 });
+    },
+  };
+})();
 
 </script>
 <script>
@@ -3937,7 +4115,7 @@ function renderNativeSources(host) {
 }
 
 /* ---------------- the Podcasts & more page ---------------- */
-let LINKS = { kind: 'all', mine: true };
+let LINKS = { kind: 'all', mine: true, open: new Set(['start']) };   // open: the groups unfolded (a kind filter opens them all)
 /** roughly where you are now: 0 total beginner … 4 ready for native material (from listening, the course and kana) */
 function srcLevelNow() {
   const R = readinessNow(), sk = id => { const x = R.skills.find(s => s.id === id); return x && x.score != null ? x.score : 0; };
@@ -3960,10 +4138,12 @@ function renderLinks() {
       ${Object.keys(used).length ? `<div class="hint" style="text-align:left;margin-top:6px">You have used ${Object.keys(used).length} of them.</div>` : ''}</div>` +
     NATIVE_GROUPS.map(g => {
       const items = NATIVE_SOURCES.filter(x => x.g === g.id && shown(x));
-      return items.length ? `<h3 class="libgroup">${esc(g.t)}</h3><p class="sub" style="margin:-4px 0 12px">${esc(g.d)}</p><div class="grid g2">${items.map(srcCard).join('')}</div>` : '';
+      return items.length ? `<details class="sitcat libfold" data-g="${g.id}" ${LINKS.kind !== 'all' || LINKS.open.has(g.id) ? 'open' : ''}>
+        <summary><b>${esc(g.t)}</b><span>${items.length} · ${esc(g.d)}</span></summary><div class="grid g2">${items.map(srcCard).join('')}</div></details>` : '';
     }).join('') + `<p class="hint" style="text-align:left;margin-top:14px">Anything that costs money or needs an account: ask a parent first.</p>`;
   $$('#lkKind button', host).forEach(b => b.onclick = () => { LINKS.kind = b.dataset.k; renderLinks(); });
   $('#lkMine').onchange = e => { LINKS.mine = e.target.checked; renderLinks(); };
+  $$('.libfold', host).forEach(d => d.ontoggle = () => { if (LINKS.kind === 'all') LINKS.open[d.open ? 'add' : 'delete'](d.dataset.g); });
   wireSrc(host);
 }
 /** the reading sources, shown under the in-app reading library */
@@ -4144,12 +4324,22 @@ function scenarioDue(passes, last) {
 
 /**
  * ctx = { minutes, mode: 'normal'|'low'|'busy', kanaPct, reviewDue,
- *         dueSituations: [id], weakSituation: id|null, phase, skills }
+ *         dueSituations: [id], weakSituation: id|null, phase, skills,
+ *         week: { id, label, covers, min } | null }
  * returns { blocks: [{ kind, label, min, why, target }], total }
+ *
+ * ctx.week is the next goal on this week's Timeline list that kana and reviews do not already cover (a grammar
+ * lesson, a situation, a listening step, a simulation, the week's extra drill). It has a place in every day of 20
+ * minutes or more, right after the reviews, so the week moves on from the daily training alone. `covers` names the
+ * ordinary block it stands in for ('grammar', 'situation', 'listen', 'shadow', 'read', 'sim'), which is then left out.
  */
 function dailyPlan(ctx) {
   const B = (kind, label, min, why, target) => ({ kind, label, min, why, target: target || null });
   const hasReview = (ctx.reviewDue || 0) > 0;
+  const wk = ctx.week || null, covered = k => !!wk && wk.covers === k;
+  // a situation or a simulation is speaking practice in itself: on a short day it stands in for the speaking item too
+  const spoken = !!wk && (wk.covers === 'situation' || wk.covers === 'sim');
+  const weekBlock = min => ({ ...B('week', wk.label, min, 'Next on this week’s list. Finishing the list is what moves your week on.', wk.id), covers: wk.covers || null });
 
   if (ctx.mode === 'low') {
     return finish(hasReview
@@ -4163,7 +4353,7 @@ function dailyPlan(ctx) {
     return finish([
       B('review', hasReview ? 'Vocabulary review or Anki' : 'Anki reviews', 8, 'The one thing worth protecting on a busy day.'),
       B('listen', 'Listening', 7, 'Listening is the skill that decays fastest.'),
-      B('grammar', 'One grammar point', 5, 'Read one example and say it aloud.'),
+      wk ? weekBlock(5) : B('grammar', 'One grammar point', 5, 'Read one example and say it aloud.'),
     ]);
   }
 
@@ -4179,22 +4369,24 @@ function dailyPlan(ctx) {
     blocks.push(B('review', 'Vocabulary review', Math.min(big ? 20 : 12, Math.max(5, Math.round(ctx.reviewDue * 0.3))),
       ctx.reviewDue + ' cards due. Or do your Anki reviews instead.'));
 
+  if (wk) blocks.push(weekBlock(Math.min(wk.min || 6, big ? 12 : 8)));
+
   if (ctx.tutor && budget >= 20) blocks.push(B('tutor', 'Tutor drill', 5, ctx.tutor.text, ctx.tutor.id));
 
   const sit = (ctx.dueSituations && ctx.dueSituations[0]) || ctx.weakSituation;
-  if (sit) blocks.push(B('situation', 'Japan situation', big ? 15 : 10,
+  if (sit && !covered('situation')) blocks.push(B('situation', 'Japan situation', big ? 15 : 10,
     ctx.dueSituations && ctx.dueSituations.length ? 'Due for spaced review.' : 'Your weakest real-life area right now.', sit));
 
-  blocks.push(B('listen', 'Listening', (big ? 15 : 10) + (boost.has('listening') ? 5 : 0),
+  if (!covered('listen')) blocks.push(B('listen', 'Listening', (big ? 15 : 10) + (boost.has('listening') ? 5 : 0),
     'The skill that matters most on arrival.'));
-  blocks.push(B('shadow', 'Speaking', (big ? 10 : 5) + (boost.has('speaking') ? 3 : 0),
+  if (!covered('shadow') && !(spoken && budget < 30)) blocks.push(B('shadow', 'Speaking', (big ? 10 : 5) + (boost.has('speaking') ? 3 : 0),
     'Say it out loud. Reading silently does not train speaking.'));
   if (ctx.recovery && budget >= 30) blocks.push(B('recovery', 'I don’t understand', 5, ctx.recovery));
   if (ctx.accent && budget >= 30) blocks.push(B('accent', 'Accent', 4, ctx.accent));
-  blocks.push(B('grammar', 'Grammar', budget >= 45 ? 10 : 5, 'The next lesson in the course, or its quiz.'));
+  if (!covered('grammar')) blocks.push(B('grammar', 'Grammar', budget >= 45 ? 10 : 5, 'The next lesson in the course, or its quiz.'));
   if (ctx.baseball && budget >= 30) blocks.push(B('baseball', 'Baseball', 5, 'Coach calls, team words and answering the coach.'));
-  if (budget >= 40) blocks.push(B('read', 'Reading', big ? 10 : 5, 'Reading builds kanji and grammar together.'));
-  if (ctx.phase && ['sim', 'camp', 'survival', 'school'].includes(ctx.phase.id))
+  if (budget >= 40 && !covered('read')) blocks.push(B('read', 'Reading', big ? 10 : 5, 'Reading builds kanji and grammar together.'));
+  if (ctx.phase && ['sim', 'camp', 'survival', 'school'].includes(ctx.phase.id) && !covered('sim'))
     blocks.splice(Math.min(2, blocks.length), 0, B('sim', 'Simulation', 10, 'Whole conversations, not single phrases, this close to departure.'));
 
   return finish(fitPlan(blocks, budget));
@@ -4211,8 +4403,10 @@ function dailyPlan(ctx) {
    The order you do them in never changes. */
 /** minutes per daily-training choice; 'serious' (75) is kept for anyone who picked it before */
 const PLAN_MINUTES = { low: 10, busy: 20, quick: 20, thirty: 30, normal: 45, hour: 60, serious: 75 };
-const PLAN_PRIO = { kana: 1, review: 2, listen: 3, shadow: 4, sim: 5, tutor: 6, recovery: 6.5, accent: 6.8, situation: 7, grammar: 8, baseball: 9, read: 10 };
-const PLAN_MIN = { kana: 5, review: 5, listen: 5, shadow: 3, sim: 8, tutor: 4, recovery: 4, accent: 3, situation: 5, grammar: 5, baseball: 4, read: 5 };
+const PLAN_PRIO = { kana: 1, review: 2, week: 2.5, listen: 3, shadow: 4, sim: 5, tutor: 6, recovery: 6.5, accent: 6.8, situation: 7, grammar: 8, baseball: 9, read: 10 };
+// listening and speaking can go down to 3 and 2 minutes (eight sentences heard, five said), so that a 20-minute day
+// still holds kana, reviews, the week's goal, listening and speaking: 5 + 5 + 5 + 3 + 2
+const PLAN_MIN = { kana: 5, review: 5, week: 5, listen: 3, shadow: 2, sim: 8, tutor: 4, recovery: 4, accent: 3, situation: 5, grammar: 5, baseball: 4, read: 5 };
 const PLAN_FLOOR = { kana: 8, listen: 8, shadow: 5 };
 function fitPlan(blocks, budget) {
   const out = blocks.map(b => ({ ...b }));
@@ -4270,8 +4464,8 @@ const VOICE = (() => {
   function pick() {
     if (!has) return null;
     const vs = speechSynthesis.getVoices().filter(v => /^ja(-|_|$)/i.test(v.lang));
-    // prefer neural/natural voices, then Google's, then anything Japanese
-    const score = v => (/natural|neural|online/i.test(v.name) ? 4 : 0) + (/google/i.test(v.name) ? 2 : 0);
+    // prefer neural/natural voices (Edge's "Online (Natural)", an iPhone's Enhanced or Premium), then Google's, then anything Japanese
+    const score = v => (/natural|neural|online|enhanced|premium/i.test(v.name) ? 4 : 0) + (/google/i.test(v.name) ? 2 : 0);
     vs.sort((a, b) => score(b) - score(a));
     voice = (preferred && vs.find(v => v.name === preferred)) || vs[0] || null;
     return voice;
@@ -4281,6 +4475,8 @@ const VOICE = (() => {
   return {
     get available() { return !!(has && (voice || pick())); },
     get name() { return voice ? voice.name : null; },
+    /** a natural-sounding voice, as opposed to a basic one */
+    get natural() { return !!(voice && /natural|neural|online|enhanced|premium/i.test(voice.name)); },
     /** speak Japanese text; resolves when finished (or immediately if unavailable). pitch: 1 is the voice's own; some voices ignore it */
     say(text, rate, pitch) {
       return new Promise(res => {
@@ -4295,7 +4491,7 @@ const VOICE = (() => {
     stop() { if (has) speechSynthesis.cancel(); },
     /** Japanese voices, most natural first */
     list() { if (!has) return []; const vs = speechSynthesis.getVoices().filter(v => /^ja(-|_|$)/i.test(v.lang));
-      const sc = v => (/natural|neural|online/i.test(v.name) ? 4 : 0) + (/google/i.test(v.name) ? 2 : 0); return vs.sort((a, b) => sc(b) - sc(a)); },
+      const sc = v => (/natural|neural|online|enhanced|premium/i.test(v.name) ? 4 : 0) + (/google/i.test(v.name) ? 2 : 0); return vs.sort((a, b) => sc(b) - sc(a)); },
     prefer(name) { preferred = name || null; pick(); },
   };
 })();
@@ -4697,6 +4893,23 @@ if (typeof module !== 'undefined') module.exports = { conjugate, conjugateText, 
 
 /* ============================ evidence ============================ */
 
+/* Answers by the start of their item ('ws:', 'ls:words:', 'gl:wa-desu'…), for the parts of the app that ask about one
+   drill or one lesson. The weekly plan asks for some forty of these, and after a year the history holds tens of
+   thousands of answers, so each list is gathered once and then only the new answers are filed.
+   The lists are shared: never change one. */
+const _ATT = { arr: null, n: 0, by: new Map() };
+function attemptsWith(prefix) {
+  const A = S.attempts;
+  if (_ATT.arr !== A || A.length < _ATT.n) { _ATT.arr = A; _ATT.n = A.length; _ATT.by = new Map(); }      // replaced (a load, a sync) or shortened: start again
+  else if (A.length > _ATT.n) {
+    for (let i = _ATT.n; i < A.length; i++) { const it = A[i].item; if (it) for (const [p, list] of _ATT.by) if (it.startsWith(p)) list.push(A[i]); }
+    _ATT.n = A.length;
+  }
+  let list = _ATT.by.get(prefix);
+  if (!list) { list = A.filter(a => a.item && a.item.startsWith(prefix)); _ATT.by.set(prefix, list); }
+  return list;
+}
+
 function recordAttempt(skill, item, kind, v) {
   const a = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
               t: Date.now(), skill, item: item || null, kind, v: Math.max(0, Math.min(1, v)) };
@@ -4822,13 +5035,14 @@ function wirePracticeKeys() {
 }
 
 function answerFeedback(host, right, correctText, after) {
+  const asked = host && host.querySelector('.pchoice');                 // gone from the page once this quiz is closed or redrawn
   $$('.pchoice', host).forEach(b => {
     b.disabled = true;
     if (b.dataset.v === correctText) b.classList.add('ok');
   });
   const card = host.querySelector('.qcard'); if (card) { card.classList.remove('flash-ok', 'flash-no'); void card.offsetWidth; card.classList.add(right ? 'flash-ok' : 'flash-no'); }
   right ? SFX.correct() : SFX.wrong();
-  if (right) setTimeout(after, 650);
+  if (right) setTimeout(() => { if (asked && !asked.isConnected) return; after(); }, 650);
   else {
     const f = el('div', 'hint'); f.style.marginTop = '14px';
     f.innerHTML = `<button class="btn" data-k="Enter">Continue</button>`;
@@ -5213,6 +5427,7 @@ function startShadow() {
   SFX.unlock();
   SH = { items: shuffle(sentencePool(16)).slice(0, 5), i: 0, hide: false };
   renderShadow();
+  $('#shHost').scrollIntoView({ block: 'start' });       // the card sits below the page's other cards
 }
 function renderShadow() {
   const q = SH, host = $('#shHost');
@@ -5235,7 +5450,8 @@ function renderShadow() {
       <button class="btn ghost" id="shQuit" style="padding:6px 12px;font-size:13px">End</button></div>
     <div class="qcard" style="text-align:center">
       <span class="modetag">Listen, then say it</span>
-      <div class="s-ja ja" id="shText" style="font-size:26px;line-height:1.7;${q.hide ? 'filter:blur(9px)' : ''}">${esc(c.sent.ja)}</div>
+      <div id="shText" style="${q.hide ? 'filter:blur(9px)' : ''}"><div class="s-ja ja" style="font-size:26px;line-height:1.7">${esc(c.sent.ja)}</div>
+        ${/[一-鿿]/.test(c.sent.ja) && c.sent.kana ? `<div class="ja sh-kana">${esc(c.sent.kana.replace(/\s+/g, ' ').trim())}</div>` : ''}${kanaHelp() && c.sent.kana ? romajiLine(c.sent.kana) : ''}</div>
       <div class="s-en" style="margin-top:4px">${esc(c.sent.en)}</div>
       <div style="display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap">
         <button class="btn ghost" id="shPlay" data-k="r">&#9654; Native</button>
@@ -5344,6 +5560,7 @@ function computePlan(mode, R, phase) {
     baseball: true,
     recovery: recoveryReason(R, phase),
     accent: typeof accentReason === 'function' ? accentReason() : null,
+    week: curWeekGoal(),                                   // the Timeline's next goal: a place in every day
   });
   return { plan: journeyAdjust(plan0, S.cfg.journey || 'prep'), effMode, wl };
 }
@@ -5373,6 +5590,7 @@ function launchBlock(b) {
   else if (b.kind === 'baseball') ballNext();
   else if (b.kind === 'recovery') startRecovery();
   else if (b.kind === 'accent') startAccentToday();
+  else if (b.kind === 'week') { b.t0 = Date.now(); dayflowSave(); const o = curGoalById(b.target); if (o && !o.done) curRun(o); else go('timeline'); }
   else if (b.kind === 'tutor') { b.t0 = Date.now(); dayflowSave(); const f = tutorFindings(tutorEvidence()); tutorRun(((f.find(x => x.id === b.target) || f[0]) || {}).action || { k: 'review' }); }
   else if (b.kind === 'journal') { go('japan'); setTimeout(() => { const f = $('#jHappened'); if (f) f.focus(); }, 50); }
   else if (b.kind === 'notebook') go('notebook');
@@ -5677,10 +5895,43 @@ function scoreMasterTest(answers, asked) {
   return { parts, passed, missed: [...miss].sort((x, y) => y[1] - x[1]).map(([id]) => id) };
 }
 
+/* ---------------- a finished lesson stays finished ----------------
+   The simple per-kana record { seen, ok, streak, intro, passed } decides when a lesson is complete: every
+   character right twice in a row. A later miss resets the streak (so a practice run asks again), but
+   `passed` stays: a lesson you finished never comes undone, never locks the lessons after it, and never
+   pulls the Timeline back a week.                                                                    */
+/** one answer on the simple record (changed in place and returned) */
+function kanaMark(k, right) {
+  if (k.streak >= 2) k.passed = true;                         // records from before `passed` existed
+  k.seen = (k.seen || 0) + 1;
+  if (right) { k.ok = (k.ok || 0) + 1; k.streak = (k.streak || 0) + 1; if (k.streak >= 2) k.passed = true; }
+  else k.streak = 0;
+  return k;
+}
+/** known without the lesson (the kana check, the master test): right once counts as passed */
+function kanaKnown(k) {
+  k.seen = (k.seen || 0) + 1; k.ok = (k.ok || 0) + 1; k.streak = Math.max(2, (k.streak || 0) + 1); k.intro = true; k.passed = true;
+  return k;
+}
+/**
+ * Which character a lesson's drill asks next. The ones not yet right twice in a row come up five times as often as
+ * the ones that are, and never the same character twice running: two in a row then means remembering it across
+ * another one, and a lesson answered well ends in about a dozen answers instead of sometimes thirty.
+ * pool: [{ id }], streakOf(id) → the current streak, last: the one just asked, rnd: 0 to 1 (for tests)
+ */
+function pickLessonKana(pool, streakOf, last, rnd) {
+  const cand = pool.length > 1 && last ? pool.filter(k => k.id !== last.id) : pool;
+  const weighted = [];
+  for (const k of cand) { const w = streakOf(k.id) >= 2 ? 1 : 5; for (let i = 0; i < w; i++) weighted.push(k); }
+  return weighted[Math.floor((rnd == null ? Math.random() : rnd) * weighted.length)] || pool[0];
+}
+/** has this character ever been right twice in a row? */
+const kanaPassed = k => !!k && (!!k.passed || (k.streak || 0) >= 2);
+
 if (typeof module !== 'undefined') {
   module.exports = { FADE_LEVELS, QTYPE_LEVEL, newKStat, applyKanaAnswer, kanaMastery, kanaStatus,
                      autoShowMnemonic, reviewPriority, confusionPairs, kanaUnits, readableWords, sentenceSpots,
-                     MASTER_PARTS, masterWords, buildMasterTest, scoreMasterTest };
+                     MASTER_PARTS, masterWords, buildMasterTest, scoreMasterTest, kanaMark, kanaKnown, kanaPassed, pickLessonKana };
 }
 
 </script>
@@ -5762,7 +6013,7 @@ function knownChars() {
   const set = new Set();
   for (const k of KANA) {
     const s = S.kstat.get(k.id), old = S.kana.get(k.id);
-    if ((s && s.level >= 3) || (old && old.streak >= 2)) set.add(k.ch);
+    if ((s && s.level >= 3) || kanaPassed(old)) set.add(k.ch);
   }
   _known = set; _readable = null; _knownVer = MN_VER;
   return set;
@@ -6416,7 +6667,7 @@ function answerMQ(btn, correctVal) {
         <div style="margin-top:10px"><button class="btn" data-k="Enter" id="mqNext">Continue</button></div></div>`;
       if (sn.audio) { play(sn.audio); $('#mqSa').onclick = () => play(sn.audio); }
       $('#mqNext').onclick = nextMQ;
-    } else setTimeout(nextMQ, c.tries > 1 ? 500 : 520);
+    } else { const q0 = MN.quiz; setTimeout(() => { if (MN.quiz === q0) nextMQ(); }, c.tries > 1 ? 500 : 520); }   // not if the quiz was closed meanwhile
     return;
   }
   // wrong: show the mnemonic as a learning aid, then try again (spec §5)
@@ -6437,7 +6688,7 @@ function answerMQ(btn, correctVal) {
   const sm = $('#mqShowM'); if (sm) sm.onclick = () => { $('#mqM').style.display = ''; sm.remove(); };
   $('#mqRetry').onclick = () => { drawQuestion(); };
 }
-function nextMQ() { MN.quiz.i++; renderMQ(); }
+function nextMQ() { if (!MN.quiz) return; MN.quiz.i++; renderMQ(); }
 
 function finishMQ() {
   const q = MN.quiz, body = $('#mnBody');
@@ -8867,7 +9118,7 @@ function renderSims() {
   if (MSG) { renderMsg(); return; }
   const now = Date.now();
   const diff = S.cfg.simDiff || 'normal';
-  $('#simHost').innerHTML = hsCard() + homeCard() + msgCard() + `<p class="sub">Whole conversations from your first weeks in Japan. People speak Japanese first; the meaning
+  $('#simHost').innerHTML = hsCard() + homeCard() + msgCard() + `<h2>Conversations</h2><p class="sub">Whole conversations from your first weeks in Japan. People speak Japanese first; the meaning
     stays hidden until you ask. Replies are judged on whether you were understood and whether they sounded natural.</p>
     <div class="tools"><span class="hint">Difficulty</span>
       <div class="seg" id="simDiff">${[['easy', 'Easy · meanings shown'], ['normal', 'Normal · hints'], ['challenge', 'Challenge · by ear']]
@@ -9228,6 +9479,10 @@ function wireHs() {
     if (!hsNameOk(name)) { $('#hsErr').textContent = 'Your name needs to be in katakana (カタカナ), up to 12 characters.'; return; }
     S.cfg.hs = { name, grade: +$('#hsGrade').value + 1, klass: +$('#hsKlass').value + 1, host: +$('#hsHost').value, pos: +$('#hsPos').value };
     saveCfg(); HS_EDIT = false; renderSims();
+    if (INTRO.back) {                                        // came from the self-introduction: back to it, now that it has a name
+      INTRO.back = false; go('speak'); const h = $('#introHost'); if (h) h.scrollIntoView({ block: 'start' });
+      toast('Profile saved. Here is your self-introduction.');
+    }
   };
 }
 
@@ -9886,13 +10141,13 @@ function renderJapan() {
         <button class="btn ${camp[it.id] ? 'ghost' : ''}" data-camp="${it.id}">${camp[it.id] ? 'Again' : 'Start'}</button></div>`).join('')}</div>
       <div class="hint" style="text-align:left;margin-top:8px">Items tick themselves from what you actually do today.
         ${JR.preview && !['camp', 'final', 'survival'].includes(phase.id) ? 'This is a preview; boot camp switches on automatically 60 days before departure.' : ''}</div>`
-      : `<div class="card">Boot camp switches on automatically in the last 60 days before departure: every day it asks for speaking, listening, school,
-        host family, social, transport, baseball, reading and Japanese-only time. <button class="btn ghost" id="jCampPrev" style="margin-left:6px">Try a boot camp day now</button></div>`}
+      : `<div class="card"><p class="campnote">Boot camp switches on automatically in the last 60 days before departure: every day it asks for speaking, listening, school,
+        host family, social, transport, baseball, reading and Japanese-only time.</p><button class="btn ghost" id="jCampPrev">Try a boot camp day now</button></div>`}
     <div class="kk" style="margin-top:16px">Japanese-only timer</div><div class="tools" style="margin-top:8px">
       ${[10, 15, 20, 30, 60].map(m => `<button class="btn ghost" data-jpt="${m}">${m} min</button>`).join('')}</div>
 
     <h2>Pre-departure check</h2>
-    <div class="card"><div class="hint" style="text-align:left;margin-bottom:10px">Fifteen abilities from your spec, each judged from what you have actually done in the app.
+    <div class="card"><div class="hint" style="text-align:left;margin-bottom:10px">Fifteen things you will need to do in Japan, each judged from what you have actually done in the app.
       This is preparation, not a pass or fail.</div>
       <div class="checks">${checks.map((c, i) => `<div class="checkrow st-${c.status}"><span class="ck">${c.status === 'done' ? '✓' : c.status === 'progress' ? '◐' : ''}</span>
         <span>${esc(c.label)}</span><button class="btn ghost" data-chk="${i}">${c.status === 'done' ? 'Review' : 'Practise'}</button></div>`).join('')}</div>
@@ -10561,11 +10816,11 @@ function renderMemCard(c) {
     if (s.mode === 'gq') recordAttempt('grammar', 'gl:' + s.gq.lesson, 'grammar', right ? 1 : 0);
     flash(right);
     if (c.deck === 'ka') kanaAnswer(c.k, 'sound2char', right, Date.now() - (s.t0 || Date.now()), right ? null : KBY.get(b.dataset.v), { noSRS: true });
-    setTimeout(() => { s.shown = true; renderCard(); if (!right) lookThenAgain(); }, right ? 430 : 700);
+    setTimeout(() => { if (!stillOn(s, c)) return; s.shown = true; renderCard(); if (!right) lookThenAgain(); }, right ? 430 : 700);
   });
   if (!s.shown && (s.mode === 'produce' || s.mode === 'conj')) speechCheckUI($('#spHost'), s.mode === 'conj' ? conjSetup(c).accept : [c.ja, c.kana], m => {
     s.spoke = m;
-    if (m.verdict === 'clear' && !s.locked) { s.locked = true; flash(true); setTimeout(() => { s.shown = true; renderCard(); }, 500); }
+    if (m.verdict === 'clear' && !s.locked) { s.locked = true; flash(true); setTimeout(() => { if (!stillOn(s, c)) return; s.shown = true; renderCard(); }, 500); }
   });
   const ti = $('#typeIn');
   if (ti) {
@@ -10584,8 +10839,8 @@ function renderMemCard(c) {
       if (c.deck === 'ka') kanaAnswer(c.k, 'char2sound', right, Date.now() - (s.t0 || Date.now()), right ? null : KANA.find(x => x.script === c.k.script && x.group === 'gojuon' && romajiOk(v, x.romaji)), { noSRS: true });
       $('#typeFb').innerHTML = right ? '<span style="color:var(--good);font-weight:650">Correct</span>'
         : `<span style="color:var(--bad);font-weight:650">Not quite</span> — press Enter to see the answer`;
-      if (right || s.mode === 'conj') setTimeout(() => { s.shown = true; renderCard(); }, right ? 450 : 650);
-      else if (c.deck === 'ka') setTimeout(() => { s.shown = true; renderCard(); lookThenAgain(); }, 600);
+      if (right || s.mode === 'conj') setTimeout(() => { if (!stillOn(s, c)) return; s.shown = true; renderCard(); }, right ? 450 : 650);
+      else if (c.deck === 'ka') setTimeout(() => { if (!stillOn(s, c)) return; s.shown = true; renderCard(); lookThenAgain(); }, 600);
     };
   }
 }
@@ -10777,14 +11032,68 @@ function renderRecordingsCard() {
 function renderVoicePicker() {
   const sel = $('#setVoice'); if (!sel) return;
   const voices = VOICE.list();
-  sel.innerHTML = voices.length ? voices.map(v => `<option value="${esc(v.name)}" ${v.name === VOICE.name ? 'selected' : ''}>${esc(v.name)}${/natural|neural|online/i.test(v.name) ? ' · natural' : ''}</option>`).join('')
+  sel.innerHTML = voices.length ? voices.map(v => `<option value="${esc(v.name)}" ${v.name === VOICE.name ? 'selected' : ''}>${esc(v.name)}${/natural|neural|online|enhanced|premium/i.test(v.name) ? ' · natural' : ''}</option>`).join('')
     : '<option>No Japanese voice found</option>';
   sel.disabled = !voices.length;
   sel.onchange = () => { S.cfg.voiceName = sel.value; saveCfg(); VOICE.prefer(sel.value); };
   const t = $('#voiceTest'); if (t) t.onclick = () => VOICE.say('こんにちは。いっしょに にほんごを れんしゅう しましょう。', 0.95);
-  $('#voiceNote').textContent = voices.some(v => /natural|neural|online/i.test(v.name)) ? 'Natural voices sound closest to real speech.'
-    : 'Tip: open the app in Microsoft Edge for natural-sounding Japanese voices, or add a Japanese voice in Windows Settings → Time & language → Speech.';
+  $('#voiceNote').textContent = voices.some(v => /natural|neural|online|enhanced|premium/i.test(v.name))
+    ? 'Natural voices sound closest to real speech. For your accent, still copy real people: the Accent page shows where.'
+    : 'For a more natural voice: on a computer, open the app in Microsoft Edge. On an iPhone, go to Settings → Accessibility → Spoken Content → Voices → Japanese, download a voice marked Enhanced or Premium, and pick it here if it appears.';
 }
+
+</script>
+<script>
+/* ================= Nihongo Flow — real people saying it =================
+   The app's own audio is a mix. The Core 2000 words and sentences are recordings of native
+   speakers; most other lines use this device's computer voice, which gets most words right but
+   never sounds quite like a person. For your accent, copy people: any word or phrase in the app
+   can be opened on two free sites, checked 2026-10-02:
+     Forvo     single words and short set phrases, each recorded by people from Japan
+     YouGlish  real YouTube clips in which someone says it, at normal speed
+   Links only: nothing is downloaded, copied into the app or sent anywhere but the link itself. */
+'use strict';
+
+const REAL_VOICES = [
+  { id: 'forvo', name: 'Forvo', what: 'the word, recorded by people from Japan', url: t => `https://forvo.com/word/${encodeURIComponent(t)}/#ja`, wordsOnly: true },
+  { id: 'youglish', name: 'YouGlish', what: 'real YouTube clips where someone says it', url: t => `https://youglish.com/pronounce/${encodeURIComponent(t)}/japanese` },
+];
+/** what to search for: the line without spaces, punctuation or the ruby markup */
+const realText = s => String(s || '').replace(/\{([^|}]+)\|[^}]+\}/g, '$1').replace(/[\s。、！？!?「」『』（）()・…〜~♪]/g, '');
+/** Forvo has words and short set phrases, rarely whole sentences */
+const realIsWord = t => [...t].length <= 8;
+/** the sites that fit this text, each with its link */
+const realVoiceLinks = text => { const t = realText(text); return t ? REAL_VOICES.filter(v => !v.wordsOnly || realIsWord(t)).map(v => ({ ...v, href: v.url(t) })) : []; };
+/** a small line of links: "Real people: Forvo · YouGlish" */
+function realVoicesHTML(text, label) {
+  const links = realVoiceLinks(text); if (!links.length) return '';
+  return `<span class="realv">${esc(label == null ? '🗣 Real people:' : label)} ${links.map(v => `<a href="${esc(v.href)}" target="_blank" rel="noopener" title="${esc(v.what)}">${v.name} ↗</a>`).join(' · ')}</span>`;
+}
+
+/** the Accent page's card: where real voices are, in the app and outside it, and what this device's own voice is */
+function renderRealVoicesCard(host) {
+  if (!host) return;
+  const vName = VOICE.name, natural = VOICE.natural;
+  host.innerHTML = `<div class="card acreal">
+    <div class="hint" style="text-align:left;margin-bottom:10px">To sound like a Japanese speaker, copy Japanese speakers. The computer voice is good for
+      practice and gets most words right, but not every one, and it never sounds quite like a person.</div>
+    <div class="acreal-row"><div><b>In this app</b><small>The Core 2000 words and example sentences are recordings of real speakers. Shadow those.</small></div>
+      <button class="btn ghost" id="rvShadow">Shadowing</button></div>
+    <div class="acreal-row"><div style="flex:1"><b>Any word or phrase</b><small>Type it, then hear people say it.</small>
+      <input id="rvIn" type="text" class="ja" lang="ja" autocomplete="off" placeholder="ありがとう" style="margin-top:6px;width:100%"></div></div>
+    <div class="acreal-links" id="rvLinks"></div>
+    <div class="acreal-row"><div><b>Standard Japanese, read by NHK announcers</b><small>Short news in easy Japanese, every article read aloud in standard pronunciation.</small></div>
+      <a class="btn ghost" href="https://news.web.nhk/news/easy/" target="_blank" rel="noopener">NHK Easy ↗</a></div>
+    <div class="acreal-row"><div><b>This device’s computer voice</b><small>${vName ? `${esc(vName)} · ${natural ? 'a natural voice, close to real speech' : 'a basic voice: a natural one sounds much closer to a person'}` : 'No Japanese voice on this device.'}</small></div>
+      <button class="btn ghost" id="rvVoice">Change it</button></div></div>`;
+  const draw = () => { const t = $('#rvIn').value || 'ありがとう', links = realVoiceLinks(t);
+    $('#rvLinks').innerHTML = links.map(v => `<a class="btn" href="${esc(v.href)}" target="_blank" rel="noopener">${v.name} ↗<small>${esc(v.what)}</small></a>`).join(''); };
+  $('#rvIn').oninput = draw; draw();
+  $('#rvShadow').onclick = () => startShadow();
+  $('#rvVoice').onclick = () => { go('settings'); requestAnimationFrame(() => { const v = $('#setVoice'); if (v) v.scrollIntoView({ block: 'center' }); }); };
+}
+
+if (typeof module !== 'undefined') module.exports = { REAL_VOICES, realText, realIsWord, realVoiceLinks };
 
 </script>
 <script>
@@ -10809,8 +11118,8 @@ function renderVoicePicker() {
 'use strict';
 
 const SNAP_VERSION = 2;
-const CFG_LOCAL = ['theme', 'voiceName', 'revDeck', 'autoBackup', 'speechCheck', 'ghSync', 'lastSync', 'wordAudio'];
-const SYNC_KV = ['readdone', 'reflect', 'simstate', 'ankiSel', 'daydone', 'flags', 'curdone', 'immlog', 'achieved', 'kanamaster', 'enhelp', 'finalcheck', 'srcused'];      // kvCache keys that travel
+const CFG_LOCAL = ['theme', 'voiceName', 'revDeck', 'autoBackup', 'speechCheck', 'ghSync', 'lastSync', 'wordAudio', 'fx'];
+const SYNC_KV = ['readdone', 'reflect', 'simstate', 'ankiSel', 'daydone', 'flags', 'curdone', 'curgoals', 'immlog', 'achieved', 'kanamaster', 'enhelp', 'finalcheck', 'srcused'];      // kvCache keys that travel
 const LOG_SKIP = new Set(['d', 'by', 'u']);
 
 const stampOf = r => (r && (r.u || r.last || r.t || r.added)) || 0;
@@ -10899,7 +11208,8 @@ function mergeObj(a, b, pick) {
 }
 const pickKanaState = (x, y) => {
   const better = (y.seen || 0) > (x.seen || 0) || ((y.seen || 0) === (x.seen || 0) && (y.ok || 0) > (x.ok || 0)) ? y : x;
-  return { ...better, intro: !!(x.intro || y.intro) };
+  const passed = !!(x.passed || y.passed || (x.streak || 0) >= 2 || (y.streak || 0) >= 2);     // a finished lesson stays finished on every device
+  return passed ? { ...better, intro: !!(x.intro || y.intro), passed } : { ...better, intro: !!(x.intro || y.intro) };
 };
 const pickLater = (x, y) => ((y && y.last) || 0) > ((x && x.last) || 0) ? y : x;
 
@@ -10944,6 +11254,7 @@ function mergeSnapshots(local, incoming) {
     out.kvCache.flags = f;
   }
   if (ik.curdone || lk.curdone) out.kvCache.curdone = mergeObj(lk.curdone, ik.curdone, (x, y) => Math.min(x || Infinity, y || Infinity));   // a week was finished the first time either device saw it
+  if (ik.curgoals || lk.curgoals) out.kvCache.curgoals = mergeObj(lk.curgoals, ik.curgoals, (x, y) => Math.min(x || Infinity, y || Infinity)); // and so was each goal
   if (ik.immlog || lk.immlog) out.kvCache.immlog = mergeObj(lk.immlog, ik.immlog, (x, y) => Math.max(x || 0, y || 0));                  // SOS uses per day
   if (ik.finalcheck || lk.finalcheck) {           // final Japan check per topic: the later run wins, the first pass is kept
     const a = lk.finalcheck || {}, b = ik.finalcheck || {}, m = { ...a };
@@ -10965,7 +11276,7 @@ function mergeSnapshots(local, incoming) {
     out.kvCache.kanamaster = m;
   }
   for (const k of ['reflect', 'ankiSel']) if (ik[k] !== undefined && (iu[k] || 0) > (lu[k] || 0)) { out.kvCache[k] = ik[k]; out.kvU[k] = iu[k]; }
-  for (const k of ['kana', 'gram', 'sits', 'readdone', 'simstate', 'daydone', 'flags', 'curdone', 'immlog', 'achieved', 'kanamaster', 'enhelp', 'finalcheck', 'srcused']) out.kvU[k] = Math.max(lu[k] || 0, iu[k] || 0);
+  for (const k of ['kana', 'gram', 'sits', 'readdone', 'simstate', 'daydone', 'flags', 'curdone', 'curgoals', 'immlog', 'achieved', 'kanamaster', 'enhelp', 'finalcheck', 'srcused']) out.kvU[k] = Math.max(lu[k] || 0, iu[k] || 0);
 
   // settings, one key at a time: each carries the time it was last changed (cfg._ku),
   // the newer value wins, and per-device keys never travel
@@ -11277,7 +11588,6 @@ async function renderNotices() {
   if (a('bk')) a('bk').onclick = () => backupNow();
   if (a('bkset')) a('bkset').onclick = () => { go('settings'); setTimeout(() => { const c = $('#dataHost'); if (c) c.scrollIntoView({ behavior: 'smooth' }); }, 60); };
   if (a('bkfile')) a('bkfile').onclick = async () => { await saveSyncFile(); renderNotices(); };
-  if (typeof wirePackNotice === 'function') wirePackNotice(host);
 }
 
 /* ---------------- Settings: this device, backups, sync ---------------- */
@@ -11362,7 +11672,7 @@ async function resetProgress() {
   if (!confirm('Erase all review history, kana progress, grammar marks and study logs on this device?\n\nThe deck itself is untouched, and your other synced devices keep their progress. This cannot be undone.')) return;
   S.frozen = true;
   for (const s of ['cards', 'log', 'items', 'attempts', 'kstat', 'snaps', 'revlog', 'tomb']) await DB.clear(s);
-  for (const k of ['kana', 'gram', 'sits', 'readdone', 'simstate', 'premerge', 'dayflow', 'daydone', 'curdone', 'immlog', 'placement', 'achieved', 'gameseen', 'chestseen', 'mphotos', 'kanamaster', 'enhelp', 'finalcheck', 'srcused']) await DB.delRaw('kv', k);   // flags are notes about content, not progress: kept
+  for (const k of ['kana', 'gram', 'sits', 'readdone', 'simstate', 'premerge', 'dayflow', 'daydone', 'curdone', 'curgoals', 'immlog', 'placement', 'achieved', 'gameseen', 'chestseen', 'mphotos', 'kanamaster', 'enhelp', 'finalcheck', 'srcused']) await DB.delRaw('kv', k);   // flags are notes about content, not progress: kept
   toast('Progress cleared'); reloadApp();
 }
 
@@ -11789,8 +12099,21 @@ function levelFor(total) {
 
 /* ---------------- in the app ---------------- */
 const XPS = { total: 0, today: 0, level: 1, ready: false };
+/* XP is counted from history after every answer. Answers and reviews already counted are kept by day, and only the
+   new ones are added; study minutes and finished checklists are few and are counted fresh each time. */
+const _xpc = { A: null, an: 0, R: null, rn: 0, by: new Map() };
 function xpNow() {
-  return xpTally({ revlog: S.revlog, attempts: S.attempts, logs: [...S.log.values()], daydone: S.kvCache.daydone || {} });
+  const A = S.attempts, R = S.revlog;
+  if (_xpc.A !== A || _xpc.R !== R || A.length < _xpc.an || R.length < _xpc.rn) { _xpc.A = A; _xpc.R = R; _xpc.an = 0; _xpc.rn = 0; _xpc.by = new Map(); }
+  if (A.length > _xpc.an || R.length > _xpc.rn) {
+    const part = xpTally({ attempts: _xpc.an ? A.slice(_xpc.an) : A, revlog: _xpc.rn ? R.slice(_xpc.rn) : R });
+    for (const [d, v] of part.byDay) _xpc.by.set(d, (_xpc.by.get(d) || 0) + v);
+    _xpc.an = A.length; _xpc.rn = R.length;
+  }
+  const byDay = new Map(_xpc.by);
+  for (const [d, v] of xpTally({ logs: [...S.log.values()], daydone: S.kvCache.daydone || {} }).byDay) byDay.set(d, (byDay.get(d) || 0) + v);
+  let total = 0; for (const v of byDay.values()) total += v;
+  return { total, byDay };
 }
 /** quiet recount, at startup and after a sync */
 function xpRecount() {
@@ -11825,6 +12148,7 @@ function xpLevelUp(L) {
     ${AVATARS.filter(([l]) => l === L.level).map(([, e]) => `<div class="xplv-s">New avatar unlocked: <span style="font-size:22px">${e}</span></div>`).join('')}
     ${L.nextTitle ? `<div class="xplv-s">Next title at level ${L.nextTitle.at}: ${esc(L.nextTitle.title)} <span class="ja">${esc(L.nextTitle.ja)}</span></div>` : ''}</div>`;
   box.className = 'on';
+  setTimeout(() => FX.burst($('.xplv-n', box), { n: 18, size: 96 }), 180);
   box.onclick = () => { box.className = ''; };
   clearTimeout(box._t); box._t = setTimeout(() => { box.className = ''; }, 3600);
 }
@@ -11841,7 +12165,7 @@ function renderXPBadges() {
   const c = $('#ckXP'); if (c) c.innerHTML = xpBarHTML();
 }
 
-if (typeof module !== 'undefined') module.exports = { XP, xpTally, levelFor, LEVEL_TITLES };
+if (typeof module !== 'undefined') module.exports = { XP, xpTally, xpNow, levelFor, LEVEL_TITLES };
 
 </script>
 <script>
@@ -11860,7 +12184,7 @@ if (typeof module !== 'undefined') module.exports = { XP, xpTally, levelFor, LEV
 
 let DAYFLOW = null;   // { day, mode, i, running, finished, blocks: [{ kind, label, min, why, target, goal, done }] }
 const DAYFLOW_MANUAL = new Set(['journal', 'notebook']);      // no natural end: you say when you are done
-const DAY_ITEMS = { low: 3, busy: 3, quick: 4, thirty: 6, normal: 7, hour: 8, serious: 8 };
+const DAY_ITEMS = { low: 3, busy: 3, quick: 5, thirty: 6, normal: 7, hour: 8, serious: 8 };   // 20 minutes: kana, reviews, the week's goal, listening, speaking
 const DAY_CHOICES = [['low', '10 min'], ['quick', '20 min'], ['thirty', '30 min'], ['normal', '45 min'], ['hour', '60 min']];
 const dayModeNow = () => S.cfg.dayMode === 'serious' ? 'hour' : (S.cfg.dayMode || 'quick');
 
@@ -11883,7 +12207,7 @@ function buildChecklist(mode, keep) {
   const pick = plan.blocks.slice(), cap = DAY_ITEMS[mode] || 4;      // too many for the day: the least important go
   while (pick.length > cap) pick.splice(pick.indexOf(pick.slice().sort((a, b) => (PLAN_PRIO[b.kind] || 99) - (PLAN_PRIO[a.kind] || 99))[0]), 1);
   const blocks = pick.map(b => ({
-    kind: b.kind, label: b.label, min: b.min, why: b.why, target: b.target, done: false,
+    kind: b.kind, label: b.label, min: b.min, why: b.why, target: b.target, covers: b.covers || null, done: false,
     goal: b.kind === 'review' ? Math.max(5, Math.min(40, dueNow)) : null,
   }));
   if (keep) for (const b of blocks) if (keep.some(k => k.kind === b.kind && k.done)) b.done = true;
@@ -11901,18 +12225,29 @@ function itemProgress(b) {
   switch (b.kind) {
     case 'review': { const q = queue(); const left = q.counts.due + q.counts.learn + q.counts.fresh, n = reviewsToday();
       return !left && n ? 1 : Math.min(1, n / (b.goal || 10)); }
-    case 'kana': return Math.min(1, (log.kana || 0) / 25);
+    // twenty-five kana answers, but never in the middle of a lesson: the lesson's own end ticks it (dayflowComplete)
+    case 'kana': { const p = Math.min(1, (log.kana || 0) / 25);
+      return typeof kanaDrill !== 'undefined' && kanaDrill && kanaDrill.lesson != null ? Math.min(0.9, p) : p; }
     case 'situation': return [...S.sits.values()].some(s => (s.last || 0) >= t0) ? 1 : Math.min(0.9, attemptsToday(a => PHRASES.has(a.item || '')) / 15);
-    case 'listen': return Math.max(Math.min(1, attemptsToday(a => a.kind === 'listening') / 8), Math.min(1, (log.listen || 0) / 10));
+    case 'listen': return Math.max(Math.min(1, attemptsToday(a => a.kind === 'listening') / LISTEN_N), Math.min(1, (log.listen || 0) / 10));   // a whole session, or ten minutes logged
     case 'shadow': return Math.max(Math.min(1, attemptsToday(a => a.kind === 'speaking') / 5), Math.min(1, (log.speak || 0) / 10));
     case 'read': return Math.min(1, attemptsToday(a => a.kind === 'reading') / 4);
-    case 'sim': return Math.min(1, attemptsToday(a => /^sc:/.test(a.item || '')) / 5);
+    case 'sim': return Math.min(0.9, attemptsToday(a => /^sc:/.test(a.item || '')) / 5 * 0.9);      // ticked when the simulation ends (dayflowComplete), not five lines in
     case 'grammar': return S.revlog.some(r => r.t >= t0 && deckOf(r.c) === 'gr')
       || S.attempts.some(a => a.t >= t0 && a.kind === 'grammar-quiz') ? 1 : 0;
     case 'journal': return attemptsToday(a => /^journal:/.test(a.item || '')) ? 1 : 0;
     case 'baseball': return Math.min(1, attemptsToday(a => a.skill === 'baseball') / 8);
     case 'recovery': return Math.min(1, attemptsToday(a => /^rc:/.test(a.item || '')) / 8);
     case 'accent': return Math.min(1, attemptsToday(a => /^ac:/.test(a.item || '')) / 8);
+    // The goal itself is done (here or from the Timeline), or its activity ended today (dayflowComplete and
+    // dayflowActivityEnd tick it then). Answers alone only fill the bar, never tick it: ticking after a few of
+    // them offered "Next" in the middle of a lesson's quiz or a situation, and one left there is never passed.
+    // Every goal either becomes done (a saved why, a recorded talk) or belongs to an activity that says it ended.
+    case 'week': { if (curGoalDone(b.target)) return 1;
+      if (!b.t0) return 0; let n = 0;
+      for (let i = S.attempts.length - 1; i >= 0 && S.attempts[i].t >= b.t0; i--) n++;
+      for (let i = S.revlog.length - 1; i >= 0 && S.revlog[i].t >= b.t0; i--) n++;
+      return Math.min(0.9, n / 12); }
     case 'tutor': { if (!b.t0) return 0; let n = 0;                     // six answers of any kind after the drill opened
       for (let i = S.attempts.length - 1; i >= 0 && S.attempts[i].t >= b.t0; i--) n++;
       for (let i = S.revlog.length - 1; i >= 0 && S.revlog[i].t >= b.t0; i--) n++;
@@ -11943,14 +12278,24 @@ function checklistChanged(manual) {
   xpSync();
   renderDayBar(true);
   if ($('#pg-dash').classList.contains('on')) renderHome();
+  setTimeout(() => curState(), 0);                         // a goal of the week finished just now is ticked, and said so, straight away
 }
 /** activities report when they finish; this ticks the matching item, in or out of the guided run */
 function dayflowComplete(kind) {
   if (!DAYFLOW || DAYFLOW.day !== todayKey()) return;
-  const b = DAYFLOW.blocks.find(x => x.kind === kind && !x.done);
+  const b = DAYFLOW.blocks.find(x => x.kind === kind && !x.done)
+    || DAYFLOW.blocks.find(x => x.kind === 'week' && !x.done && x.covers === kind);     // this week's goal stood in for that item today
   if (!b) { checklistDetect(); return; }
   b.done = true;
   checklistChanged();
+}
+/** any activity has just ended (the completion sound is the one signal every activity gives): if this week's goal
+    was opened from the checklist and answered, it is done for today, passed or not */
+function dayflowActivityEnd() {
+  if (!DAYFLOW || DAYFLOW.day !== todayKey()) return;
+  const b = DAYFLOW.blocks.find(x => x.kind === 'week' && !x.done && x.t0); if (!b) return;
+  let n = 0; for (let i = S.attempts.length - 1; i >= 0 && S.attempts[i].t >= b.t0; i--) n++;
+  if (n >= 3) { b.done = true; checklistChanged(); }
 }
 function toggleItem(i) {
   const b = DAYFLOW.blocks[i]; if (!b) return;
@@ -11997,7 +12342,7 @@ function renderDayBar(pulse) {
   const dots = DAYFLOW.blocks.map((x, j) => `<i class="${x.done ? 'done' : j === i ? 'cur' : ''}"></i>`).join('');
   bar.className = 'daybar on' + (b.done ? ' ready' : '') + (pulse ? ' pulse' : '');
   bar.innerHTML = `<div class="db-dots" aria-hidden="true">${dots}</div>
-    <div class="db-text"><div class="db-k">Today’s training · ${DAYFLOW.blocks.filter(x => x.done).length} of ${n} done</div>
+    <div class="db-text"><div class="db-k"><span class="db-kl">Today’s training · </span>${DAYFLOW.blocks.filter(x => x.done).length} of ${n} done</div>
       <div class="db-now">${b.done ? '✓ ' : ''}${esc(b.label)}${b.done ? ' · +20 XP' : ` · ${b.min} min`}</div></div>
     ${b.done ? `<button class="btn" id="dbNext">${next ? `Next: ${esc(next.label)} →` : 'Finish ✓'}</button>`
       : DAYFLOW_MANUAL.has(b.kind) ? '<button class="btn" id="dbDone">Done</button>'
@@ -12019,6 +12364,7 @@ function itemAmount(b) {
   if (b.kind === 'situation') return '1 scenario';
   if (b.kind === 'sim') return '1 simulation';
   if (b.kind === 'tutor') return '1 targeted drill';
+  if (b.kind === 'week') return 'from this week’s list';
   if (b.kind === 'recovery') return '6 moments';
   return `${b.min} minutes`;
 }
@@ -12029,9 +12375,10 @@ function itemMeta(b) {
   const amt = itemAmount(b);
   return `${amt}${/minutes$/.test(amt) ? '' : ` · about ${b.min} min`}${p > 0 ? ` · ${Math.round(p * 100)}% there` : ''}`;
 }
-const QUEST_ICON = { review: '🗂️', kana: 'あ', grammar: '📐', situation: '💬', listen: '🎧', shadow: '🗣️', read: '📖', sim: '🎭',
+const QUEST_ICON = { week: '📅', review: '🗂️', kana: 'あ', grammar: '📐', situation: '💬', listen: '🎧', shadow: '🗣️', read: '📖', sim: '🎭',
   journal: '✍️', notebook: '📓', baseball: '⚾', tutor: '🎯', recovery: '🆘', accent: '〽️' };
 let RING_LAST = null;                         // the ring grows from where it was last time
+let CK_LAST = null;                           // { day, tick: [done…], lit } as last drawn: an item ticked since then marks itself, and the flame catches
 /** under Japan prep: today's training around a progress ring, the streak beside it, and the chest you are playing for */
 function renderChecklist(g) {
   const host = $('#dashPlan'); if (!host) return;
@@ -12054,9 +12401,9 @@ function renderChecklist(g) {
       <div class="q-head"><div class="q-k">TODAY’S TRAINING</div><div class="q-t">${nudge}</div>
         <div class="q-s">${all ? 'Anything more today is extra.' : `${done} of ${n} done · about ${left} minutes`}</div>
         <div class="q-streak" title="Study on a day to keep your streak. One missed day is always forgiven. Every 7 days in a row earns a streak shield (hold up to 3), which covers an extra missed day.">
-          <span class="fl ${todayOn ? 'lit' : ''}" aria-hidden="true">🔥</span><b>${stk.streak}</b> day streak${stk.tokens ? ` <span class="shield">🛡️ ${stk.tokens}</span>` : ''}
+          <span class="fl ${todayOn ? 'lit' : ''}${todayOn && CK_LAST && CK_LAST.day === D.day && CK_LAST.lit === false ? ' ignite' : ''}" aria-hidden="true">🔥</span><b>${stk.streak}</b> day streak${stk.tokens ? ` <span class="shield">🛡️ ${stk.tokens}</span>` : ''}
           ${!todayOn && stk.streak ? '<span class="q-keep">· study today to keep it</span>' : ''}</div></div></div>
-    <ul class="cklist">${D.blocks.map((b, i) => `<li class="ck ${b.done ? 'done' : ''}" title="${esc(b.why || '')}">
+    <ul class="cklist">${D.blocks.map((b, i) => `<li class="ck ${b.done ? 'done' : ''}${b.done && CK_LAST && CK_LAST.day === D.day && CK_LAST.tick[i] === false ? ' just' : ''}" title="${esc(b.why || '')}">
       <button class="ckbox" data-ck="${i}" aria-label="${b.done ? 'Mark not done' : 'Mark done'}">${b.done ? '✓' : ''}</button>
       <span class="ck-i" aria-hidden="true">${QUEST_ICON[b.kind] || '•'}</span>
       <div class="ckbody"><div class="cklabel">${esc(b.label)}${b.kind === 'situation' && b.target ? ` · ${esc(titleOf(b.target))}` : ''}</div>
@@ -12073,6 +12420,9 @@ function renderChecklist(g) {
         : `<div class="q-chest"><span aria-hidden="true">🎁</span> Finish all ${n} to open today’s chest</div>`}
       ${pending.filter(k => k !== tk).length ? `<button class="btn ghost" id="chestMore">🎁 ${pending.filter(k => k !== tk).length} bonus chest${pending.filter(k => k !== tk).length === 1 ? '' : 's'} to open</button>` : ''}</div>
 `;
+  CK_LAST = { day: D.day, tick: D.blocks.map(b => !!b.done), lit: todayOn };
+  $$('.ck.just .ckbox', host).forEach(b => FX.burst(b, { n: 10, size: 34 }));
+  const flame = $('.fl.ignite', host); if (flame) FX.burst(flame, { n: 9, size: 30, colors: ['#ff9f1c', '#ffd93d', '#ff6b3d'] });
   const ring = $('#qRing'); RING_LAST = pct;
   requestAnimationFrame(() => requestAnimationFrame(() => { if (ring) ring.setAttribute('stroke-dasharray', `${(pct * C).toFixed(1)} ${C.toFixed(1)}`); }));
   $$('[data-ck]', host).forEach(b => b.onclick = () => toggleItem(+b.dataset.ck));
@@ -12197,7 +12547,8 @@ function placeQuestion() {
     if (ok) P.right.push(c);
     P.log.push({ id: c.id, ok });
     P.i++;
-    if (P.i < P.items.length) setTimeout(placeQuestion, ok ? 250 : 500); else setTimeout(placeStepDone, 300);
+    const still = f => () => { if (PLACE === P) f(); };                    // closed meanwhile: nothing to show
+    if (P.i < P.items.length) setTimeout(still(placeQuestion), ok ? 250 : 500); else setTimeout(still(placeStepDone), 300);
   };
   $$('.placemodal .choice').forEach(b => b.onclick = () => {
     const ok = b.dataset.id === c.id;
@@ -12781,7 +13132,7 @@ function openWordCard(id) {
     <div class="whead">
       <div class="wbig ja">${c.fg ? ruby(c.fg) : esc(c.ja)}</div>
       <div>${readingHTML(c, 'q-kana')}<div class="wen">${esc(c.en)}</div>
-        <div style="margin-top:8px">${audioButtons('wPlay', 'Play word')}</div></div>
+        <div style="margin-top:8px">${audioButtons('wPlay', 'Play word')}</div><div style="margin-top:8px">${realVoicesHTML(c.ja)}</div></div>
     </div>
     <div class="wsrc">Core 2000 (iKnow), from your own Anki deck · step ${c.step} · word ${S.deck.indexOf(c) + 1} of ${S.deck.length.toLocaleString()} in frequency order</div>
     ${why.length ? `<div class="wwhy"><b>You struggle with this word:</b> ${esc(why.join(' · '))}</div>` : ''}
@@ -13681,12 +14032,15 @@ const REAL_MATCH = {
   tekudasai: (t) => t.some((w, i) => w === 'ください' && /[てで]$/.test(t[i - 1] || '')),
   temoii:    (t, ja) => /[てで]もいい(です|よ|か|。|？|$)/.test(ja),
   mashou:    (t) => t.some(w => /(ましょう|ませんか)$/.test(w)),
-  because:   (t, ja) => /(?<!(これ|それ|あれ|今|ここ|そこ|どこ|^だ|^))から、|ので、/.test(ja),
+  // から、 as "because": not これから、 それから、 今から、 ここから、… and not at the very start (だから、 opens a sentence).
+  // Written without a lookbehind: Safari before 16.4 cannot parse one, and the whole file would fail to load.
+  because:   (t, ja) => /ので、/.test(ja) || [...ja.matchAll(/から、/g)].some(m => { const pre = ja.slice(0, m.index);
+    return pre !== '' && pre !== 'だ' && !/(これ|それ|あれ|今|ここ|そこ|どこ)$/.test(pre); }),
   but:       (t, ja) => /(が|けど|けれど)、/.test(ja),
   dekiru:    (t, ja) => /(でき(ます|ません|る|ない)|ことができ)/.test(ja),
   compare:   (t) => t.includes('より') || t.includes('いちばん'),
   teiru:     (t) => t.some((w, i) => /[てで]$/.test(w) && /^い(ます|る|た|ません)?$/.test(t[i + 1] || '')),
-  'te-and':  (t, ja) => /(?<!の|ない)[てで]、/.test(ja),
+  'te-and':  (t, ja) => [...ja.matchAll(/[てで]、/g)].some(m => !/(の|ない)$/.test(ja.slice(0, m.index))),      // not ので、 or ないで、
 };
 
 /**
@@ -13784,7 +14138,7 @@ LESSONS.forEach(l => l.g.forEach(p => { const i = GRAMMAR.findIndex(g => g.p ===
 const lessonOfPoint = i => _lessonOfPoint.get(i) || null;
 const primaryPoint = l => GRAMMAR.findIndex(g => g.p === l.g[0]);
 
-const lessonAtts = id => S.attempts.filter(a => a.item === 'gl:' + id);
+const lessonAtts = id => attemptsWith('gl:' + id).filter(a => a.item === 'gl:' + id);     // the prefix list, then exactly this lesson
 const statusOf = id => lessonStatus(lessonAtts(id));
 /** the first lesson not yet passed, skipping lessons parked for a week (unless every open one is parked) */
 const nextLesson = () => { const open = LESSONS.filter(l => !['passed', 'mastered'].includes(statusOf(l.id).state));
@@ -13841,7 +14195,7 @@ function renderCourse() {
            : '<div class="goalbanner">Every lesson passed. Reviews keep them fresh.</div>'}
     </div>
     ${COURSE.map((u, ui) => { const ls = LESSONS.filter(l => l.unitNo === ui + 1), up = ls.filter(l => ['passed', 'mastered'].includes(sts.get(l.id).state)).length;
-      return `${u.part ? `<div class="gc-part">${esc(u.part)}</div>` : ''}<details class="gc-unit" ${nx && nx.unitNo === ui + 1 ? 'open' : ''}><summary class="gc-uname">Unit ${ui + 1} · ${esc(u.unit)} <span>${up} of ${ls.length} passed</span></summary>
+      return `${u.part ? `<div class="gc-part">${esc(u.part)}</div>` : ''}<details class="gc-unit" ${nx && nx.unitNo === ui + 1 ? 'open' : ''}><summary class="gc-uname"><b>Unit ${ui + 1} · ${esc(u.unit)}</b> <span>${up} of ${ls.length} passed</span></summary>
       <div class="gc-lessons">${ls.map(l => { const s = sts.get(l.id);
         return `<button class="gc-lesson st-${s.state}${nx && nx.id === l.id ? ' next' : ''}" data-l="${l.id}">
           <span class="gc-no">${l.no}</span><span class="gc-lt"><span class="ja">${esc(l.title)}</span><small>${esc(l.gist)}</small></span>
@@ -14247,7 +14601,7 @@ function finishRS(host) {
 </script>
 <script>
 /* ================= Nihongo Flow — the listening path (pure, tested) =================
-   Eight steps from single sounds to real conversations, each a short session:
+   Eight steps from single sounds to real conversations, each a short session of ten:
      sounds     hear a kana, pick it                       (a Japanese voice)
      words      hear a Core 2000 word, pick its meaning     (native recording)
      dictation  hear a word, type it                        (native recording)
@@ -14271,7 +14625,7 @@ const LISTEN_STEPS = [
   { id: 'respond',   label: 'Respond',            what: 'Someone speaks to you. Pick your reply.',  src: 'voice' },
   { id: 'scenes',    label: 'In Japan',           what: 'What you will hear at school, at home, with friends and at practice.', src: 'voice' },
 ];
-const LISTEN_N = 8;
+const LISTEN_N = 10;         // a session is as long as the window a step is judged over, so one good session makes a step solid
 const STEP_WINDOW = 10;
 
 /** accuracy over a step's last ten answers */
@@ -14331,7 +14685,7 @@ if (typeof module !== 'undefined') {
 <script>
 /* ================= Nihongo Flow — the listening path, on screen =================
    Eight steps (listening/listening-path-logic.js) at the top of the Listening page, each a session of
-   eight. Native recordings wherever they exist; the device's Japanese voice for kana,
+   ten. Native recordings wherever they exist; the device's Japanese voice for kana,
    simulation lines and phrases, labelled as synthesised.                            */
 'use strict';
 
@@ -14343,7 +14697,10 @@ const lpHearPhrases = cat => [...PHRASES.values()].filter(p => p.cat === cat && 
 /** why a step cannot run on this device yet, or '' */
 function stepLocked(id) {
   if ((id === 'sounds' || id === 'respond') && !VOICE.available) return 'Needs a Japanese voice on this device (Settings › Japanese voice).';
-  if ((id === 'words' || id === 'dictation') && lpLearned().length < 8) return 'Opens after you have studied 8 Core 2000 words in Review.';
+  // words open with the first few studied, so day one can listen to the words it just met; whole sentences wait for
+  // eight, so a device without a Japanese voice never starts a beginner on native sentences
+  if (id === 'words' && lpLearned().length < 4) return 'Opens after you have studied 4 Core 2000 words in Review.';
+  if (['dictation', 'slow', 'normal', 'heard'].includes(id) && lpLearned().length < 8) return 'Opens after you have studied 8 Core 2000 words in Review.';
   if (id === 'scenes' && !SCENES.some(([c]) => lpHearPhrases(c).length >= 4)) return 'Needs a Japanese voice on this device.';
   return '';
 }
@@ -14351,13 +14708,16 @@ function stepLocked(id) {
 function renderListenPath(host) {
   if (!host) return;
   if (LP) { renderLP(host); return; }
-  const stats = Object.fromEntries(LISTEN_STEPS.map(s => [s.id, stepStats(S.attempts, s.id)]));
+  const stats = Object.fromEntries(LISTEN_STEPS.map(s => [s.id, stepStats(attemptsWith('ls:' + s.id + ':'), s.id)]));
   const avail = LISTEN_STEPS.filter(s => !stepLocked(s.id)).map(s => s.id);
   const rec = recommendedStep(stats, avail);
   const ri = LISTEN_STEPS.findIndex(s => s.id === rec), rs = LISTEN_STEPS[ri];
   const recScene = rec === 'scenes' ? (SCENES.find(([c]) => lpHearPhrases(c).length >= 4) || [])[0] : null;
   host.innerHTML = (rs ? startHere({ eyebrow: `START HERE · STEP ${ri + 1} OF ${LISTEN_STEPS.length}`, title: esc(rs.label), sub: esc(rs.what),
-      btn: `${stats[rec].n ? 'Again' : 'Start'} · ${LISTEN_N}`, attrs: `data-lp="${rec}"${recScene ? ` data-scene="${recScene}"` : ''}` }) : '') + `
+      btn: `${stats[rec].n ? 'Again' : 'Start'} · ${LISTEN_N}`, attrs: `data-lp="${rec}"${recScene ? ` data-scene="${recScene}"` : ''}` })
+    : startHere({ eyebrow: 'START HERE', title: 'Meet your first words', btn: 'Go to Review', attrs: 'data-lpreview',      // nothing can run yet
+        sub: `Listening starts with the native recordings of words you have studied: ${lpLearned().length} of 4 so far. `
+          + 'A Japanese voice on this device (Settings › Japanese voice) opens the kana sounds right away.' })) + `
     <details class="more"><summary>All ${LISTEN_STEPS.length} listening steps <span>from single sounds to real conversations</span></summary>
     <div class="card">
     <div class="hint" style="text-align:left;margin:0 0 12px">A step is solid at 80% over its last ten answers; the one to do next is highlighted.</div>
@@ -14371,14 +14731,16 @@ function renderListenPath(host) {
           : `<button class="btn ${s.id === rec ? '' : 'ghost'}" data-lp="${s.id}">${st.n ? 'Again' : 'Start'} · ${LISTEN_N}</button>`}
       </div>`; }).join('')}</div></div></details>`;
   $$('[data-lp]', host).forEach(b => b.onclick = () => startListenStep(b.dataset.lp, null, b.dataset.scene));
+  const rv = $('[data-lpreview]', host); if (rv) rv.onclick = () => go('review');
 }
 
 /** start the step recommended for you (Start today, the dashboard plan) */
 function startListenPath() {
-  const stats = Object.fromEntries(LISTEN_STEPS.map(s => [s.id, stepStats(S.attempts, s.id)]));
+  const stats = Object.fromEntries(LISTEN_STEPS.map(s => [s.id, stepStats(attemptsWith('ls:' + s.id + ':'), s.id)]));
   const rec = recommendedStep(stats, LISTEN_STEPS.filter(s => !stepLocked(s.id)).map(s => s.id));
   if (rec === 'scenes') { const c = SCENES.find(([x]) => lpHearPhrases(x).length >= 4); startListenStep('scenes', null, c && c[0]); }
-  else if (rec) startListenStep(rec); else startListenQuiz();
+  else if (rec) startListenStep(rec);
+  else { go('listen'); toast('Listening opens after your first 4 words in Review, or right away with a Japanese voice (Settings).'); }
 }
 
 function listenItems(step, scene) {
@@ -14445,7 +14807,8 @@ function renderLP(host) {
     opts = q._o || (q._o = shuffle([q.sent.en, ...pickDistinct(others, 3, q.sent.en)])); answer = q.sent.en;
     body = `<span class="modetag">${s.step === 'slow' ? 'Played slower. What does it mean?' : 'What does it mean?'}</span>`;
   }
-  const optHTML = !opts ? '' : `<div class="choices mchoice">${opts.map((o, i) => {
+  const long = ['slow', 'normal', 'heard', 'respond', 'scenes'].includes(s.step);   // sentences: one per row on a phone
+  const optHTML = !opts ? '' : `<div class="choices mchoice${long ? ' mlong' : ''}">${opts.map((o, i) => {
     const v = s.step === 'sounds' ? o.id : s.step === 'heard' ? o.id : s.step === 'respond' ? o.ja : o;
     const text = s.step === 'sounds' ? esc(o.ch) : s.step === 'heard' ? esc(kanaHelp() ? o.sent.kana : o.sent.ja) : s.step === 'respond' ? rubyMarkup(o.ja) : esc(o);
     return `<button class="choice gqopt" data-k="${i + 1}" data-v="${esc(v)}"><span class="kk">${i + 1}</span><span class="${ja ? 'ja' : ''}" style="${s.step === 'sounds' ? 'font-size:30px' : ''}">${text}</span></button>`; }).join('')}</div>`;
@@ -15104,6 +15467,7 @@ function rcSay(sc, rate) { VOICE.say(kanaOf(sc.line), rate || 1.2); }
 
 function renderRecovery() {
   const host = $('#rcHost'); if (!host) return;
+  if (!RC && laterRow(host, 'recovery', renderRecovery)) return;
   if (!RC) {
     const tried = new Set(S.attempts.filter(a => /^rc:/.test(a.item || '')).map(a => a.item.split(':')[1])).size;
     host.innerHTML = `<div class="card rccard">
@@ -15498,6 +15862,7 @@ const NUM_SKILL = { Station: 'survival', Konbini: 'survival', 'Convenience store
 function renderNumbers() {
   const host = $('#numHost'); if (!host) return;
   if (NUMS) { renderNumQ(); return; }
+  if (laterRow(host, 'numbers', renderNumbers)) return;                  // not this drill's week yet: it waits in the page's fold
   const done = S.attempts.filter(a => /^nm:/.test(a.item || '')).slice(-20), acc = done.length ? Math.round(done.reduce((s, a) => s + a.v, 0) / done.length * 100) : null;
   host.innerHTML = `<div class="card numcard">
     <div style="font-weight:700;font-size:16px">🔢 Numbers you will hear</div>
@@ -15569,6 +15934,7 @@ const signPlain = s => plainOf(s.ja);
 function renderSigns() {
   const host = $('#signHost'); if (!host) return;
   if (SG) { renderSignQ(); return; }
+  if (laterRow(host, 'signs', renderSigns)) return;                  // not this drill's week yet: it waits in the page's fold
   const last = new Map(); for (const a of S.attempts) if (/^sg:/.test(a.item || '')) last.set(a.item.slice(3), a.v);
   const known = [...last.values()].filter(v => v === 1).length;
   host.innerHTML = `<div class="card signcard">
@@ -15661,7 +16027,7 @@ function wireShowCards(host) {
 }
 
 /* ---------------- your self-introduction ---------------- */
-let INTRO = { mode: 0, which: 'cls' };     // mode 0 full text, 1 first sounds only, 2 English cues only
+let INTRO = { mode: 0, which: 'cls', back: false };     // mode 0 full text, 1 first sounds only, 2 English cues only; back: return here once the profile is saved
 const introCfg = () => S.cfg.intro || { from: '', likes: ['baseball'], club: 'baseball' };
 function renderIntro() {
   const host = $('#introHost'); if (!host) return;
@@ -15669,9 +16035,9 @@ function renderIntro() {
   if (!p) {
     host.innerHTML = `<div class="card"><div style="font-weight:700;font-size:16px">🙋 Your self-introduction</div>
       <div class="hint" style="text-align:left;margin:4px 0 10px">You will introduce yourself to your class, your team and your host family, many times.
-        First, set up your name in katakana in High school life.</div>
+        First, set up your name in katakana in High school life. You come straight back here.</div>
       <button class="btn" id="introSetup">Set up my profile</button></div>`;
-    $('#introSetup').onclick = () => go('sim');
+    $('#introSetup').onclick = () => { INTRO.back = true; go('sim'); const n = $('#hsName'); if (n) { n.scrollIntoView({ block: 'center' }); n.focus(); } };
     return;
   }
   const c = introCfg(), t = hsTokens(p), text = buildIntro({ name: p.name, from: c.from, grade: p.grade, likes: c.likes, club: c.club, pos: c.club === 'baseball' ? t.pos : '', posEn: t.posEn });
@@ -16525,6 +16891,9 @@ function renderAccent() {
     </div>
     <div class="hint" style="text-align:left;margin:6px 2px 0">Recordings stay on this device: measured here, never uploaded, and thrown away on the next take.</div>
 
+    <h2>Real voices to copy</h2>
+    <div id="rvHost"></div>
+
     <h2>Learning it the right way <span class="pill ${hDone >= 7 ? 'n5' : hDone >= 4 ? 'n4' : 'n3'}">${hDone} of ${habits.length}</span></h2>
     <div class="card achabits">${habits.map(h => `<div class="achabit st-${h.status}">
         <span class="ck">${h.status === 'done' ? '✓' : h.status === 'progress' ? '◐' : ''}</span>
@@ -16547,10 +16916,11 @@ function renderAccent() {
       <b>What this page can and cannot hear.</b> It measures the rise and fall of your voice and your timing, on this device, against
       standard (Tokyo) Japanese from the UniDic dictionary. It cannot tell whether a vowel or consonant is right: that needs a person.
       The device voice says most common words with the right pitch, but not every one; the Core 2000 recordings are real speakers.
-      To look any word up with recordings, use OJAD on the <a href="#" id="acLinks">Podcasts &amp; more</a> page.
+      To hear real people say any word, use Real voices to copy above; for a word’s pitch in every form, OJAD on the <a href="#" id="acLinks">Podcasts &amp; more</a> page.
       <br><br>The lessons were written for this app by an AI assistant from standard descriptions of Japanese pronunciation, and
       await a teacher’s or native speaker’s review.</div>`;
 
+  renderRealVoicesCard($('#rvHost'));
   $('#acGoNext').onclick = () => acStartDrill(sum.next.drill);
   $$('.acarea', host).forEach(b => b.onclick = () => acStartDrill(b.dataset.drill));
   $$('[data-start]', host).forEach(b => b.onclick = () => acStartDrill(b.dataset.start === 'ear' ? 'ear:' + ACV.ear : b.dataset.start));
@@ -16798,6 +17168,7 @@ function acSayQ() {
       <div class="acleg"><span class="acleg-you">your voice</span>${refLine ? '<span class="acleg-ref">native speaker</span>' : ''}<span class="acleg-band">the pattern</span></div>
       <div class="${verdict[0]}" style="margin-top:8px">${esc(verdict[1])}${v != null ? ` · ${Math.round(v * 100)}%` : ''}${native != null ? ` · against the native recording ${Math.round(native * 100)}%` : ''}${s.takes > 1 ? ' <span class="hint">(your first take counts)</span>' : ''}</div>
       <div class="mnem" style="text-align:left">${esc(acSayAdvice(res, L, w.a, n, noun))}</div>
+      <div style="margin:6px 0">${realVoicesHTML(w.ja || w.kana, '🗣 Hear real people say it:')}</div>
       <div class="gl-actions" style="justify-content:center"><button class="btn ghost" id="acMe">▶ Me</button><button class="btn ghost" id="acModel">🔊 Model</button></div>
       ${acNextBtn()}</div>`;
     $('#acMe').onclick = () => acPlayTake(url); $('#acModel').onclick = () => acHear(w);
@@ -17055,6 +17426,7 @@ let TK = null;                     // { items, i, score, n }
 function renderTalk() {
   const host = $('#talkHost'); if (!host) return;
   if (TK) { renderTalkQ(); return; }
+  if (laterRow(host, 'talk', renderTalk)) return;                  // not this drill's week yet: it waits in the page's fold
   const last = S.attempts.filter(a => /^tk:/.test(a.item || '')).slice(-20), acc = last.length ? last.reduce((s, a) => s + a.v, 0) / last.length : null;
   const reg = r => Object.entries(TALK_WHO).filter(([, w]) => w.reg === r).map(([, w]) => w.en).join(', ');
   host.innerHTML = `<div class="card talkcard">
@@ -17428,6 +17800,7 @@ const khLast = () => { const m = new Map(); for (const a of S.attempts) if (/^kh
 function renderKnowhow() {
   const host = $('#khHost'); if (!host) return;
   if (KH) { renderKhQ(); return; }
+  if (laterRow(host, 'knowhow', renderKnowhow)) return;                  // not this drill's week yet: it waits in the page's fold
   const last = khLast(), known = id => last.get(id) === 1;
   host.innerHTML = `<div class="card khcard">
     <div class="hint" style="text-align:left;margin-bottom:10px">What to do at home, at school, at the table and in an earthquake: the things nobody explains
@@ -17502,6 +17875,7 @@ const kwLast = () => { const m = new Map(); for (const a of S.attempts) if (/^kw
 function renderKataWords() {
   const host = $('#kwHost'); if (!host) return;
   if (KW) { renderKwQ(); return; }
+  if (laterRow(host, 'kata-words', renderKataWords)) return;                  // not this drill's week yet: it waits in the page's fold
   const last = kwLast(), known = KATA_WORDS.filter(w => last.get(w[0]) === 1).length;
   host.innerHTML = `<div class="card kwcard">
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
@@ -17759,6 +18133,7 @@ let CT = null;                       // { mode: 'which' | 'say', items, i, score
 function renderCounters() {
   const host = $('#ctHost'); if (!host) return;
   if (CT) { renderCtQ(); return; }
+  if (laterRow(host, 'counters', renderCounters)) return;                  // not this drill's week yet: it waits in the page's fold
   const last = S.attempts.filter(a => /^ct:/.test(a.item || '')).slice(-20), acc = last.length ? last.reduce((s, a) => s + a.v, 0) / last.length : null;
   host.innerHTML = `<div class="card ctcard">
     <div style="font-weight:700;font-size:16px">🔢 Counting things</div>
@@ -17855,6 +18230,7 @@ const DLV = { region: 'all' };
 function renderDialects() {
   const host = $('#dlHost'); if (!host) return;
   if (DL) { renderDlQ(); return; }
+  if (laterRow(host, 'dialects', renderDialects)) return;                  // not this drill's week yet: it waits in the page's fold
   const last = lastBy('dl:'), known = DIALECTS.filter(d => last.get(d.id) === 1).length;
   host.innerHTML = `<div class="card dlcard">
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
@@ -17916,6 +18292,7 @@ const onoExample = w => rubyMarkup(w[2]).replace(esc(w[0]), `<mark class="onomar
 function renderOnomato() {
   const host = $('#onoHost'); if (!host) return;
   if (ON) { renderOnQ(); return; }
+  if (laterRow(host, 'sound-words', renderOnomato)) return;                  // not this drill's week yet: it waits in the page's fold
   const last = lastBy('on:'), known = ONOMATO.filter(w => last.get(w[0]) === 1).length;
   host.innerHTML = `<div class="card onocard">
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
@@ -18152,6 +18529,7 @@ const swInDeck = w => S.dict.has('sw-' + w[0]);
 function renderSchoolWords() {
   const host = $('#swHost'); if (!host) return;
   if (SW) { renderSwQ(); return; }
+  if (laterRow(host, 'school-words', renderSchoolWords)) return;                  // not this drill's week yet: it waits in the page's fold
   const last = lastBy('sw:'), known = SCHOOL_WORDS.filter(w => last.get(w[0]) === 1).length, pool = swPool(SWV.group), toAdd = pool.filter(w => !swInDeck(w)).length;
   host.innerHTML = `<div class="card onocard">
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
@@ -18225,6 +18603,7 @@ const pnFill = s => s.replace(/◯◯/g, pnMe());
 function renderNames() {
   const host = $('#pnHost'); if (!host) return;
   if (PN) { renderPnQ(); return; }
+  if (laterRow(host, 'names', renderNames)) return;                  // not this drill's week yet: it waits in the page's fold
   const last = lastBy('pn:'), known = NAMES.filter(n => last.get(n[0]) === 1).length;
   host.innerHTML = `<div class="card onocard">
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
@@ -18300,6 +18679,7 @@ let CS = null;
 function renderCasual() {
   const host = $('#csHost'); if (!host) return;
   if (CS) { renderCsQ(); return; }
+  if (laterRow(host, 'casual', renderCasual)) return;                  // not this drill's week yet: it waits in the page's fold
   const last = lastBy('cs:'), known = CASUAL_SHORT.filter(c => last.get(c.id) === 1).length;
   host.innerHTML = `<div class="card dlcard">
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
@@ -18411,6 +18791,7 @@ const sdPool = () => sentencePool(12);
 function renderDictation() {
   const host = $('#sdHost'); if (!host) return;
   if (SD) { renderSdQ(); return; }
+  if (laterRow(host, 'dictation', renderDictation)) return;                  // not this drill's week yet: it waits in the page's fold
   const pool = sdPool(), last = lastBy('sd:'), right = [...last.values()].filter(v => v === 1).length;
   if (pool.length < 5) { host.innerHTML = ''; return; }            // no deck with audio on this device yet
   host.innerHTML = `<div class="card dlcard">
@@ -18585,6 +18966,7 @@ const cvScore = (c, best) => { const v = c.qs.map((_, i) => best.get(c.id + ':' 
 function renderConvos() {
   const host = $('#cvHost'); if (!host) return;
   if (CV) { renderCv(); return; }
+  if (laterRow(host, 'convos', renderConvos)) return;                  // not this drill's week yet: it waits in the page's fold
   const best = cvBest(), done = CONVOS.filter(c => cvScore(c, best) === 1).length;
   host.innerHTML = `<div class="card dlcard">
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
@@ -18730,6 +19112,7 @@ let WS = null;
 function renderWorksheet() {
   const host = $('#wsHost'); if (!host) return;
   if (WS) { renderWsQ(); return; }
+  if (laterRow(host, 'worksheet', renderWorksheet)) return;                  // not this drill's week yet: it waits in the page's fold
   const last = lastBy('ws:'), known = PAPER_LINES.filter(l => last.get(l[0]) === 1).length;
   host.innerHTML = `<div class="card onocard">
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
@@ -19614,6 +19997,7 @@ function renderMine() {
 /** the Speaking page: a way to the two talk-to-yourself tools */
 function renderSelfTalk() {
   const host = $('#selfHost'); if (!host) return;
+  if (laterRow(host, 'planday', renderSelfTalk)) return;                  // not this drill's week yet: it waits in the page's fold
   const said = dpState().said === todayKey();
   host.innerHTML = `<div class="card talkcard"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
     <div style="flex:1;min-width:220px"><div style="font-weight:700;font-size:16px">🗓️ Talk to yourself</div>
@@ -20267,7 +20651,7 @@ function tutorEvidence() {
     return { id: l.id, no: l.no, title: l.title, n: a.length, acc: accN(a) }; });
   const rd = lastN(kind('reading'), 40), kj = lastN(kind('kanji'), 40);
   ev.reading = { n: rd.length, acc: accN(rd) }; ev.kanji = { n: kj.length, acc: accN(kj) };
-  ev.listenSteps = LISTEN_STEPS.map(s => ({ id: s.id, label: s.label, ...stepStats(S.attempts, s.id) }));
+  ev.listenSteps = LISTEN_STEPS.map(s => ({ id: s.id, label: s.label, ...stepStats(attemptsWith('ls:' + s.id + ':'), s.id) }));
 
   ev.struggling = tutorStruggling().length;
   ev.cats = Object.entries(SITUATION_CATS).map(([id, label]) => { const a = lastN(atts.filter(x => x.skill === id).map(x => x.v), 40); return { id, label, n: a.length, acc: accN(a) }; });
@@ -20498,6 +20882,22 @@ function drillProgress(attempts, need) {
   return a.reduce((s, x) => s + x.v, 0) / a.length >= (need.min == null ? 0.7 : need.min) ? 1 : 0.9;
 }
 
+/**
+ * A goal you finished stays ticked. Some goals are judged from your latest answers (a listening step, a drill's last
+ * ten), so a bad day could un-tick one and pull the timeline back a week; the timeline is a list of what you have
+ * done, and how well you do now is what the Progress page measures.
+ * kept = { objective id: when it was first done }. Returns the weeks with every kept goal done, and the ids that are
+ * done now but not kept yet (the caller saves them).
+ */
+function keepDone(evaluated, kept) {
+  const k = kept || {}, fresh = [];
+  const weeks = evaluated.map(w => ({ ...w, objectives: w.objectives.map(o => {
+    if (o.done && !k[o.id]) fresh.push(o.id);
+    return k[o.id] && !o.done ? { ...o, progress: 1, done: true, skip: false, kept: true } : o;
+  }) }));
+  return { weeks, fresh };
+}
+
 /** is this week finished? When behind, only its core objectives count */
 const weekDone = (w, behind) => w.objectives.every(o => o.done || o.skip || (behind && !o.core));
 
@@ -20519,7 +20919,7 @@ function curriculumPace(curN, total, daysLeft) {
   return { status: diff >= 2 ? 'behind' : diff < -4 ? 'ahead' : 'on', remaining, weeksLeft, diff };    // a week of slack is normal
 }
 
-if (typeof module !== 'undefined') module.exports = { buildCurriculum, evaluateCurriculum, currentWeek, weekDone, curriculumPace, drillProgress, CUR_WORDS, CUR_SITS, CUR_SIMS, CUR_MAX };
+if (typeof module !== 'undefined') module.exports = { buildCurriculum, evaluateCurriculum, keepDone, currentWeek, weekDone, curriculumPace, drillProgress, CUR_WORDS, CUR_SITS, CUR_SIMS, CUR_MAX };
 
 </script>
 <script>
@@ -20567,7 +20967,7 @@ const EXTRA_GO = {
 function curExtra(id) {
   const x = TIMELINE_EXTRAS.find(e => e.id === id); if (!x) return 0;
   if ((x.voice && !VOICE.available) || (x.mic && !REC.supported())) return null;
-  if (x.need) return drillProgress(S.attempts, x.need);
+  if (x.need) return drillProgress(attemptsWith(x.need.prefix), x.need);
   const v = EXTRA_CHECK[x.check] ? EXTRA_CHECK[x.check]() : 0;
   return v === true ? 1 : v === false ? 0 : v;
 }
@@ -20578,23 +20978,73 @@ function curEvidence() {
     kanaDone: (s, i) => !!(kl[s][i] && kl[s][i].done), words,
     lessonDone: id => ['passed', 'mastered'].includes(statusOf(id).state),
     sitDone: id => sitState(id).passes > 0,
-    stepSolid: id => { const why = stepLocked(id); if (why && /voice/i.test(why)) return null; const s = stepStats(S.attempts, id); return s.n >= 10 && s.acc >= 0.8; },
+    stepSolid: id => { const why = stepLocked(id); if (why && /voice/i.test(why)) return null; const s = stepStats(attemptsWith('ls:' + id + ':'), id); return s.n >= 10 && s.acc >= 0.8; },
     readDone: lvl => READINGS.some(r => r.level === lvl && (best.get(r.id) || 0) >= 0.8),
     simDone: id => simState(id).passes > 0,
     drill: curExtra,
   };
 }
-/** everything the screens need: evaluated weeks, this week, pace (behind relaxes the extras) */
+/** everything the screens need: evaluated weeks, this week, pace (behind relaxes the extras).
+    One screen draw asks several times; the answer is kept until the next answer or review, and no longer than the task. */
+let _curMemo = null;
 function curState() {
-  const cur = curriculum(), ev = evaluateCurriculum(cur, curEvidence()), total = ev.length, days = daysToDeparture();
+  const key = S.attempts.length + ':' + S.revlog.length;
+  if (_curMemo && _curMemo.key === key) return _curMemo.v;
+  const v = curStateNow();
+  _curMemo = { key, v }; setTimeout(() => { if (_curMemo && _curMemo.v === v) _curMemo = null; }, 0);
+  return v;
+}
+function curStateNow() {
+  const cur = curriculum(), kept = S.kvCache.curgoals || {};
+  const { weeks: ev, fresh } = keepDone(evaluateCurriculum(cur, curEvidence()), kept), total = ev.length, days = daysToDeparture();
+  if (fresh.length) {                                       // a goal done for the first time: it stays ticked from now on
+    const now = Date.now(); for (const id of fresh) kept[id] = now;
+    S.kvCache.curgoals = kept; DB.put('kv', { k: 'curgoals', v: kept });
+  }
+  const said = curQuiet() ? [] : fresh.slice(0, 2);          // one or two goals done just now are worth a word; a whole history is not
   let week = currentWeek(ev, false), pace = curriculumPace(week ? week.n : null, total, days);
   const behind = pace.status === 'behind';
   if (behind) { week = currentWeek(ev, true); pace = { ...curriculumPace(week ? week.n : null, total, days), status: week ? 'behind' : 'done' }; }
   // remember when each week was first finished
-  const log = S.kvCache.curdone || {}; let changed = false;
-  for (const w of ev) if (weekDone(w, behind) && !log[w.n] && (!week || w.n < week.n)) { log[w.n] = Date.now(); changed = true; }
+  const log = S.kvCache.curdone || {}; let changed = false; const newly = [];
+  for (const w of ev) if (weekDone(w, behind) && !log[w.n] && (!week || w.n < week.n)) { log[w.n] = Date.now(); changed = true; newly.push(w.n); }
   if (changed) { S.kvCache.curdone = log; DB.put('kv', { k: 'curdone', v: log }); }
+  if (newly.length && newly.length <= 2 && !curQuiet()) setTimeout(() => curCelebrate(Math.max(...newly), week, total), 350);
+  else if (said.length && fresh.length <= 2) setTimeout(() => { for (const id of said) { const o = ev.flatMap(w => w.objectives).find(x => x.id === id);
+    if (o) FX.note('✓', 'Ticked on your Timeline', o.label); } }, 350);
   return { ev, week, pace, total, behind, log };
+}
+/** just opened, or catching up on a whole history (the first run after an update, a sync): no banners */
+const curQuiet = () => performance.now() < 6000;
+/** a week finished just now: a banner, cherry petals, and what comes next */
+function curCelebrate(n, next, total) {
+  gamePop('🌸', `Week ${n} of ${total} done`, next ? `Next · Week ${next.n}: ${next.title}` : 'Every week of the plan is done', false);
+  FX.petals(n >= total ? 60 : 28);
+}
+/** is this one goal done? Worked out on its own: the checklist asks after every answer */
+function curGoalDone(id) {
+  if ((S.kvCache.curgoals || {})[id]) return true;
+  for (const w of curriculum().weeks) { const o = w.objectives.find(x => x.id === id);
+    if (o) return evaluateCurriculum({ weeks: [{ n: w.n, objectives: [o] }] }, curEvidence())[0].objectives[0].done; }
+  return true;                                            // no such goal any more: nothing to wait for
+}
+/** any goal by its id (it may belong to a week you have since finished) */
+const curGoalById = id => { for (const w of curState().ev) { const o = w.objectives.find(x => x.id === id); if (o) return o; } return null; };
+/**
+ * The next goal on this week's list that today's kana and review items do not already cover. Today's training gives
+ * it a place every day (dailyPlan's ctx.week), so the week moves on without a visit to the Timeline.
+ * A listening step that cannot start yet (too few words studied) and a lesson you parked for a week are passed
+ * over for the next goal.
+ */
+function curWeekGoal() {
+  const { week, behind } = curState(); if (!week) return null;
+  const o = week.objectives.find(x => !x.done && !x.skip && x.kind !== 'kana' && x.kind !== 'words' && (x.core || !behind)
+    && !(x.kind === 'listen' && stepLocked(x.ref)) && !(x.kind === 'lesson' && parkedUntil(x.ref)));
+  if (!o) return null;
+  const x = o.kind === 'drill' ? TIMELINE_EXTRAS.find(e => e.id === o.ref) : null;
+  const covers = { lesson: 'grammar', situation: 'situation', listen: 'listen', read: 'read', sim: 'sim' }[o.kind]
+    || (x && x.where === 'Listening' ? 'listen' : x && x.where === 'Speaking' ? 'shadow' : null);
+  return { id: o.id, label: o.label, covers, min: o.kind === 'sim' ? 10 : o.kind === 'situation' || o.kind === 'lesson' ? 8 : 6 };
 }
 /** this week's situation, if it is not passed yet: today's training practises it */
 function curWeekSituation() {
@@ -20659,7 +21109,63 @@ function renderReportWeek() {
    js/timeline/curriculum.js.                                                                */
 'use strict';
 
-const TL = { open: null };            // a week unfolded by hand
+const TL = { open: null, ph: new Set() };   // a week unfolded by hand; finished stretches unfolded by hand
+const TL_PEEK = new Set();             // drills opened before their week, this session
+let TL_SEEN = null;                     // { week, done: Set of goal ids } as last drawn, for marking what changed
+
+/* ---------------- drills wait for their week ----------------
+   On the practice pages, a drill whose week on the timeline has not come is hidden, and listed
+   in one closed "Later on the Timeline" fold at the bottom of its page, so a page shows what
+   you are working on now. It opens with one tap, and stays open once you have used it.
+   Settings › "Show every drill on every page now" turns this off.                         */
+let _tlWeekMemo = { t: 0, n: 1 };
+/** the week you are on, worked out at most once a second (several drills ask while a page draws) */
+function tlWeekNow() {
+  if (Date.now() - _tlWeekMemo.t > 1000) { const w = curState().week; _tlWeekMemo = { t: Date.now(), n: w ? w.n : Infinity }; }
+  return _tlWeekMemo.n;
+}
+const LATER = new Map();               // page id → Map(drill id → { x, host, redraw }): the drills waiting on that page
+/** hide a drill's card when its week has not come and list it in its page's fold; true when hidden (the caller then stops) */
+function laterRow(host, extraId, redraw) {
+  const page = host && host.closest('.page');
+  const shown = () => { if (page && LATER.has(page.id)) { LATER.get(page.id).delete(extraId); laterFold(page); } return false; };
+  if (!host || S.cfg.allDrills || TL_PEEK.has(extraId)) return shown();
+  const x = TIMELINE_EXTRAS.find(e => e.id === extraId); if (!x || x.week <= tlWeekNow()) return shown();
+  if (x.need && S.attempts.some(a => a.item && a.item.startsWith(x.need.prefix))) return shown();
+  if (!page) {                                            // not on a page: one line in place
+    host.innerHTML = `<div class="laterrow"><span class="laterwk">Week ${x.week}</span><span>${esc(x.label)}</span>
+      <button class="linkbtn" data-later="${x.id}">Open now</button></div>`;
+    host.querySelector('[data-later]').onclick = () => { TL_PEEK.add(extraId); redraw(); };
+    return true;
+  }
+  host.innerHTML = '<i class="later-mark" hidden></i>';  // the CSS hides a host holding only this mark
+  if (!LATER.has(page.id)) LATER.set(page.id, new Map());
+  LATER.get(page.id).set(extraId, { x, host, redraw });
+  laterFold(page);
+  return true;
+}
+/** the closed fold at the bottom of a page: every drill there that waits for its week, soonest first.
+    A page whose list hides while a lesson runs marks that part data-later-home, and the fold lives at its end. */
+function laterFold(page) {
+  if (!page) return;
+  const m = LATER.get(page.id) || new Map();
+  for (const [id, e] of m) if (!e.host.isConnected || !e.host.querySelector(':scope > .later-mark')) m.delete(id);   // drawn since (a drill started)
+  const home = page.querySelector('[data-later-home]') || page;
+  let el = page.querySelector('.laterfold');
+  if (!m.size) { if (el) el.remove(); return; }
+  if (!el) { el = document.createElement('details'); el.className = 'more laterfold'; }
+  home.appendChild(el);                                   // always last on the page
+  const xs = [...m.values()].sort((a, b) => a.x.week - b.x.week), open = el.open;
+  el.innerHTML = `<summary>Later on the Timeline <span>${xs.length === 1 ? '1 more drill, when its week comes' : `${xs.length} more drills, each in its week`}</span></summary>
+    <div class="laterlist">${xs.map(e => `<div class="laterrow"><span class="laterwk">Week ${e.x.week}</span><span>${esc(e.x.label)}</span>
+      <button class="linkbtn" data-later="${e.x.id}">Open now</button></div>`).join('')}</div>`;
+  el.open = open;
+  el.querySelectorAll('[data-later]').forEach(b => b.onclick = () => {
+    const id = b.dataset.later, e = m.get(id); TL_PEEK.add(id); m.delete(id);
+    if (e) { e.redraw(); e.host.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    laterFold(page);
+  });
+}
 const tlDate = t => new Date(t).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 const tlLongDate = t => new Date(t).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
 const nextDayMode = () => { const order = ['low', 'quick', 'thirty', 'normal', 'hour'], i = order.indexOf(dayModeNow()); return i >= 0 && i < order.length - 1 ? order[i + 1] : null; };
@@ -20692,7 +21198,9 @@ function tlPaceLine(week, total, pace, now) {
   if (days == null || days < 0) return `At a week each, you finish around ${tlLongDate(end)}. Set your departure date on Home to see how that fits.`;
   const spare = Math.floor((now + days * 864e5 - end) / (7 * 864e5)), wk = n => `${n} week${n === 1 ? '' : 's'}`;
   const when = spare > 0 ? `${wk(spare)} before you leave` : spare === 0 ? 'just before you leave' : `${wk(-spare)} after you leave`;
-  if (pace.status === 'behind') return `At a week each, you would finish around ${tlLongDate(end)}, ${when}. The extras no longer hold a week back, so the essentials keep moving; a few more minutes a day closes the gap.`;
+  if (pace.status === 'behind') return `At a week each, you would finish around ${tlLongDate(end)}, ${when}. The extras no longer hold a week back, so the essentials keep moving; `
+    + (spare < -8 ? 'the whole plan will not fit before you leave, and that is all right: the weeks come in the order you will need them, so each one you finish is the most useful one left. More minutes a day takes you further.'
+      : 'a few more minutes a day closes the gap.');                // never promise what the calendar cannot give
   return `At a week each, you finish around ${tlLongDate(end)}, ${when}.`;
 }
 
@@ -20703,12 +21211,12 @@ function renderTimeline() {
   let top = '';
   if (week) {
     const rows = tlRows(week), need = rows.filter(r => !r.skip && (r.core || !behind)), left = need.filter(r => !r.done), next = left[0];
-    top = `<div class="card tlnow">
+    top = `<div class="card tlnow${TL_SEEN && TL_SEEN.week < week.n ? ' newweek' : ''}">
       <div class="eyebrow">THIS WEEK · WEEK ${week.n} OF ${total}</div>
       <div class="tltitle">${esc(week.title)}</div>
       <div class="hint" style="text-align:left;margin:2px 0 10px">${left.length ? `${left.length} of ${need.length} left.` : 'All done.'} This list is all you need to think about; the rest of the app waits for its week.</div>
       <div class="bar" style="margin-bottom:12px"><i style="width:${need.length ? Math.round((need.length - left.length) / need.length * 100) : 100}%"></i></div>
-      <div class="tlrows">${rows.map((r, i) => `<div class="tlrow${r.done ? ' done' : ''}${r.skip ? ' skip' : ''}">
+      <div class="tlrows">${rows.map((r, i) => `<div class="tlrow${r.done ? ' done' : ''}${r.skip ? ' skip' : ''}${r.done && TL_SEEN && TL_SEEN.week === week.n && !TL_SEEN.done.has(r.o.id) ? ' just' : ''}">
         <span class="ckbox" aria-hidden="true">${r.done ? '✓' : ''}</span>
         <div class="tllbl"><span class="${r.kana ? 'ja' : ''}">${esc(r.label)}</span>
           <small>${esc(tlWhere(r))}${r.kind === 'drill' ? ' · new this week' : ''}${r.how && !r.done ? ' · ' + esc(r.how) : ''}${!r.core && behind ? ' · optional while you catch up' : ''}</small>
@@ -20733,11 +21241,16 @@ function renderTimeline() {
   };
   const phases = TIMELINE_PHASES.map(p => { const ws = ev.filter(w => w.n >= p.from && w.n <= p.to); if (!ws.length) return '';
     const d = ws.filter(w => weekDone(w, behind)).length, here = week && week.n >= p.from && week.n <= p.to;
+    if (d === ws.length && !here)                         // a finished stretch folds to one line, so the list starts near where you are
+      return `<details class="tlphase tlfold" data-ph="${p.from}"${TL.ph.has(p.from) ? ' open' : ''}><summary class="tlph"><b>✓ ${esc(p.title)}</b><span>Weeks ${p.from}–${Math.min(p.to, total)} · all done</span></summary>
+        ${ws.map(weekHTML).join('')}</details>`;
     return `<div class="tlphase${here ? ' here' : ''}"><div class="tlph"><b>${esc(p.title)}</b><span>Weeks ${p.from}–${Math.min(p.to, total)} · ${d} of ${ws.length} done</span></div>
       ${ws.map(weekHTML).join('')}</div>`; }).join('');
+  TL_SEEN = week ? { week: week.n, done: new Set(tlRows(week).filter(r => r.done).map(r => r.o.id)) } : { week: total + 1, done: new Set() };
   host.innerHTML = `${top}<h2 class="tlh">The whole road</h2>
     <div class="hint" style="text-align:left;margin:-4px 0 12px">A week moves on when its list is done, not when the calendar says so. The dates are where a week each would put you.</div>${phases}`;
 
+  $$('.tlrow.just .ckbox', host).forEach(b => FX.burst(b, { n: 10, size: 34 }));
   if (week) {
     const rows = tlRows(week), need = rows.filter(r => !r.skip && (r.core || !behind) && !r.done);
     $$('[data-tlgo]', host).forEach(b => b.onclick = () => curRun(rows[+b.dataset.tlgo].o));
@@ -20746,6 +21259,7 @@ function renderTimeline() {
   const u = $('#tlUp'); if (u) u.onclick = () => { S.cfg.dayMode = up; saveCfg(); buildChecklist(up, DAYFLOW && DAYFLOW.blocks); toast(`Today’s training is now ${PLAN_MINUTES[up]} minutes`); renderTimeline(); };
   $$('[data-tlw]', host).forEach(b => b.onclick = () => { const w = ev.find(x => x.n === +b.dataset.tlw); curRun(tlRows(w)[+b.dataset.tli].o); });
   $$('.tlweek', host).forEach(d => d.addEventListener('toggle', () => { if (d.open) TL.open = +d.dataset.week; else if (TL.open === +d.dataset.week) TL.open = null; }));
+  $$('.tlfold', host).forEach(d => d.addEventListener('toggle', e => { if (e.target === d) TL.ph[d.open ? 'add' : 'delete'](+d.dataset.ph); }));
 }
 
 </script>
@@ -20924,7 +21438,7 @@ function areaStrength(id) {
       const avg = rs.reduce((a, r) => a + best.get(r.id), 0) / rs.length;
       c.push({ text: `${name}: ${pctR(avg)} on ${rs.length} text${rs.length === 1 ? '' : 's'}`, score: avg + l * 0.001, n: rs.length, min: 1 }); });
   } else if (id === 'listening') {
-    for (const st of LISTEN_STEPS) { const x = stepStats(S.attempts, st.id); if (x.n) c.push({ text: `${st.label}: ${pctR(x.acc)} over your last ${x.n}`, score: x.acc, n: x.n, min: STEP_WINDOW }); }
+    for (const st of LISTEN_STEPS) { const x = stepStats(attemptsWith('ls:' + st.id + ':'), st.id); if (x.n) c.push({ text: `${st.label}: ${pctR(x.acc)} over your last ${x.n}`, score: x.acc, n: x.n, min: STEP_WINDOW }); }
   } else if (id === 'speaking') {
     for (const [cat, label] of RP_CATS) { const v = respondScore(cat); if (v != null) c.push({ text: `Replies at ${label.toLowerCase()}: ${pctR(v)}`, score: v, n: 4, min: 4 }); }
   } else if (id === 'accent') {
@@ -21357,7 +21871,7 @@ function renderDashGuide() {
       <li><b>Once a day, press Start today’s Japan training.</b> Twenty minutes is plenty; pick more on good days. Finish it all to open a reward chest.</li>
       <li><b>Kana first.</b> Everything else is read in kana, so your first two weeks are mostly kana and a few words.</li>
       <li><b>Stuck in real life?</b> Press <kbd>/</kbd> or open Find a phrase to look up how to say something.</li>
-      <li><b>Adventure is your map:</b> ten worlds from Hiragana Village to Tokyo, with bosses, stars and things to collect.</li>
+      <li><b>Adventure is your map:</b> fourteen worlds from Hiragana Village to a school trip to Kyoto, with bosses, stars and things to collect.</li>
       <li><b>Progress shows what you can do,</b> from your answers, not how long you clicked. XP and stars never count toward readiness.</li></ol>
     <button class="btn ghost" id="guideOk">Got it</button>`;
   $('#guideOk').onclick = () => { S.cfg.guideDone = true; saveCfg(); host.style.display = 'none'; };
@@ -21497,7 +22011,7 @@ function findShow() {
         <div class="ja fr-ja">${esc(r.ja)}</div>
         ${r.kana && r.kana !== r.ja ? `<div class="ja fr-kana">${esc(r.kana)}</div>` : ''}
         ${r.kana ? `<div class="fr-rom">${esc(sayRomaji(r.kana))}</div>` : ''}
-        <div class="fr-en">${esc(r.type === 'lesson' ? r.en.replace(r.ja, '').trim() : r.en)}</div></div>
+        <div class="fr-en">${esc(r.type === 'lesson' ? r.en.replace(r.ja, '').trim() : r.en)}</div>${r.type === 'lesson' ? '' : realVoicesHTML(r.ja)}</div>
       <div class="fr-act">
         ${(r.type === 'phrase' && canHearItem(r.id)) || (r.type === 'word' && r.audio) ? `<button class="audiobtn mini" data-fplay="${i}" title="Hear it">&#9654;</button>` : ''}
         ${r.type === 'phrase' || r.type === 'mine' ? `<button class="btn ghost" data-fshow="${i}" title="Show it to someone">Show</button>` : ''}
@@ -21612,7 +22126,7 @@ document.addEventListener('keydown', e => {
 let KCHK = null;       // { script, items, i, right: Set, t0 }
 
 function startKanaCheck(script) {
-  const items = KANA.filter(k => k.script === script && k.group === 'gojuon' && kanaState(k.id).streak < 2);
+  const items = KANA.filter(k => k.script === script && k.group === 'gojuon' && !kanaPassed(kanaState(k.id)));
   if (!items.length) { toast('You have finished every lesson in this script'); return; }
   KCHK = { script, items, i: 0, right: new Set(), before: kanaLessons(script).filter(l => l.done).length };
   SFX.unlock(); showDrill(); kchkRender();
@@ -21638,8 +22152,7 @@ function kchkRender() {
 function kchkAnswer(right) {
   const c = KCHK, k = c.items[c.i];
   if (right) {
-    const s = kanaState(k.id); s.seen++; s.ok++; s.streak = Math.max(2, s.streak + 1); s.intro = true;
-    S.kana.set(k.id, s); c.right.add(k.id);
+    S.kana.set(k.id, kanaKnown(kanaState(k.id))); c.right.add(k.id);
     kanaAnswer(k, 'char2sound', true, performance.now() - c.t0);
   }
   c.i++; kchkRender();
@@ -21725,7 +22238,7 @@ function kmtTyped(v) {
   if (q.part === 'c2s') {
     const right = romajiMatchesKana(typed, q.k.ch) || typed === q.k.ch;
     if (right) {                                   // known cold, like the kana check: its lesson need not teach it again
-      const s = kanaState(q.k.id); s.seen++; s.ok++; s.streak = Math.max(2, s.streak + 1); s.intro = true; S.kana.set(q.k.id, s);
+      S.kana.set(q.k.id, kanaKnown(kanaState(q.k.id)));
     }
     kanaAnswer(q.k, 'char2sound', right, ms);
     kmtNext(right, q.k.id, `${esc(q.k.ch)} is <b>${esc(q.k.romaji)}</b>`);
@@ -22241,7 +22754,7 @@ function gameEvidence() {
     sitPassed: id => sitState(id).passes > 0,
     words,
     stepSolid: id => { const lock = stepLocked(id); if (lock && /voice/i.test(lock)) return null;          // cannot on this device: skipped, not blocking
-      const st = stepStats(S.attempts, id); return st.n >= STEP_WINDOW && st.acc >= 0.8; },
+      const st = stepStats(attemptsWith('ls:' + id + ':'), id); return st.n >= STEP_WINDOW && st.acc >= 0.8; },
     readDone: l => { const list = READINGS.filter(r => r.level === l); return list.length > 0 && list.every(r => (best.get(r.id) || 0) >= 0.8); },
     simPassed: id => simState(id).passes > 0,
     speedBest: script => (S.cfg.kanaBest || {})[script] || 0,
@@ -22319,7 +22832,7 @@ function gamePop(icon, title, sub, big) {
   setTimeout(() => p.classList.add('out'), 3400); setTimeout(() => p.remove(), 3900);
 }
 function confetti() {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!FX.on) return;
   const host = el('div', 'confetti'), colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#c77dff', '#ff9f1c'];
   host.setAttribute('aria-hidden', 'true');
   for (let i = 0; i < 80; i++) { const c = el('i');
@@ -22346,7 +22859,8 @@ function openChest(key, g) {
       <div class="ci-fact">${esc(item.fact)}</div>` : `<div class="ci-en">You have found every chest item!</div><div class="ci-fact">Chests keep counting toward your achievements.</div>`}
       <button class="btn" id="chestOk" style="margin-top:14px">Add to my collection</button></div></div>`;
   const reveal = () => { $('#chestTap').classList.add('open'); SFX.complete(); confetti();
-    setTimeout(() => { $('#chestTap').hidden = true; $('#chestHint').hidden = true; $('#chestItem').hidden = false; $('#chestOk').focus(); }, 450); };
+    setTimeout(() => { $('#chestTap').hidden = true; $('#chestHint').hidden = true; $('#chestItem').hidden = false; $('#chestOk').focus();
+      FX.burst($('#chestItem .ci-icon') || $('#chestItem'), { n: 16, size: 84, colors: ['#ffd93d', '#ffb020', '#fff3b0', '#ff9f1c'] }); }, 450); };
   $('#chestTap').onclick = reveal; $('#chestTap').focus();
   const close = () => { box.className = ''; box.innerHTML = ''; if ($('#pg-dash').classList.contains('on')) renderHome(); else if ($('#pg-adv').classList.contains('on')) renderAdventure(); };
   box.onclick = e => { if (e.target === box || e.target.id === 'chestOk') close(); };
@@ -22423,6 +22937,7 @@ function renderHomePrep() {
     <div class="planrow"><span class="hint" style="margin:0">How much time today?</span>
       <div class="seg" id="planModes">${DAY_CHOICES.map(([md, l]) => `<button data-m="${md}" class="${mode === md ? 'on' : ''}">${l}</button>`).join('')}</div></div>`;
   renderDashWeek();
+  FX.count(journey !== 'home' && dl > 0 ? $('.prep-count b', host) : null, dl, 'days');   // only the first time Home is shown after opening
   $('#todayGo').onclick = () => all ? go('review') : D.running ? runDayBlock(D.i) : startToday();
   $$('#planModes button', host).forEach(b => b.onclick = () => {
     S.cfg.dayMode = b.dataset.m; saveCfg();
@@ -22456,18 +22971,22 @@ function renderHomeOutside(g) {
 /** your eleven abilities, in words from your own answers: never XP, never lessons finished */
 function renderHomeAbility() {
   const host = $('#homeAbility'); if (!host) return;
-  const sc = readyScores(), now = Date.now();
-  const tiles = HOME_AREAS.map(([id, label]) => {
-    const s = sc.get(id) || { score: null }, lv = readyLevel(s.score), rp = recentPerf(readyVals(id), now);
+  const sc = readyScores(), now = Date.now(), tiles = [], waiting = [];
+  for (const [id, label] of HOME_AREAS) {
+    const s = sc.get(id) || { score: null };
+    if (s.score == null) { waiting.push(`<button class="abw" data-area="${id}" aria-label="${esc(label)}: not measured yet">${esc(label)}</button>`); continue; }
+    const lv = readyLevel(s.score), rp = recentPerf(readyVals(id), now);
     const arrow = rp.trend === 'up' ? '<i class="ab-up" title="Better than the two weeks before">▲</i>' : rp.trend === 'down' ? '<i class="ab-dn" title="Worse than the two weeks before">▼</i>' : '';
-    return `<button class="ab lv-${lv.key}" data-area="${id}" aria-label="${esc(label)}: ${esc(lv.label)}">
+    tiles.push(`<button class="ab lv-${lv.key}" data-area="${id}" aria-label="${esc(label)}: ${esc(lv.label)}">
       <span class="ab-n">${esc(label)}</span><span class="ab-l">${esc(lv.label)} ${arrow}</span>
-      <span class="ab-bar" aria-hidden="true"><i style="width:${s.score == null ? 0 : Math.round(s.score * 100)}%"></i></span></button>`;
-  });
+      <span class="ab-bar" aria-hidden="true"><i style="width:${Math.round(s.score * 100)}%"></i></span></button>`);
+  }
   host.innerHTML = `<div class="hc-k">YOUR JAPANESE · FROM YOUR ANSWERS ONLY</div>
-    <div class="abgrid">${tiles.join('')}</div>
+    ${tiles.length ? `<div class="abgrid">${tiles.join('')}</div>`
+      : '<p class="abnone">Each ability gets a tile here once you have answered enough to measure it. Kana comes first, usually within a few days.</p>'}
+    ${waiting.length ? `<div class="abwait"><span>${tiles.length ? 'Not measured yet:' : 'Waiting:'}</span>${waiting.join('')}</div>` : ''}
     <button class="linkbtn" id="abAll">Strengths, weak spots and what to practise →</button>`;
-  $$('.ab', host).forEach(b => b.onclick = () => (b.dataset.area === 'accent' ? go('accent') : openReadyArea(b.dataset.area)));
+  $$('.ab, .abw', host).forEach(b => b.onclick = () => (b.dataset.area === 'accent' ? go('accent') : openReadyArea(b.dataset.area)));
   $('#abAll').onclick = () => go('report');
 }
 function renderHomeNote() {
@@ -22645,7 +23164,7 @@ function skillTrees(g) {
     { id: 'grammar', icon: '🧩', name: 'Grammar', nodes: COURSE.map(u => { const n = u.lessons.filter(l => passed(l.id)).length;
         return { label: u.unit, done: n === u.lessons.length, part: n / u.lessons.length }; }),
       go: () => { const nl = nextLesson(); go('grammar'); if (nl) openLesson(nl.id); }, note: `${g.st.lessonsPassed} of ${LESSONS.length} lessons passed` },
-    { id: 'listen', icon: '🎧', name: 'Listening', nodes: LISTEN_STEPS.map(s => { const st = stepStats(S.attempts, s.id);
+    { id: 'listen', icon: '🎧', name: 'Listening', nodes: LISTEN_STEPS.map(s => { const st = stepStats(attemptsWith('ls:' + s.id + ':'), s.id);
         return { label: s.label, done: st.n >= STEP_WINDOW && st.acc >= 0.8, part: st.n ? Math.min(st.n / STEP_WINDOW, st.acc / 0.8, 1) : 0 }; }),
       go: startListenPath, note: 'A step counts at 80% over its last ten answers' },
     { id: 'speak', icon: '🗣️', name: 'Speaking', nodes: RP_CATS.map(([c, l]) => { const v = respondScore(c); return { label: l, done: v != null && v >= 0.8, part: v == null ? 0 : Math.min(1, v / 0.8) }; }),
@@ -22757,7 +23276,8 @@ function renderAdvRun(host) {
         const ok = b.dataset.v === en; b.classList.add(ok ? 'ok' : 'no');
         if (!ok) { const c = [...$$('.choice', host)].find(x => x.dataset.v === en); if (c) c.classList.add('ok'); }
         ok ? (r.right++, SFX.correct()) : SFX.wrong();
-        setTimeout(() => { r.locked = false; r.i++;
+        setTimeout(() => { if (ADV.run !== r) return;                      // the run was left meanwhile
+          r.locked = false; r.i++;
           if (r.i >= ev.words.length) { r.done = true; const all = r.right === ev.words.length;
             recordAttempt('game', `event:${ev.id}:${new Date().getFullYear()}`, 'event', all ? 1 : r.right / ev.words.length);
             if (all) { SFX.levelUp(); confetti(); } xpSync(); }
@@ -22783,7 +23303,7 @@ function renderAdvRun(host) {
         if (r.locked || r.done) return; r.locked = true;
         const ok = b.dataset.id === q.p.id; b.classList.add(ok ? 'ok' : 'no');
         if (ok) { r.right++; SFX.correct(); } else { r.wrong++; r.missed.push(q.p); SFX.wrong(); const c = [...$$('.choice', host)].find(x => x.dataset.id === q.p.id); if (c) c.classList.add('ok'); }
-        setTimeout(() => { r.locked = false; if (r.done) return; sprintNext(); renderAdventure(); }, ok ? 250 : 900);
+        setTimeout(() => { r.locked = false; if (r.done || ADV.run !== r) return; sprintNext(); renderAdventure(); }, ok ? 250 : 900);
       });
     }
   }
@@ -22890,7 +23410,7 @@ const S = {
          romajiLock: false, furigana: true, autoplay: true, deckStep: 0, kanaFirst: true,
          departure: '', targetLevel: 'N4', leechAt: 8, leechSuspend: false,
          sound: true, goalReviews: 80, goalMinutes: 30, newOther: 10, newSay: 5, newConj: 4, pitch: true,
-         wordAudio: 'native', kanaPace: true, meetPlays: 3 },
+         wordAudio: 'native', kanaPace: true, meetPlays: 3, fx: true },
   session: null,
   tick: { start: Date.now(), acc: 0 },
 };
@@ -22902,7 +23422,7 @@ async function boot() {
   await loadDevice();
   cfgStampInit(!!cfg);
   DB.persist();
-  applyTheme();
+  applyTheme(); FX.apply();
   SFX.enabled = S.cfg.sound !== false;
   document.addEventListener('pointerdown', () => SFX.unlock(), { once: true });
 
@@ -22931,7 +23451,7 @@ async function boot() {
   if (S.cfg.fsrsWeights) FSRS.setWeights(S.cfg.fsrsWeights);      // personal fit, if adopted
   if (S.cfg.voiceName) VOICE.prefer(S.cfg.voiceName);
   await loadRecordings();
-  for (const k of ['readdone', 'reflect', 'simstate', 'ankiSel', 'dayflow', 'daydone', 'immlog', 'curdone', 'flags', 'achieved', 'gameseen', 'chestseen', 'kanamaster', 'enhelp', 'finalcheck', 'srcused']) { const r = await DB.get('kv', k); if (r) S.kvCache[k] = r.v; }
+  for (const k of ['readdone', 'reflect', 'simstate', 'ankiSel', 'dayflow', 'daydone', 'immlog', 'curdone', 'curgoals', 'flags', 'achieved', 'gameseen', 'chestseen', 'kanamaster', 'enhelp', 'finalcheck', 'srcused']) { const r = await DB.get('kv', k); if (r) S.kvCache[k] = r.v; }
   dayflowLoad();
   (await DB.all('log')).forEach(r => S.log.set(r.d, r));
   await migrateLogRows();
@@ -22965,7 +23485,10 @@ function buildIndex() {
 }
 
 /* ============================ persistence ============================ */
-const saveCfg  = () => { if (S.frozen) return; cfgStampChanges(); return DB.put('kv', { k: 'cfg', v: S.cfg }); };
+const saveCfg  = () => { if (S.frozen) return; cfgStampChanges(); setTimeout(cfgSaved, 0); return DB.put('kv', { k: 'cfg', v: S.cfg }); };
+/** after a setting is saved: some of this week's goals are finished by saving (your why, a recorded talk, the day plan),
+    with no answer recorded, so today's checklist is looked at here too */
+function cfgSaved() { if (typeof checklistDetect === 'function' && typeof DAYFLOW !== 'undefined' && DAYFLOW) checklistDetect(); }
 const saveKana = () => DB.put('kv', { k: 'kana', v: [...S.kana] });
 const saveGram = () => DB.put('kv', { k: 'gram', v: [...S.gram] });
 
@@ -23041,7 +23564,9 @@ function go(p) {
   if (!PAGES.includes(p)) p = 'dash';
   if (p !== 'review' && S.session) endSession(true);
   if (document.body.classList.contains('moreopen')) toggleMoreSheet(false);
+  const pg = $('#pg-' + p), fresh = pg && !pg.classList.contains('on');
   $$('.page').forEach(x => x.classList.toggle('on', x.id === 'pg-' + p));
+  if (fresh) { pg.classList.add('pagein'); clearTimeout(pg._pin); pg._pin = setTimeout(() => pg.classList.remove('pagein'), 700); }   // its blocks rise in, once
   $$('.navitem').forEach(x => x.classList.toggle('on', x.dataset.go === p));
   location.hash = p;
   // drop focus so Space/Enter cannot re-fire the nav button during review
@@ -23070,6 +23595,7 @@ function go(p) {
   if (p === 'links')   renderLinks();
   if (p === 'roadmap') renderRoadmap();
   if (p === 'settings') { renderImmNote(); renderReviewCard(); renderSetupCard(); renderVoicePicker(); renderRecordingsCard(); renderDataCard(); renderSpeechStatus(); renderPackCard(); }
+  laterFold($('#pg-' + p));                               // drills that wait for their week: the fold at the bottom stays true
 }
 
 </script>
@@ -23455,6 +23981,8 @@ function renderCard() {
   preloadNext();
 }
 
+/** is this still the card being answered? Steps that run a moment after an answer ask first: the deck may have been changed, or the session ended */
+const stillOn = (s, c) => S.session === s && s.cur === c;
 /** multiple choice: a wrong pick is an honest Again */
 function answerChoice(btn, c) {
   const s = S.session; if (s.locked) return;
@@ -23465,14 +23993,14 @@ function answerChoice(btn, c) {
   if (!right) $$('.mchoice .choice').forEach(b => { if (b.dataset.id === c.id) b.classList.add('ok'); });
   flash(right);
   if (s.known && !cardState(c.id).state) {                        // the quick check for a word you said you know
-    if (right) { s.taught = true; s.knewIt = true; setTimeout(() => { s.shown = true; renderCard(); }, 430); }
+    if (right) { s.taught = true; s.knewIt = true; setTimeout(() => { if (!stillOn(s, c)) return; s.shown = true; renderCard(); }, 430); }
     else setTimeout(() => { if (S.session !== s || s.cur !== c) return;
       s.known = false; s.mode = null; s.opts = null; s.locked = false; s.ok = null; s.rt = null;
       toast('Not quite: here it is properly'); renderCard(); }, 1600);
     return;
   }
-  if (right) { setTimeout(() => { s.shown = true; renderCard(); }, 430); }
-  else { setTimeout(() => { s.shown = true; renderCard(); lookThenAgain(); }, 700); }
+  if (right) { setTimeout(() => { if (!stillOn(s, c)) return; s.shown = true; renderCard(); }, 430); }
+  else { setTimeout(() => { if (!stillOn(s, c)) return; s.shown = true; renderCard(); lookThenAgain(); }, 700); }
 }
 
 /* After a wrong answer the right one stays up long enough to take in (LOOK_MS, with a bar
@@ -23512,7 +24040,7 @@ function answerType(inp, c) {
   $('#typeFb').innerHTML = right
     ? `<span style="color:var(--good);font-weight:650">Correct</span>`
     : `<span style="color:var(--bad);font-weight:650">${esc(c.kana)} is “${esc(kanaToRomaji(c.kana))}”</span> — press Enter`;
-  if (right) setTimeout(() => { s.shown = true; renderCard(); }, 480);
+  if (right) setTimeout(() => { if (!stillOn(s, c)) return; s.shown = true; renderCard(); }, 480);
 }
 
 /** brief full-card tint, the fastest possible feedback signal */
@@ -23839,7 +24367,7 @@ function kanaLessons(script) {
   for (let i = 0; i < base.length; i += 5) out.push(base.slice(i, i + 5));
   return out.map((chars, i) => {
     const taught = chars.every(c => kanaState(c.id).intro);
-    const done = chars.every(c => kanaState(c.id).streak >= 2);
+    const done = chars.every(c => kanaPassed(kanaState(c.id)));          // once finished, a later miss does not undo it
     return { i, chars, taught, done };
   }).map((l, i, all) => ({ ...l, unlocked: i === 0 || all[i - 1].done }));
 }
@@ -23890,12 +24418,13 @@ function renderKana() {
     return `<h2 style="display:flex;align-items:center;gap:10px">${g === 'gojuon' ? 'Base characters'
         : g === 'dakuten' ? 'With dakuten and handakuten' : 'Blended sounds'}
       <span style="font-size:12.5px;font-weight:600;color:var(--text-2)">${d} / ${set.length}</span></h2>
-      <div class="kanagrid">${set.map(k => `<div class="kbox" data-m="${kanaGridLevel(k.id)}">
+      <div class="kanagrid">${set.map(k => `<div class="kbox${g === 'gojuon' ? ' kopen' : ''}" data-m="${kanaGridLevel(k.id)}"
+        ${g === 'gojuon' ? `data-mn="${k.id}" role="button" tabindex="0" aria-label="${k.ch}: open its card and memory hook"` : ''}>
         <div class="k ja">${k.ch}</div><div class="r">${S.cfg.romajiLock && kanaGridLevel(k.id) === 2 ? '' : k.romaji}</div>
-        ${g === 'gojuon' ? `<button class="kmn${userMnem(k) ? '' : ' need'}" data-mn="${k.id}" title="Mnemonic">🧠</button>` : ''}</div>`).join('')}</div>`;
+        ${g === 'gojuon' ? `<span class="kmn${userMnem(k) ? '' : ' need'}" title="${userMnem(k) ? 'Memory hook' : 'No memory hook of your own yet'}" aria-hidden="true">🧠</span>` : ''}</div>`).join('')}</div>`;
   }).join('');
 
-  $$('#kanaGrids [data-mn]').forEach(b => b.onclick = () => openKanaCard(b.dataset.mn));
+  $$('#kanaGrids [data-mn]').forEach(b => { b.onclick = () => openKanaCard(b.dataset.mn); b.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openKanaCard(b.dataset.mn); } }; });
   $('#kanaRules').innerHTML = KANA_RULES.map(r => `<div class="rule">
     <div class="r-t">${r.t}</div><div style="font-size:13.5px;color:var(--text-2)">${r.d}</div>
     <div class="r-ex ja">${r.ex}</div></div>`).join('');
@@ -24010,8 +24539,9 @@ function nextSpeed() {
     kanaAnswer(speed.cur, 'char2sound', right, performance.now() - speed.t0, right ? null : speed.pool.find(x => x.romaji === b.dataset.r));
     b.classList.add(right ? 'ok' : 'no');
     const k = kanaState(speed.cur.id);
-    k.seen++; if (right) { k.ok++; k.streak++; speed.score++; SFX.correct(); }
-    else { k.streak = 0; speed.miss++; SFX.wrong(); $$('#kanaDrill .choice').forEach(x => { if (x.dataset.r === speed.cur.romaji) x.classList.add('ok'); }); }
+    kanaMark(k, right);
+    if (right) { speed.score++; SFX.correct(); }
+    else { speed.miss++; SFX.wrong(); $$('#kanaDrill .choice').forEach(x => { if (x.dataset.r === speed.cur.romaji) x.classList.add('ok'); }); }
     S.kana.set(speed.cur.id, k);
     const sc = $('#speedScore'); if (sc) sc.textContent = speed.score;
     setTimeout(() => { if (speed) nextSpeed(); }, right ? 160 : 620);
@@ -24063,7 +24593,9 @@ function nextKana() {
       <p style="margin-top:20px"><button class="btn" id="lessonNext">Next lesson</button>
       <button class="btn ghost" id="lessonDone">Back to lessons</button></p></div>`;
     $('#kanaScore').textContent = '';
-    dayflowComplete('kana');
+    const ls = kanaLessons(d.script), dn = ls.filter(l => l.done).length;   // the count above says so at once
+    $('#kanaSummary').textContent = `${dn} of ${ls.length} lessons complete. Each lesson teaches five characters, then drills only those five. ${kanaMasterLine(d.script)}`.trim();
+    SFX.complete(); dayflowComplete('kana');
     $('#lessonDone').onclick = () => $('#kanaDrillClose').click();
     $('#lessonNext').onclick = () => {
       const all = kanaLessons(d.script);
@@ -24074,7 +24606,8 @@ function nextKana() {
     kanaDrill = null;
     return;
   }
-  d.cur = pickKana(d.pool); d.answered = false; d.t0 = performance.now(); d.chosen = null;
+  d.cur = d.lesson != null ? pickLessonKana(d.pool, id => kanaState(id).streak, d.cur) : pickKana(d.pool);
+  d.answered = false; d.t0 = performance.now(); d.chosen = null;
   d.mode = Math.random() < 0.5 ? 'recognise' : 'recall';
   const host = $('#kanaDrill');
   if (d.mode === 'recognise') {
@@ -24107,7 +24640,7 @@ function nextKana() {
 function answerKana(right, inp) {
   const d = kanaDrill; d.answered = true; d.n++; if (right) d.ok++;
   const k = kanaState(d.cur.id);
-  k.seen++; if (right) { k.ok++; k.streak++; } else k.streak = 0;
+  kanaMark(k, right);
   S.kana.set(d.cur.id, k); saveKana(); bump('kana', 1);
   const typed = inp ? KANA.find(x => x.script === d.cur.script && x.group === 'gojuon' && romajiOk(inp.value, x.romaji)) : null;
   kanaAnswer(d.cur, d.mode === 'recognise' ? 'char2sound' : 'sound2char', right, performance.now() - d.t0, right ? null : (d.chosen || typed));
@@ -24131,6 +24664,7 @@ function answerKana(right, inp) {
    vocabulary/core-2000-tracking.js. */
 'use strict';
 
+let VLIST = { key: '', n: 60 };                           // how many words are drawn; back to 60 when the search or filters change
 function renderVocab() {
   renderOnomato();
   renderSchoolWords();
@@ -24152,13 +24686,15 @@ function renderVocab() {
     const n = c => struggleReasons(S.cards.get(c.id), wordStatsFor(c.id)).length;
     list = list.slice().sort((a, b) => n(b) - n(a));
   }
-  $('#vCount').textContent = `${list.length.toLocaleString()} word${list.length === 1 ? '' : 's'}`;
+  const key = [qy, filter, step].join('|'); if (key !== VLIST.key) VLIST = { key, n: 60 };
+  const shown = list.slice(0, VLIST.n), more = list.length - shown.length;
+  $('#vCount').textContent = `${list.length.toLocaleString()} word${list.length === 1 ? '' : 's'}${more ? ` · showing ${shown.length}` : ''}`;
   const banner = filter !== 'struggling' ? ''
     : list.length ? `<div class="vbanner"><div><b>${list.length} word${list.length === 1 ? '' : 's'} you struggle with.</b>
         Chosen from your answers: forgotten often, often wrong lately, slow, or one skill far behind the others.</div>
         <button class="btn" id="vFocus">Practise ${Math.min(list.length, 20)} now</button></div>`
     : '<div class="vbanner"><div>Nothing here yet. Words appear only when your answers show you struggle with them.</div></div>';
-  $('#vRows').innerHTML = banner + list.slice(0, 400).map(c => {
+  $('#vRows').innerHTML = banner + shown.map(c => {
     const st = S.cards.get(c.id);
     const why = filter === 'struggling' ? struggleReasons(st, wordStatsFor(c.id)) : null;
     const tag = !st || st.state === 0 ? '<span class="pill" style="background:var(--surface-3);color:var(--text-2)">new</span>'
@@ -24167,16 +24703,17 @@ function renderVocab() {
     return `<div class="row vrow" data-id="${esc(c.id)}" tabindex="0" title="Open this word">
       <div class="g-ja ja">${S.cfg.furigana && c.fg ? ruby(c.fg) : esc(c.ja)}</div>
       <div class="g-en">${esc(c.en)}${why ? `<div class="vwhy">${esc(why.join(' · '))}</div>` : ''}</div>
-      <div class="g-r">${tag}<span style="font-size:12px;color:var(--text-3)">step ${c.step}</span>
+      <div class="g-r">${tag}<span class="vstep">step ${c.step}</span>
       ${c.audio ? `<button class="audiobtn" style="width:30px;height:30px;font-size:11px" data-a="${esc(c.audio)}">&#9654;</button>` : ''}</div></div>`;
-  }).join('') || '<div class="empty">No words match.</div>';
+  }).join('') + (more ? `<div class="vmore"><button class="btn ghost" id="vMore">Show ${Math.min(60, more)} more</button></div>` : '')
+    || '<div class="empty">No words match.</div>';
+  const vm = $('#vMore'); if (vm) vm.onclick = () => { VLIST.n += 60; renderVocab(); };
   $$('#vRows .audiobtn').forEach(b => b.onclick = e => { e.stopPropagation(); play(b.dataset.a); });
   $$('#vRows .vrow').forEach(r => {
     r.onclick = () => openWordCard(r.dataset.id);
     r.onkeydown = e => { if (e.key === 'Enter') openWordCard(r.dataset.id); };
   });
   const vf = $('#vFocus'); if (vf) vf.onclick = () => startFocusSession(list.slice(0, 20), 'Struggling words');
-  if (list.length > 400) $('#vCount').textContent += ' · showing first 400';
 }
 
 </script>
@@ -24556,6 +25093,8 @@ function wireSettings() {
   bind('#setLeech', 'leechAt', Number);
   bind('#setLeechSusp', 'leechSuspend', Boolean);
   bind('#setSound', 'sound', Boolean, () => { SFX.enabled = S.cfg.sound; if (S.cfg.sound) { SFX.unlock(); SFX.correct(); } });
+  bind('#setAllDrills', 'allDrills', Boolean);
+  bind('#setFx', 'fx', Boolean, () => { FX.apply(); if (S.cfg.fx) FX.burst($('#setFx'), { n: 10, size: 34 }); });
   bind('#setGoalRev', 'goalReviews', Number, renderDash);
   bind('#setGoalMin', 'goalMinutes', Number, renderDash);
   bind('#setKanaFirst', 'kanaFirst', Boolean, renderDash);
