@@ -1,6 +1,8 @@
 /* Nihongo Flow phone version: works offline once opened.
    Network first, so an update is picked up the next time you are online
-   (no clearing caches, no ?v= tricks); the cache is only the fallback. */
+   (no clearing caches, no ?v= tricks); the cache is only the fallback.
+   The German half of the app (de/) has a worker and a cache of its own, and caches are shared by the whole site,
+   so only this app's own old caches are ever deleted. */
 const CACHE = 'nihongo-flow-v1';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png'];
 
@@ -9,7 +11,7 @@ self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).catch(() => {}));
 });
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k))))
+  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE && k.startsWith('nihongo-flow-')).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
 });
 self.addEventListener('fetch', e => {
