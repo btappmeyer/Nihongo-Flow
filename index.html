@@ -2266,6 +2266,127 @@ html.fx-off *,html.fx-off *::before,html.fx-off *::after{animation-duration:.01m
 .aistext{margin-top:6px}
 .aiqs{margin:4px 0 10px;padding-left:20px;font-size:14px;line-height:1.6}
 @media (max-width:600px){ .askq{max-width:94%} .aska .tutorrow{flex-direction:column;align-items:stretch} .askbar .askin{font-size:16px} }
+/* ---------- the opening screen (js/app/flow-gate.js): the shared logo, alive ----------
+   日本語 above the wave, Deutsch below. Two full layers; the lower one is moved by a transform, so the seam can
+   lean toward the half under the pointer and sweep the whole screen when a language is chosen. */
+html.fg-wait::before{content:'';position:fixed;inset:0;z-index:399;background:linear-gradient(135deg,#4338ca,#a855f7)}
+#flowGate{position:fixed;inset:0;z-index:400;overflow:hidden;color:#fff;-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;-webkit-user-select:none;
+  transition:opacity .5s ease,transform .5s cubic-bezier(.3,0,.2,1)}
+#flowGate.out{opacity:0;transform:scale(1.08);pointer-events:none}
+.fg-half{position:absolute;inset:0;width:100%;height:100%;border:0;margin:0;padding:0;font:inherit;color:inherit;cursor:pointer;display:block;text-align:center;outline:0;
+  transition:transform .62s cubic-bezier(.65,0,.2,1),filter .35s ease;will-change:transform}
+.fg-half.ja{background:radial-gradient(110% 70% at 85% 0%,rgba(216,180,254,.75) 0%,transparent 60%),linear-gradient(135deg,#3730a3 0%,#5b47ee 42%,#a855f7 100%)}
+.fg-half.de{background:radial-gradient(90% 60% at 10% 60%,rgba(253,224,71,.55) 0%,transparent 60%),linear-gradient(165deg,#e11d48 0%,#f4511e 46%,#f59e0b 100%);transform:translateY(50%)}
+/* the wave on the lower half's top edge: two layers flowing against each other */
+.fg-wave{position:absolute;left:0;bottom:100%;margin-bottom:-1px;width:200%;height:44px;display:flex;pointer-events:none;animation:fgFlow 9s linear infinite;transition:opacity .3s ease .25s}
+.fg-wave svg{flex:0 0 50%;width:50%;height:100%;display:block;fill:#e11d48}
+.fg-wave.w2{height:66px;opacity:.5;animation-duration:15s;animation-direction:reverse}
+.fg-wave.w2 svg{fill:#fb7185}
+@keyframes fgFlow{to{transform:translateX(-50%)}}
+/* in each half: a huge faint letter, small things drifting, the names */
+.fg-drift{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.fg-drift i{position:absolute;display:block}
+.fg-drift .pt{top:-22px;border-radius:80% 0 80% 0;background:linear-gradient(135deg,#ffe9f2,#ffa9cd);opacity:.85;animation:fgPetal linear infinite}
+.fg-drift .mt{top:54%;border-radius:50%;background:#fff2bf;box-shadow:0 0 9px 1px rgba(255,220,120,.9);opacity:0;animation:fgMote linear infinite}
+@keyframes fgPetal{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--sway),62vh) rotate(430deg)}}
+@keyframes fgMote{0%{transform:translate(0,0) scale(.6);opacity:0}15%{opacity:.95}80%{opacity:.7}100%{transform:translate(var(--sway),-54vh) scale(1.1);opacity:0}}
+.fg-ghost{position:absolute;right:-3%;top:1%;font-size:min(58vw,44vh);font-weight:800;line-height:1;opacity:.11;pointer-events:none;animation:fgFloat 9s ease-in-out infinite}
+.fg-half.de .fg-ghost{right:auto;left:-2%;top:5%;animation-delay:-4.5s}
+@keyframes fgFloat{50%{transform:translateY(14px) rotate(-3deg)}}
+.fg-in{position:absolute;left:50%;top:25%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;white-space:nowrap;pointer-events:none;
+  transition:transform .62s cubic-bezier(.65,0,.2,1),opacity .35s ease}
+.fg-big{font-size:clamp(38px,min(13vw,12vh),104px);font-weight:800;letter-spacing:.02em;line-height:1.08;text-shadow:0 8px 34px rgba(20,10,60,.35)}
+.fg-name{font-size:clamp(15px,4.2vw,23px);font-weight:650;letter-spacing:.05em;opacity:.95}
+.fg-sub{font-size:13px;opacity:.82;margin-top:2px}
+.fg-tag{margin-top:9px;font-size:11.5px;font-weight:750;letter-spacing:.1em;text-transform:uppercase;padding:6px 13px;border-radius:999px;background:rgba(255,255,255,.2);
+  border:1px solid rgba(255,255,255,.35);animation:fgTag 2.2s ease-in-out infinite;transition:opacity .25s ease}
+@keyframes fgTag{50%{box-shadow:0 0 0 9px rgba(255,255,255,0);transform:scale(1.04)}0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.35)}}
+.fg-ask{position:absolute;left:50%;top:0;transform:translate(-50%,-62%);z-index:3;padding:8px 17px;border-radius:999px;background:rgba(24,16,48,.62);border:1px solid rgba(255,255,255,.22);
+  font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;pointer-events:none;transition:opacity .25s ease}
+.fg[data-key=ja] .fg-half.ja .fg-in,.fg[data-key=de] .fg-half.de .fg-in{outline:2px solid rgba(255,255,255,.9);outline-offset:16px;border-radius:16px}
+/* the screen arriving: the lower half rises with a little spring, the names come up */
+.fg.gate .fg-half.ja{animation:fgSky .7s ease backwards}
+.fg.gate .fg-half.de{animation:fgRise .95s cubic-bezier(.2,1.2,.35,1) backwards}
+.fg.gate .fg-in{animation:fgName .65s cubic-bezier(.2,.9,.3,1) .28s backwards}
+.fg.gate .fg-half.de .fg-in{animation-delay:.45s}
+.fg.gate .fg-ask{animation:fgAsk .5s ease .8s backwards}
+@keyframes fgSky{from{opacity:0;transform:scale(1.06)}}
+@keyframes fgRise{from{transform:translateY(112%)}}
+@keyframes fgName{from{opacity:0;transform:translate(-50%,-22%) scale(.94)}}
+@keyframes fgAsk{from{opacity:0}}
+/* leaning toward the half under the pointer */
+.fg[data-lean=ja] .fg-half.de{transform:translateY(57%);filter:saturate(.72) brightness(.84)}
+.fg[data-lean=de] .fg-half.de{transform:translateY(43%)}
+.fg[data-lean=de] .fg-half.ja{filter:saturate(.72) brightness(.8)}
+.fg-half:active .fg-big{transform:scale(.97)}
+/* chosen: the wave sweeps to that side, its name grows into the middle */
+.fg.picked .fg-ask,.fg.picked .fg-tag{opacity:0}
+.fg.pick-ja .fg-half.de{transform:translateY(112%)}
+.fg.pick-de .fg-half.de{transform:translateY(0)}
+.fg.pick-de .fg-wave{opacity:0}
+.fg.pick-ja .fg-half.ja .fg-in,.fg.pick-de .fg-half.de .fg-in{transform:translate(-50%,calc(-50% + 25vh)) scale(1.16)}
+.fg.pick-de .fg-half.ja .fg-in,.fg.pick-ja .fg-half.de .fg-in{opacity:0}
+.fg-ring{position:absolute;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;border:2px solid rgba(255,255,255,.85);pointer-events:none;z-index:5;animation:fgRing .75s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes fgRing{to{transform:scale(34);opacity:0}}
+/* leaving through the switch: only the other language's colour, flooding in from its side */
+.fg.leave.pick-de .fg-half.ja,.fg.leave.pick-ja .fg-half.de{display:none}
+.fg.leave:not(.picked) .fg-half.de{transform:translateY(112%)}
+.fg.leave:not(.picked) .fg-half.ja{transform:translateY(-104%)}
+/* and the app coming up underneath as the screen lifts */
+html.fg-enter #app{animation:fgApp .5s ease both}
+@keyframes fgApp{from{opacity:.25}}
+/* ---------- effects, second round (2026-10-11): motion on everything that is pressed, opened or scrolled to ----------
+   Decoration only, and all of it stops with Settings › Animations and effects (html.fx-off) or the device's
+   reduce-motion setting, like the first round above. Only transform and opacity move, so nothing is laid out again. */
+/* pressing: buttons give a little, and a ring opens where the finger was (FX.wire) */
+.btn{transition:transform .14s cubic-bezier(.2,.9,.3,1),filter .2s ease,box-shadow .2s ease,background-color .13s,color .13s,border-color .13s}
+.btn:active{transform:scale(.96)}
+.choice:active,.seg button:active,.chip:active{transform:scale(.97)}
+@media (hover:hover){ .btn:hover{transform:translateY(-1px)} .btn:active{transform:scale(.96)}
+  #side .navitem{transition:transform .16s ease,background-color .13s,color .13s} #side .navitem:hover{transform:translateX(3px)} }
+.fxtap{position:absolute;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:2px solid color-mix(in srgb,var(--accent) 75%,#fff);opacity:.7;animation:fxTap .5s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes fxTap{to{transform:scale(4.2);opacity:0}}
+/* answers arriving one after another */
+@keyframes fxChoice{from{opacity:0;transform:translateY(8px) scale(.98)}}
+.choice,.pchoice{animation:fxChoice .26s cubic-bezier(.2,.9,.3,1) backwards}
+.choice:nth-child(2),.pchoice:nth-child(2){animation-delay:.04s} .choice:nth-child(3),.pchoice:nth-child(3){animation-delay:.08s}
+.choice:nth-child(4),.pchoice:nth-child(4){animation-delay:.12s} .choice:nth-child(n+5),.pchoice:nth-child(n+5){animation-delay:.16s}
+/* a page opening: its bars fill, and what is below the edge waits (FX.page) and rises when it is scrolled to */
+@keyframes fxGrow{from{transform:scaleX(0)}}
+.page.pagein .bar>i{transform-origin:left center;animation:fxGrow .7s cubic-bezier(.2,.8,.3,1) .12s backwards}
+.fxhid{opacity:0}
+@keyframes fxSeen{from{opacity:0;transform:translateY(16px) scale(.985)}}
+.fxseen{animation:fxSeen .5s cubic-bezier(.2,.8,.3,1) backwards}
+html.fx-off .fxhid{opacity:1}
+@media (prefers-reduced-motion:reduce){ .fxhid{opacity:1} }
+/* a fold opening: what was inside comes down into place */
+@keyframes fxFold{from{opacity:0;transform:translateY(-6px)}}
+details[open]>*:not(summary){animation:fxFold .26s ease backwards}
+/* the main button breathes, so the eye finds it */
+@keyframes fxBreath{50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--accent) 0%,transparent),0 10px 30px color-mix(in srgb,var(--accent) 38%,transparent)}
+  0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 34%,transparent),0 6px 18px color-mix(in srgb,var(--accent) 22%,transparent)}}
+.prep-go .btn.big{animation:fxBreath 3.4s ease-in-out infinite}
+/* Home: a few petals, or motes of light in the German half, drifting over the page */
+#fxAmbient{position:absolute;inset:0;overflow:hidden;opacity:.5}
+#fxAmbient i{position:absolute;display:block}
+#fxAmbient .pt{top:-24px;border-radius:80% 0 80% 0;background:linear-gradient(135deg,#ffe9f2,#ffa9cd);animation:fxDriftDown linear infinite}
+#fxAmbient .mt{bottom:-12px;border-radius:50%;background:#fff2bf;box-shadow:0 0 9px 1px rgba(255,214,107,.9);animation:fxDriftUp linear infinite}
+@keyframes fxDriftDown{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--sway),108vh) rotate(480deg)}}
+@keyframes fxDriftUp{0%{transform:translate(0,0);opacity:0}12%{opacity:1}88%{opacity:.8}100%{transform:translate(var(--sway),-108vh);opacity:0}}
+/* ---------- the list round (2026-10-11): the pace note on Review, and the long road on Progress ---------- */
+.pacenote{margin:10px 0 0;padding:10px 13px;border-radius:12px;font-size:13.5px;line-height:1.5;background:color-mix(in srgb,var(--warn,#f59e0b) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--warn,#f59e0b) 38%,var(--border))}
+.pacenote.more{background:color-mix(in srgb,var(--good) 10%,var(--surface));border-color:color-mix(in srgb,var(--good) 36%,var(--border))}
+.pacenote .btn{margin:6px 6px 0 0}
+.longroad{display:flex;flex-wrap:wrap;gap:8px 6px;margin-top:8px}
+.lr-s{display:flex;align-items:center;gap:6px;padding:5px 10px 5px 5px;border-radius:999px;font-size:12.5px;font-weight:600;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2)}
+.lr-s i{font-style:normal;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;font-size:11px;font-weight:700;background:var(--surface-3);color:var(--text-2)}
+.lr-s.done{color:var(--text);border-color:color-mix(in srgb,var(--good) 45%,var(--border))} .lr-s.done i{background:var(--good);color:#fff}
+.lr-s.here{color:var(--text);border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)} .lr-s.here i{background:var(--accent);color:var(--accent-text)}
+.lr-s.here small{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.lr-s.beyond:not(.done){border-style:dashed;opacity:.8}
+/* six lengths of day in one row, on any width */
+#planModes{display:flex;flex:1 1 auto;min-width:0}
+#planModes button{flex:1 1 0;min-width:0;padding-left:0;padding-right:0;text-align:center}
 
 </style>
 </head>
@@ -2695,6 +2816,9 @@ html.fx-off *,html.fx-off *::before,html.fx-off *::after{animation-duration:.01m
         <label style="display:flex;gap:10px;align-items:flex-start;font-size:14px">
           <input type="checkbox" id="setKanaPace" style="margin-top:3px"> <span>Ease in new words while I learn hiragana: at most 5 a day until half
           the hiragana lessons are done, then 8, then your full number. Romaji is shown under words until kana is comfortable.</span></label>
+        <label style="display:flex;gap:10px;align-items:flex-start;font-size:14px">
+          <input type="checkbox" id="setAutoPace" style="margin-top:3px"> <span>Let new words follow my reviews: half as many while 40 reviews are more than a day late
+          or I am forgetting more than one in five, none while 100 are late. The Review page says so whenever it happens.</span></label>
         <label class="fld">The first time you meet something new
           <select id="setMeet"><option value="3">Hear it 3 times (normal, slower, normal), say it, then a listening check</option>
             <option value="2">Hear it 2 times, say it, then a listening check</option>
@@ -2782,6 +2906,7 @@ html.fx-off *,html.fx-off *::before,html.fx-off *::after{animation-duration:.01m
         <label style="display:flex;gap:10px;align-items:center;font-size:14px">
           <input type="checkbox" id="setKanaFirst"> Kana before kanji: show Core 2000 words in kana until hiragana is solid,
           and introduce words you can already read first</label>
+        <label id="setGateWrap" style="display:none;gap:10px;align-items:flex-start;font-size:14px"><input type="checkbox" id="setGate"> Opening screen <span class="hint" style="text-align:left;margin:0">(choose 日本語 or Deutsch each time the app opens; on this device)</span></label>
         <label class="fld" id="setOtherWrap" style="display:none">Deutsch in today’s training
           <select id="setOther"><option value="0">Off: Japanese only</option><option value="10">10% of my minutes</option>
             <option value="20">20% of my minutes</option><option value="30">30% of my minutes</option></select>
@@ -2865,7 +2990,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre></deta
 
 <!-- Scripts, in loading order: one folder per page of the menu (see WHERE-THINGS-ARE.md). They share one
      global scope; a file that uses another while loading comes after it, and the file that starts the app is last. -->
-<script>window.__NF_WEB = 1; window.__NF_BUILD = '2026-10-11T04:08:15.378Z'; window.__FLOW_MERGED = 1;</script>
+<script>window.__NF_WEB = 1; window.__NF_BUILD = '2026-10-11T21:28:10.290Z'; window.__FLOW_MERGED = 1; try { var c = JSON.parse(localStorage.getItem('flow-chose') || 'null'), auto = navigator.webdriver || /HeadlessChrome/.test(navigator.userAgent); if (!auto && ((c && Date.now() - c.t < 20000) || (localStorage.getItem('flow-gate') !== 'off' && sessionStorage.getItem('flow-in') !== '1'))) document.documentElement.classList.add('fg-wait'); } catch (e) {}</script>
 <script>
 /* ================= Nihongo Flow — core: storage, FSRS, helpers ================= */
 'use strict';
@@ -3233,11 +3358,13 @@ const FX = (() => {
   const calm = () => (typeof S !== 'undefined' && S.cfg && S.cfg.fx === false) || matchMedia('(prefers-reduced-motion: reduce)').matches;
   const layer = () => { let l = $('#fxLayer'); if (!l) { l = el('div'); l.id = 'fxLayer'; l.setAttribute('aria-hidden', 'true'); document.body.appendChild(l); } return l; };
   const counted = new Set();                              // numbers that have counted up once since the app opened
+  const auto = !!navigator.webdriver || /HeadlessChrome/.test(navigator.userAgent);      // a test browser: nothing may wait to be scrolled to
+  let wired = false;
   return {
     /** are effects allowed right now? */
     get on() { return !calm(); },
     /** Settings: the class that stops the CSS motion when effects are off */
-    apply() { document.documentElement.classList.toggle('fx-off', S.cfg.fx === false); },
+    apply() { document.documentElement.classList.toggle('fx-off', S.cfg.fx === false); this.wire(); if (S.cfg.fx === false) { $$('.fxhid').forEach(c => c.classList.remove('fxhid')); this.ambient(false); } },
 
     /** sparks flying out from an element (the middle of the screen without one) */
     burst(at, opts) {
@@ -3290,6 +3417,66 @@ const FX = (() => {
       p.innerHTML = `<span class="gp-i">${esc(icon)}</span><div><b>${esc(title)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</div>`;
       host.appendChild(p); p.onclick = () => p.remove();
       setTimeout(() => p.classList.add('out'), 2800); setTimeout(() => p.remove(), 3300);
+    },
+
+    /** once, as the app starts: a ring wherever the screen is pressed, and sparks from a right answer */
+    wire() {
+      if (wired) return; wired = true;
+      const press = 'button, a, summary, label, select, .choice, .pchoice, .navitem, [role="button"], [data-go], [data-ask]';
+      document.addEventListener('pointerdown', e => {
+        if (calm() || !e.target.closest || !e.target.closest(press) || e.target.closest('#flowGate')) return;
+        const r = el('i', 'fxtap'); r.style.left = e.clientX + 'px'; r.style.top = e.clientY + 'px';
+        layer().appendChild(r); setTimeout(() => r.remove(), 520);
+      }, { passive: true });
+      document.addEventListener('click', e => {
+        const c = e.target.closest && e.target.closest('.choice, .pchoice');
+        if (c) requestAnimationFrame(() => { if (c.isConnected && c.classList.contains('ok')) this.burst(c, { n: 8, size: 36 }); });
+      });
+      // cards waiting below the edge (page, below): looked at again whenever anything could have moved them
+      let t = 0; const soon = () => { if (!t) t = setTimeout(() => { t = 0; this.sweep(); }, 90); };
+      document.addEventListener('scroll', soon, { capture: true, passive: true });
+      document.addEventListener('click', soon); document.addEventListener('toggle', soon, true); addEventListener('resize', soon);
+      document.addEventListener('visibilitychange', () => { if (document.hidden) this.sweep(true); });
+      setInterval(() => { if (document.querySelector('.fxhid')) this.sweep(); }, 700);
+    },
+
+    /** a page has just been opened: what is below the screen's edge rises in as it is scrolled to, and Home gets
+        something drifting over it (petals here, motes of light in the German half). Never in a test browser, and
+        never while the tab is hidden: a card waiting to be seen must not stay unseen. */
+    page(id, fresh) {
+      this.ambient(id === 'dash');
+      this.sweep(true);                                    // whatever the last page left waiting
+      if (!fresh || calm() || auto || document.hidden) return;
+      for (const c of $$('.page.on .card')) {
+        if (c.parentElement && c.parentElement.closest('.card')) continue;                 // a card inside a card moves with it
+        if (c.getBoundingClientRect().top > innerHeight) c.classList.add('fxhid');
+      }
+    },
+    /** show every waiting card that has reached the screen's edge (all of them with `all`): rising in when it is on
+        screen, simply there when it was scrolled past */
+    sweep(all) {
+      for (const c of $$('.fxhid')) {
+        const r = c.getBoundingClientRect(), boxed = r.width > 0 || r.height > 0;
+        if (!all && (!boxed || r.top > innerHeight * 0.97)) continue;
+        c.classList.remove('fxhid');
+        if (!all && r.bottom > 0) { c.classList.add('fxseen'); setTimeout(() => c.classList.remove('fxseen'), 700); }
+      }
+    },
+
+    /** Home only: a handful of petals or motes, slow and faint, over the page */
+    ambient(on) {
+      const have = $('#fxAmbient');
+      if (!on || calm() || auto) { if (have) have.remove(); return; }
+      if (have) return;
+      const host = el('div'); host.id = 'fxAmbient';
+      const de = typeof FLOW_LANG !== 'undefined' && FLOW_LANG === 'de';
+      for (let i = 0; i < 7; i++) {
+        const p = el('i', de ? 'mt' : 'pt'), size = de ? 4 + Math.random() * 4 : 9 + Math.random() * 8;
+        p.style.cssText = `left:${(4 + Math.random() * 92).toFixed(1)}%;width:${size.toFixed(1)}px;height:${(de ? size : size * 0.8).toFixed(1)}px;--sway:${Math.round((Math.random() - 0.5) * 140)}px;`
+          + `animation-duration:${(13 + Math.random() * 10).toFixed(1)}s;animation-delay:-${(Math.random() * 20).toFixed(1)}s`;
+        host.appendChild(p);
+      }
+      layer().appendChild(host);
     },
 
     /** an activity has just finished: sparks from its "complete" heading (the first one that is on screen) */
@@ -4781,7 +4968,7 @@ const RESEARCH_GROUPS = [
       go: ['speak', 'Speaking'], mine: null, src: ['teimouri2019'] },
     { id: 'sleep', title: 'Sleep is part of learning words.',
       found: 'Across 25 studies with 1,396 adults, people who slept after learning new words remembered them better than people who stayed awake for the same length of time (g = 0.50).',
-      app: 'A word you got right comes back on a later day, after you have slept on it. A day’s training is 10 to 60 minutes, and late at night Home tells you to keep it short. Never trade sleep for flashcards.',
+      app: 'A word you got right comes back on a later day, after you have slept on it. A day’s training is 5 to 60 minutes, and late at night Home tells you to keep it short. Never trade sleep for flashcards.',
       go: null, mine: null, src: ['schimke2021'] },
   ] },
   { id: 'memory', title: 'Remembering', lead: 'How words and grammar stay learned.', points: [
@@ -5200,6 +5387,11 @@ function dailyPlan(ctx) {
   // (the shortest an item may be shrinks by the same share, so a 20-minute day keeps all five of its items in 16)
   const tight = ctx.dayMinutes && ctx.minutes && ctx.minutes < ctx.dayMinutes ? ctx.minutes / ctx.dayMinutes : 1;
   const shared = bl => (tight < 1 ? fitPlan(bl, ctx.minutes, tight) : bl);
+  if (ctx.mode === 'tiny') {                              // five minutes: the one thing that matters most today, nothing else
+    return finish(shared([(ctx.kanaPct || 0) < 0.8 ? B('kana', 'Kana lesson', 5, 'Five minutes still moves you on. Everything else is read in kana, so it comes first.')
+      : hasReview ? B('review', 'Vocabulary review', 5, 'Five minutes keeps the words you have. A short day counts: it is the missed days that cost.')
+      : B('listen', 'Listening', 5, 'Nothing is due, so the five minutes go to your ears.')]));
+  }
   if (ctx.mode === 'low') {
     return finish(shared(hasReview
       ? [B('review', 'Vocabulary review', 5, 'Keeps your reviews from piling up.'),
@@ -5278,8 +5470,9 @@ function dailyPlan(ctx) {
      3. the core (kana, reviews, listening, speaking, a simulation) shrinks to its minimum
      4. core blocks drop, least important first, never the last one
    The order you do them in never changes. */
-/** minutes per daily-training choice; 'serious' (75) is kept for anyone who picked it before */
-const PLAN_MINUTES = { low: 10, busy: 20, quick: 20, thirty: 30, normal: 45, hour: 60, serious: 75 };
+/** minutes per daily-training choice; 'serious' (75) is kept for anyone who picked it before.
+    'tiny' (5) is the day that would otherwise be skipped: one thing, and the chain of days holds. */
+const PLAN_MINUTES = { tiny: 5, low: 10, busy: 20, quick: 20, thirty: 30, normal: 45, hour: 60, serious: 75 };
 const PLAN_PRIO = { kana: 1, review: 2, week: 2.5, listen: 3, shadow: 4, sentence: 4.5, sim: 5, tutor: 6, recovery: 6.5, accent: 6.8, situation: 7, grammar: 8, baseball: 9, read: 10 };
 // listening and speaking can go down to 3 and 2 minutes (eight sentences heard, five said), so that a 20-minute day
 // still holds kana, reviews, the week's goal, listening and speaking: 5 + 5 + 5 + 3 + 2
@@ -6056,7 +6249,9 @@ function tapFind(zone, x, y) {
     { acceptNode: n => (n.parentElement.closest('rt, rp, .pen, button, small') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
   let text = '', idx = -1;
   for (let n = walk.nextNode(); n; n = walk.nextNode()) { if (n === c.node) idx = text.length + k; text += n.data; }
-  return idx < 0 ? null : tapPick(text, idx);
+  const hit = idx < 0 ? null : tapPick(text, idx);
+  if (hit) hit.line = text.trim();                        // the whole line, for “Take the line apart”
+  return hit;
 }
 /** put the pop-up by a point, kept on screen */
 function popAt(pop, x, y) {
@@ -6073,7 +6268,14 @@ function showSmallPopup(hit, x, y) {
     : `<div class="p-ja ja">${esc(hit.word)}</div><div class="p-en">Not one of your 2,000 words.</div>
        <div style="margin-top:8px;font-size:12px;color:var(--text-3)">The video’s rule: look it up only if it keeps coming back.</div>
        <div class="p-act"><a class="btn ghost" href="https://jisho.org/search/${encodeURIComponent(hit.word)}" target="_blank" rel="noopener">Look it up on Jisho ↗</a></div>`;
+  if (lineApart(hit.line, hit.word)) pop.insertAdjacentHTML('beforeend', lineApart(hit.line, hit.word));
   popAt(pop, x, y);
+}
+/** the button that hands a whole line to Ask, which answers with its words and the patterns a lesson teaches; nothing for a line of one word or a long passage */
+function lineApart(line, word) {
+  const l = String(line || '').trim();
+  if (l.length < String(word || '').length + 2 || l.length > 90) return '';
+  return `<div class="p-act"><button class="btn ghost" data-ask="${esc(l)}" data-asksend="1">Take the line apart</button></div>`;
 }
 function wireTapAWord() {
   document.addEventListener('click', ev => {
@@ -6598,7 +6800,7 @@ function computePlan(mode, R, phase) {
   const lv3 = sc => { const b = basicOf(sc); return b.filter(k => { const x = S.kstat.get(k.id); return x && x.level >= 3; }).length / b.length; };
   const kanaPct = (lv3('hira') + lv3('kata')) / 2;
   const wl = weekLoad();
-  const effMode = mode === 'low' ? 'low' : (mode === 'busy' || (wl !== 'normal' && total > 20)) ? 'busy' : 'normal';
+  const effMode = mode === 'tiny' ? 'tiny' : mode === 'low' ? 'low' : (mode === 'busy' || (wl !== 'normal' && total > 20)) ? 'busy' : 'normal';
   const plan0 = dailyPlan({
     minutes, dayMinutes: total, mode: effMode,
     kanaPct, reviewDue: q.counts.due + q.counts.learn + q.counts.fresh,
@@ -11617,7 +11819,35 @@ function weekLoad() {
 function effectiveNewPerDay() {
   const w = weekLoad();
   const n = w === 'busy' ? Math.min(S.cfg.newPerDay, 5) : w === 'baseball' ? Math.min(S.cfg.newPerDay, 8) : S.cfg.newPerDay;
-  return Math.min(n, kanaPaceCap());
+  return Math.min(n, kanaPaceCap(), reviewPace().n);
+}
+/* New words follow the reviews (the rule is newWordPace in review/memory-science-logic.js): fewer while reviews are
+   more than a day late or grown-up words are slipping. Worked out at most every twenty seconds; off in Settings. */
+let _pace = null;
+function reviewPace() {
+  const now = Date.now(), per = S.cfg.newPerDay, on = S.cfg.autoPace !== false;
+  if (_pace && now - _pace.t < 20000 && _pace.per === per && _pace.on === on) return _pace.v;
+  let overdue = 0; for (const c of S.deck) { const st = S.cards.get(c.id); if (st && st.state === 2 && !st.susp && st.due < now - 864e5) overdue++; }
+  const tr = trueRetention(S.revlog, now, 14, () => 'all');
+  let full = 0; for (let i = 1; i <= 7; i++) { const r = S.log.get(todayKey(new Date(now - i * 864e5))); if (per > 0 && r && (r.nw || 0) >= per) full++; }
+  const v = { ...(on ? newWordPace({ perDay: per, overdue, recall: { n: tr.n, r: tr.overall }, full }) : { n: per, why: null, more: false }), overdue, recall: tr.overall, per };
+  _pace = { t: now, per, on, v };
+  return v;
+}
+/** the line under the Review page's decks: why there are fewer new words today, or the offer of more */
+function paceNoteHTML() {
+  const p = reviewPace(), late = `${p.overdue} review${p.overdue === 1 ? ' is' : 's are'} more than a day late`;
+  if (p.why && effectiveNewPerDay() !== p.n) return '';      // a stricter limit is already at work (a busy week, the first kana lessons): this one changes nothing today
+  if (p.why === 'pile') return `<div class="pacenote"><b>No new words today.</b> ${late}. They come first; new words are back as soon as the pile is under ${NEW_PILE_STOP}.</div>`;
+  if (p.why === 'half') return `<div class="pacenote"><b>${p.n} new words today</b> instead of ${p.per}: ${late}. Clear them and your full number returns.</div>`;
+  if (p.why === 'slip') return `<div class="pacenote"><b>${p.n} new words today</b> instead of ${p.per}: lately you are forgetting more than one in five of the words you had learned (${Math.round(p.recall * 100)}% remembered). Fewer new ones until that recovers.</div>`;
+  if (p.more && S.cfg.paceAsked !== todayKey()) return `<div class="pacenote more">You are remembering ${Math.round(p.recall * 100)}% with nothing late, and taking every new word. Ready for more? <button class="btn ghost sm" id="paceMore">${p.per + 5} a day</button> <button class="btn ghost sm" id="paceNo">Not now</button></div>`;
+  return '';
+}
+function wirePaceNote(again) {
+  const m = $('#paceMore'), n = $('#paceNo');
+  if (m) m.onclick = () => { S.cfg.newPerDay = Math.min(100, (S.cfg.newPerDay || 0) + 5); S.cfg.paceAsked = todayKey(); saveCfg(); const s = $('#setNew'); if (s) s.value = S.cfg.newPerDay; toast(`${S.cfg.newPerDay} new words a day`); again(); };
+  if (n) n.onclick = () => { S.cfg.paceAsked = todayKey(); saveCfg(); again(); };
 }
 /* A Core word you cannot read yet is only a sound and a meaning. While hiragana is new,
    new words are eased in: 5 a day until half the lessons are done, then 8. */
@@ -12022,6 +12252,23 @@ async function fitPersonalWeights(revlog, start, factory, opts) {
 
 /* ---------------- statistics from the review log ---------------- */
 
+/* ---------------- new words follow the reviews ----------------
+   Staying in the zone between bored and buried. Reviews more than a day late are a pile: past forty of them the
+   day's new words are halved, past a hundred there are none until the pile is gone. The same halving when more
+   than one in five grown-up words is being forgotten. And when recall is high, nothing is late and every new
+   word has been taken most days, the learner is offered more (offered: the number is theirs). */
+const NEW_PILE_EASE = 40, NEW_PILE_STOP = 100, NEW_RECALL_N = 40, NEW_RECALL_LOW = 0.8, NEW_MORE_N = 60, NEW_MORE_R = 0.93, NEW_MORE_MAX = 25;
+/** o: { perDay, overdue, recall: { n, r }, full } (full: days of the last seven on which every new word was taken)
+    → { n, why: null | 'pile' | 'half' | 'slip', more } (pure, tested) */
+function newWordPace(o) {
+  const per = Math.max(0, Math.round((o && o.perDay) || 0)), over = (o && o.overdue) || 0, rc = (o && o.recall) || { n: 0, r: null };
+  if (over >= NEW_PILE_STOP) return { n: 0, why: 'pile', more: false };
+  const slip = rc.n >= NEW_RECALL_N && rc.r != null && rc.r < NEW_RECALL_LOW;
+  if (over >= NEW_PILE_EASE || slip) return { n: Math.min(per, Math.max(3, Math.ceil(per / 2))), why: over >= NEW_PILE_EASE ? 'half' : 'slip', more: false };
+  const more = per > 0 && per < NEW_MORE_MAX && over === 0 && rc.n >= NEW_MORE_N && rc.r >= NEW_MORE_R && ((o && o.full) || 0) >= 5;
+  return { n: per, why: null, more };
+}
+
 /** Reviews that test long-term memory: the card was in review, a day or more had
     passed, and the answer actually rescheduled it. */
 const isLongTerm = r => r.st0 === 2 && !r.ns && r.el >= 1;
@@ -12083,7 +12330,7 @@ function deckCounts(cards, deckOf) {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = { buildHistories, replayLoss, evalLoss, splitHistories, optimizeWeights, fitPersonalWeights,
+  module.exports = { newWordPace, NEW_PILE_EASE, NEW_PILE_STOP, buildHistories, replayLoss, evalLoss, splitHistories, optimizeWeights, fitPersonalWeights,
                      trueRetention, calibration, deckCounts, OPT_PARAMS, FSRS_BOUNDS, OPT_MIN_REVIEWS };
 }
 
@@ -12312,7 +12559,8 @@ function renderDeckBar() {
   const counts = deckDueCounts(), cur = S.cfg.revDeck || 'all';
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
   host.innerHTML = `<div class="deckbar">${[['all', 'All decks', total], ...MEM_DECKS.map(d => [d.id, d.label, counts[d.id] || 0])]
-    .map(([id, l, n]) => `<button data-deck="${id}" class="${cur === id ? 'on' : ''}">${l}${n ? ` <b>${n}</b>` : ''}</button>`).join('')}</div>`;
+    .map(([id, l, n]) => `<button data-deck="${id}" class="${cur === id ? 'on' : ''}">${l}${n ? ` <b>${n}</b>` : ''}</button>`).join('')}</div>${cur === 'all' || cur === 'core' ? paceNoteHTML() : ''}`;
+  wirePaceNote(renderDeckBar);
   $$('#revDecks [data-deck]').forEach(b => b.onclick = () => {
     S.cfg.revDeck = b.dataset.deck; saveCfg(); S.session = null; startSession();
   });
@@ -13906,8 +14154,8 @@ if (typeof module !== 'undefined') module.exports = { XP, xpTally, xpNow, levelF
 
 let DAYFLOW = null;   // { day, mode, i, running, finished, blocks: [{ kind, label, min, why, target, goal, done }] }
 const DAYFLOW_MANUAL = new Set(['journal', 'notebook']);      // no natural end: you say when you are done
-const DAY_ITEMS = { low: 3, busy: 3, quick: 5, thirty: 6, normal: 7, hour: 8, serious: 8 };   // 20 minutes: kana, reviews, the week's goal, listening, speaking
-const DAY_CHOICES = [['low', '10 min'], ['quick', '20 min'], ['thirty', '30 min'], ['normal', '45 min'], ['hour', '60 min']];
+const DAY_ITEMS = { tiny: 1, low: 3, busy: 3, quick: 5, thirty: 6, normal: 7, hour: 8, serious: 8 };   // 20 minutes: kana, reviews, the week's goal, listening, speaking
+const DAY_CHOICES = [['tiny', '5'], ['low', '10'], ['quick', '20'], ['thirty', '30'], ['normal', '45'], ['hour', '60']];      // minutes; 5 is the day you nearly skipped
 const dayModeNow = () => S.cfg.dayMode === 'serious' ? 'hour' : (S.cfg.dayMode || 'quick');
 
 function dayflowLoad() {
@@ -24537,6 +24785,10 @@ const CAN_DO = [
   { id: 'schoolday', text: 'I can get through a school day in Japanese.', how: 'Pass one of the school days in High school life.', by: ['day'], go: 'sim' },
   { id: 'w300', text: 'I know 300 of the commonest words well.', how: 'Words count once they hold for three weeks.', by: ['words', 300], go: 'review' },
   { id: 'w1000', text: 'I know 1,000 of the commonest words well.', how: 'Words count once they hold for three weeks.', by: ['words', 1000], go: 'review' },
+  { id: 'talk', text: 'I can talk for a minute about something I know.', how: 'Give the one-minute talk on the Roadmap, once.', by: ['talk'], go: 'roadmap' },
+  { id: 'podcast', text: 'I can follow something made for learners: a podcast, a video, a story.', how: 'Three things outside the app marked “Most of it”.', by: ['follow', 3], go: 'links' },
+  { id: 'grammarall', text: 'I can use everyday grammar.', how: 'Pass every lesson of the grammar course.', by: ['lessonsAll'], go: 'grammar' },
+  { id: 'w2000', text: 'I know the 2,000 commonest words well.', how: 'Words count once they hold for three weeks.', by: ['words', 2000], go: 'review' },
 ];
 /**
  * ev: { sits: Set of passed situation ids, sims: Set of passed simulation ids, lessons: Set of passed lesson ids, kana: { hira, kata } (master test passed),
@@ -24557,12 +24809,36 @@ function canDo(ev) {
     if (k === 'read') return (e.read || 0) >= 1;
     if (k === 'day') return (e.day || 0) >= 1;
     if (k === 'words') return (e.words || 0) >= ids[0];
+    if (k === 'talk') return (e.talk || 0) >= 1;
+    if (k === 'follow') return (e.follow || 0) >= ids[0];
+    if (k === 'lessonsAll') return (e.lessonTotal || 0) > 0 && !!e.lessons && e.lessons.size >= e.lessonTotal;
     return false;
   };
   return CAN_DO.map(c => ({ id: c.id, text: c.text, how: c.how, go: c.go, done: test(c.by) || (c.or ? test(c.or) : false) }));
 }
 
-if (typeof module !== 'undefined') module.exports = { SKILL_MAP, LESSON_SUB, SKILL_WINDOW, SKILL_MIN_N, skillLevel, skillMap, JLPT_ROUGH, JLPT_NOTE, levelEstimates, bandSay, CAN_DO, canDo };
+/* ---------------- the long road ----------------
+   Every stage from the first character to the top level, so the far goal is in sight and so is the place you are.
+   The app teaches as far as the last stage not marked beyond; the rest is reached with real Japanese and time. */
+const LONG_ROAD = [
+  { id: 'hira', label: 'Hiragana', test: ['kana', 'hira'] }, { id: 'kata', label: 'Katakana', test: ['kana', 'kata'] },
+  { id: 'words', label: 'First 300 words', test: ['words', 300] }, { id: 'grammar', label: 'Basic grammar', test: ['part1'] }, { id: 'kanji', label: 'First 100 kanji', test: ['kanji', 100] },
+  { id: 'N5', label: 'N5', test: ['band', 0] }, { id: 'N4', label: 'N4', test: ['band', 1] },
+  { id: 'N3', label: 'N3', beyond: true }, { id: 'N2', label: 'N2', beyond: true }, { id: 'N1', label: 'N1', beyond: true },
+];
+const LONG_ROAD_NOTE = 'This app takes you to about N4: enough for daily life with a host family, and to follow a class with help. N3 and beyond come from reading and listening to real Japanese every day (Podcasts & more, Subtitles, Your own text) and from living there. Reading a novel or working in Japanese are N2 and N1: years, not months, and nobody skips the stages before them.';
+/** d: { kana: { hira, kata }, words, kanji, part1, part1Total, overall: band | null } → { stages: [{ id, label, done, here, beyond }], done, at } (pure, tested) */
+function roadStages(d) {
+  const e = d || {}, bands = JLPT_ROUGH.map(b => b.band), have = bands.indexOf(e.overall);
+  const ok = t => { if (!t) return false; const [k, x] = t;
+    if (k === 'kana') return !!(e.kana && e.kana[x]); if (k === 'words') return (e.words || 0) >= x; if (k === 'kanji') return (e.kanji || 0) >= x;
+    if (k === 'part1') return (e.part1Total || 0) > 0 && (e.part1 || 0) >= e.part1Total; if (k === 'band') return have >= x; return false; };
+  const stages = LONG_ROAD.map(s => ({ id: s.id, label: s.label, done: ok(s.test), here: false, beyond: !!s.beyond }));
+  const at = stages.findIndex(s => !s.done); if (at >= 0) stages[at].here = true;
+  return { stages, done: stages.filter(s => s.done).length, at: at < 0 ? stages.length : at };
+}
+
+if (typeof module !== 'undefined') module.exports = { LONG_ROAD, LONG_ROAD_NOTE, roadStages, SKILL_MAP, LESSON_SUB, SKILL_WINDOW, SKILL_MIN_N, skillLevel, skillMap, JLPT_ROUGH, JLPT_NOTE, levelEstimates, bandSay, CAN_DO, canDo };
 
 </script>
 <script>
@@ -24639,6 +24915,7 @@ function canEvidence() {
     kana: { hira: !!(km.hira && km.hira.passedOn), kata: !!(km.kata && km.kata.passedOn) },
     num: stat(attemptsWith('nm:').filter(a => a.kind === 'listening')), msg: stat(attemptsWith('tx:').filter(a => a.kind === 'production')), rec: stat(attemptsWith('rc:')),
     read: [...readBest().values()].filter(v => v >= 0.6).length, day: SCHOOL_DAYS.filter(d => simState(d.id).passes).length, words,
+    talk: attemptsWith('fl:').length, follow: (S.kvCache.followlog || []).filter(x => x.v >= 2).length, lessonTotal: LESSONS.length,
   };
 }
 const canNow = () => canDo(canEvidence());
@@ -24672,11 +24949,15 @@ function renderSkillMap() {
   const p1 = LESSONS.filter(l => l.no <= 25), p2 = LESSONS.filter(l => l.no > 25), passed = l => !!statusOf(l.id).passedAt;
   const est = levelEstimates({ solid, kanji: [...kanjiStats().values()].filter(e => e.acc >= 0.8).length, part1: p1.filter(passed).length, part1Total: p1.length, part2: p2.filter(passed).length, part2Total: p2.length });
   const curve = forgettingCurve(S.revlog), anyCurve = curve.some(r => r.recall != null);
+  const road = roadStages({ kana: canEvidence().kana, words: solid, kanji: est.rows.find(r => r.id === 'kanji').have, part1: p1.filter(passed).length, part1Total: p1.length, overall: est.overall });
   host.innerHTML = `<details class="more skillmap"${open ? ' open' : ''}><summary>Skill map <span>eight skills and what is inside each, a rough level, and how much you still remember</span></summary>
     <div class="card" style="margin-top:12px"><div class="eyebrow">A ROUGH LEVEL</div>
       <div class="estrow">${est.rows.map(r => `<div><div class="kk">${esc(r.label)}</div><div class="est-n">${r.have.toLocaleString()}</div>
         <div class="est-b">${esc(bandSay(r.band))}</div>${r.next ? `<div class="hint" style="text-align:left;margin:0">${r.next.left.toLocaleString()} more for ${esc(r.next.band)}</div>` : ''}</div>`).join('')}</div>
-      <div class="hint" style="text-align:left;margin-top:8px">Taken together: <b>${esc(bandSay(est.overall))}</b>, because a level is only as high as its lowest part. ${esc(est.note)}</div></div>
+      <div class="hint" style="text-align:left;margin-top:8px">Taken together: <b>${esc(bandSay(est.overall))}</b>, because a level is only as high as its lowest part. ${esc(est.note)}</div>
+      <div class="kk" style="margin-top:14px">The long road</div>
+      <div class="longroad">${road.stages.map((s, i) => `<div class="lr-s${s.done ? ' done' : ''}${s.here ? ' here' : ''}${s.beyond ? ' beyond' : ''}"><i>${s.done ? '✓' : i + 1}</i><span>${esc(s.label)}</span>${s.here ? '<small>you are here</small>' : ''}</div>`).join('')}</div>
+      <div class="hint" style="text-align:left;margin-top:8px">${esc(LONG_ROAD_NOTE)}</div></div>
     <div class="skillgrid">${map.map(s => `<details class="card skillcard"><summary><b>${esc(s.label)}</b><span class="pill lv-${s.level.key}">${esc(s.level.label)}</span>
         ${s.weakest ? `<span class="skweak">slips most: ${esc(s.subs.find(x => x.id === s.weakest).label.toLowerCase())}</span>` : ''}</summary>
       <div class="skrows">${s.subs.map(x => `<div class="skrow"><div><div>${esc(x.label)}</div><div class="hint" style="text-align:left;margin:0">${x.score != null ? `${esc(x.level.label)} · last ${x.n} answers` : x.n ? `${x.n} answer${x.n === 1 ? '' : 's'} so far: five make a level` : 'not tried yet'}</div></div>
@@ -25153,7 +25434,7 @@ const APP_HELP = [
   { k: ['departure', 'leave date', 'leaving date', 'date i leave', 'days to japan', 'countdown'],
     a: 'Your departure date is in the Japan prep card at the top of Home: tap the date to change it. It is also in Settings, under Departure. Everything that counts down (days left, the Timeline’s weeks, your pace) follows it.', go: ['dash', 'Open Home'] },
   { k: ['minutes', 'how long each day', 'time per day', 'minutes a day', 'shorter', 'less time', 'more time', 'busy'],
-    a: 'On Home, under Japan prep, pick 10, 20, 30, 45 or 60 minutes. Today’s list is rebuilt to fit, in the same four parts: Remember, Learn, Understand, Use it. On a busy day choose 10: a short day keeps the habit, and a missed day is forgiven once.', go: ['dash', 'Open Home'] },
+    a: 'On Home, under Japan prep, pick 5, 10, 20, 30, 45 or 60 minutes. Today’s list is rebuilt to fit, in the same four parts: Remember, Learn, Understand, Use it. On a busy day choose 10: a short day keeps the habit, and a missed day is forgiven once.', go: ['dash', 'Open Home'] },
   { k: ['backup', 'back up', 'backups', 'lose my progress', 'save my progress', 'restore'],
     a: 'Settings, under “Your data, backups and sync”. On a computer you can pick a folder once and a backup is saved there every day you study. On a phone, use “Save a backup file” now and then. Restore is in the same place, and the last state before a restore is kept so you can undo it.', go: ['settings', 'Open Settings'] },
   { k: ['sync', 'both devices', 'phone and computer', 'two devices', 'other device', 'github'],
@@ -27250,7 +27531,7 @@ function renderHomePrep() {
     <div id="dashCheck" class="checkline"></div>
     <div class="q-foot prep-go"><button class="btn big" id="todayGo">${label}</button></div>
     <div class="planif" id="planIf"></div>
-    <div class="planrow"><span class="hint" style="margin:0">How much time today?</span>
+    <div class="planrow"><span class="hint" style="margin:0">Minutes today</span>
       <div class="seg" id="planModes">${DAY_CHOICES.map(([md, l]) => `<button data-m="${md}" class="${mode === md ? 'on' : ''}">${l}</button>`).join('')}</div></div>`;
   renderDashWeek(); renderCheckLine(); renderStartPlan();
   FX.count(journey !== 'home' && dl > 0 ? $('.prep-count b', host) : null, dl, 'days');   // only the first time Home is shown after opening
@@ -27736,11 +28017,12 @@ function flowTarget(lang, merged, protocol) {
   return lang === 'ja' ? 'de/' : '../';
 }
 const flowOther = lang => (lang === 'ja' ? 'de' : 'ja');
-/** a day's minutes between the two languages: { main, other }. The smaller part is never under two minutes (pure, tested) */
+/** a day's minutes between the two languages: { main, other }. The smaller part is never under two minutes, or one
+    minute of a day shorter than ten, so that the five-minute day is still four and one (pure, tested) */
 function flowSplit(total, share) {
   total = Math.max(0, Math.round(total || 0));
   if (!share || total < 5) return { main: total, other: 0 };
-  const other = Math.max(2, Math.round(total * share / 100));
+  const other = Math.max(total < 10 ? 1 : 2, Math.round(total * share / 100));
   return { main: total - other, other };
 }
 /** how far the other language's part of today is, 0 to 1, from the note it left (pure, tested). rec: flow-done */
@@ -27761,6 +28043,7 @@ function flowRemember(lang) { try { localStorage.setItem('flow-lang', lang); loc
 /** At start. The phone version opens at the Japanese app: when German was open last, today, go there. → true when the page is leaving. */
 function flowResume() {
   if (!window.__FLOW_MERGED || location.protocol === 'file:') return false;
+  if (GATE.mode === 'gate') return false;      // the opening screen asks instead, and remembers the answer (app/flow-gate.js)
   let last = '', lastDay = ''; try { last = localStorage.getItem('flow-lang') || ''; lastDay = localStorage.getItem('flow-lang-day') || ''; } catch (e) { /* private mode */ }
   const sh = flowGet('flow-share');
   if (FLOW_LANG === 'ja' && last === 'de' && flowOpensIn(last, lastDay, todayKey(), !!(sh && sh.share > 0)) === 'de') { location.replace(flowTarget('ja', true, location.protocol)); return true; }
@@ -27769,15 +28052,17 @@ function flowResume() {
 }
 function switchLanguage() {
   const to = flowHere(); if (!to) return;
-  flowRemember(flowOther(FLOW_LANG));
+  const other = flowOther(FLOW_LANG);
+  flowRemember(other);
   if (typeof flushTime === 'function') flushTime();
   if (FLOW_LANG !== FLOW_MAIN) flowReport();
-  setTimeout(() => { location.href = to; }, 150);            // a moment for the last save to land
+  setTimeout(() => { location.href = to; }, flowGateLeave(other));   // a moment for the last save to land, while the other language's colour floods in
 }
 function wireLanguageSwitch() {
   const b = $('#langSwitch');
   if (b) { b.style.display = flowHere() ? '' : 'none'; b.onclick = switchLanguage; }
   const w = $('#setOtherWrap'); if (w) w.style.display = FLOW_LANG === FLOW_MAIN && flowHere() ? '' : 'none';
+  wireGateSetting();
   flowDayStart();
 }
 
@@ -27833,6 +28118,148 @@ if (typeof module !== 'undefined') module.exports = { flowTarget, flowOther, flo
 
 </script>
 <script>
+/* ================= Nihongo Flow — the opening screen: one app, two languages =================
+   The shared logo, alive: 日本語 above the wave, Deutsch below it. Opening the app asks which one; a tap floods the
+   screen in that language's colours and lets you in (or carries you over to the other half, which finishes the
+   same movement when it arrives). Japanese is first and is marked as the place to start the day.
+   Nothing here is saved or counted. It is skipped when the app was built alone, when Settings says so
+   (localStorage “flow-gate” = off, this device), on a reload in the same tab, and in the test browsers.
+     flow-chose   { t, lang }   left for the other half: this language was just chosen, play the way in        */
+'use strict';
+
+const GATE_NAMES = { ja: ['日本語', 'Nihongo Flow', 'あ'], de: ['Deutsch', 'Deutsch Flow', 'Ä'] };
+const GATE_FRESH = 20000;                       // a choice made on the other side counts for this long (ms)
+/** what the opening screen does as a page loads: 'gate' asks, 'arrive' finishes a choice made on the other side, 'none' (pure, tested)
+    o: { merged, off, auto, seen, chose: { t, lang } | null, now, lang } */
+function flowGateMode(o) {
+  if (!o || !o.merged || o.auto) return 'none';
+  if (o.chose && o.chose.lang === o.lang && o.now - o.chose.t >= 0 && o.now - o.chose.t < GATE_FRESH) return 'arrive';
+  return o.off || o.seen ? 'none' : 'gate';
+}
+/** the line under each name: Japanese is where the day starts, German has its share after it (pure, tested).
+    share: the note flow-share, done: the note flow-done, today: day key → { ja, de, first } */
+function flowGateLines(share, done, today) {
+  const sh = share && share.d === today && share.min > 0 && share.total > 0 ? share : null;
+  const fin = !!(done && done.d === today && done.done);
+  return {
+    ja: sh ? `${sh.total - sh.min} min today · start here` : 'Start here today',
+    de: sh ? (fin ? `Done for today · ${sh.min} min` : `${sh.min} min today · after 日本語`) : 'After 日本語',
+    first: 'ja',
+  };
+}
+
+const GATE = { el: null, mode: 'none', t0: 0, picked: false, ready: false, swept: false };
+const gateAuto = () => !!navigator.webdriver || /HeadlessChrome/.test(navigator.userAgent);
+const gateCalm = () => matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('fx-off');
+const gateSeen = () => { try { return sessionStorage.getItem('flow-in') === '1'; } catch (e) { return false; } };
+const gateOff = () => { try { return localStorage.getItem('flow-gate') === 'off'; } catch (e) { return false; } };
+function flowGateNow() {
+  return flowGateMode({ merged: !!window.__FLOW_MERGED, off: gateOff(), auto: gateAuto(), seen: gateSeen(), chose: flowGet('flow-chose'), now: Date.now(), lang: FLOW_LANG });
+}
+/** small things drifting in each half: petals falling above, gold motes rising below */
+function gateDrift(n, cls) {
+  let s = '';
+  for (let i = 0; i < n; i++) {
+    const size = cls === 'pt' ? 8 + Math.random() * 9 : 3 + Math.random() * 5;
+    s += `<i class="${cls}" style="left:${(Math.random() * 100).toFixed(1)}%;width:${size.toFixed(1)}px;height:${(cls === 'pt' ? size * 0.8 : size).toFixed(1)}px;`
+      + `--sway:${Math.round((Math.random() - 0.5) * 120)}px;animation-duration:${(5 + Math.random() * 6).toFixed(2)}s;animation-delay:-${(Math.random() * 9).toFixed(2)}s"></i>`;
+  }
+  return s;
+}
+const GATE_WAVE = '<svg viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30 C150 0 300 60 450 30 S750 0 900 30 S1050 60 1200 30 V60 H0 Z"/></svg>';
+function gateBuild(mode, lang) {
+  const lines = flowGateLines(flowGet('flow-share'), flowGet('flow-done'), todayKey());
+  const half = l => `<button type="button" class="fg-half ${l}" data-lang="${l}" aria-label="${GATE_NAMES[l][1]}: ${l === 'ja' ? 'Japanese' : 'German'}. ${lines[l]}">
+      ${l === 'de' ? `<span class="fg-wave w2">${GATE_WAVE}${GATE_WAVE}</span><span class="fg-wave w1">${GATE_WAVE}${GATE_WAVE}</span>${mode === 'gate' ? '<span class="fg-ask" aria-hidden="true">Choose your language</span>' : ''}` : ''}
+      <span class="fg-drift" aria-hidden="true">${gateDrift(l === 'ja' ? 12 : 16, l === 'ja' ? 'pt' : 'mt')}</span>
+      <span class="fg-ghost" aria-hidden="true">${GATE_NAMES[l][2]}</span>
+      <span class="fg-in"><span class="fg-big"${l === 'ja' ? ' lang="ja"' : ' lang="de"'}>${GATE_NAMES[l][0]}</span>
+        <span class="fg-name">${GATE_NAMES[l][1]}</span>
+        <span class="fg-sub">${lines[l]}</span>${l === lines.first && mode === 'gate' ? '<span class="fg-tag">▶ First today</span>' : ''}</span></button>`;
+  const g = document.createElement('div');
+  g.id = 'flowGate'; g.className = 'fg ' + mode + (mode === 'gate' ? '' : ' pick-' + lang);
+  g.setAttribute('role', 'dialog'); g.setAttribute('aria-modal', 'true'); g.setAttribute('aria-label', 'Choose a language');
+  g.innerHTML = half('ja') + half('de');
+  return g;
+}
+/** as the page loads: show the opening screen, or the end of a choice made on the other side */
+function flowGateStart() {
+  const mode = flowGateNow(), wait = () => document.documentElement.classList.remove('fg-wait');
+  GATE.mode = mode;
+  if (mode === 'none') { wait(); return; }
+  const g = GATE.el = gateBuild(mode, FLOW_LANG);
+  document.body.appendChild(g); wait();
+  GATE.t0 = performance.now();
+  if (mode === 'arrive') { flowSet('flow-chose', null); gateEntered(); GATE.swept = true; setTimeout(flowGateOpen, 4000); return; }
+  g.querySelectorAll('.fg-half').forEach(b => {
+    b.addEventListener('click', e => gatePick(b.dataset.lang, e));
+    b.addEventListener('pointerenter', () => { if (!GATE.picked) g.dataset.lean = b.dataset.lang; });
+    b.addEventListener('pointerleave', () => { if (!GATE.picked) delete g.dataset.lean; });
+  });
+  document.addEventListener('keydown', gateKeys, true);
+}
+/** the keyboard, while the screen is up: arrows or Tab move between the two, Enter or Space goes in, 1 and 2 choose.
+    Heard on the document, because the app underneath takes the focus away as it finishes loading. */
+function gateKeys(e) {
+  const g = GATE.el;
+  if (!g || GATE.mode !== 'gate' || GATE.picked) { document.removeEventListener('keydown', gateKeys, true); return; }
+  const order = ['ja', 'de'], at = g.dataset.key || flowGateLines().first;
+  if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key)) g.dataset.key = g.dataset.lean = g.dataset.key ? order[1 - order.indexOf(at)] : at;
+  else if (e.key === 'Enter' || e.key === ' ') gatePick(at);
+  else if (e.key === '1' || e.key === '2') gatePick(order[+e.key - 1]);
+  else if (e.metaKey || e.ctrlKey || e.altKey || /^F\d+$/.test(e.key)) return;       // the browser's own keys pass
+  e.preventDefault(); e.stopPropagation();      // the app's own shortcuts wait until a language is chosen
+}
+function gateEntered() { try { sessionStorage.setItem('flow-in', '1'); } catch (e) { /* private mode: the screen simply shows again */ } }
+/** a language was tapped: the wave sweeps to its side, then the app opens, here or in the other half */
+function gatePick(lang, e) {
+  const g = GATE.el; if (!g || GATE.picked) return;
+  GATE.picked = true; delete g.dataset.lean;
+  if (e && e.clientX != null && (e.clientX || e.clientY)) {
+    const r = document.createElement('i'); r.className = 'fg-ring'; r.style.left = e.clientX + 'px'; r.style.top = e.clientY + 'px'; g.appendChild(r);
+  }
+  g.classList.add('picked', 'pick-' + lang);
+  flowRemember(lang); gateEntered();
+  const calm = gateCalm();
+  if (lang === FLOW_LANG) { setTimeout(() => { GATE.swept = true; flowGateOpen(); }, calm ? 0 : 620); setTimeout(() => { GATE.ready = true; flowGateOpen(); }, 4000); return; }
+  flowSet('flow-chose', { t: Date.now(), lang });
+  setTimeout(() => { location.href = flowHere(); }, calm ? 0 : 560);
+}
+/** the app is ready underneath: the screen lifts away. After arriving it waits a moment, so the colour is seen. */
+function flowGateOpen() {
+  const g = GATE.el; if (!g || g.classList.contains('out')) return;
+  if (!GATE.ready || !GATE.swept) return;                                // still choosing, or the app underneath is still loading
+  const left = GATE.mode === 'arrive' && !gateCalm() ? Math.max(0, 520 - (performance.now() - GATE.t0)) : 0;
+  setTimeout(() => {
+    g.classList.add('out'); document.documentElement.classList.add('fg-enter');
+    const pg = document.querySelector('.page.on'); if (pg) { pg.classList.remove('pagein'); void pg.offsetWidth; pg.classList.add('pagein'); setTimeout(() => pg.classList.remove('pagein'), 900); }
+    setTimeout(() => { g.remove(); GATE.el = null; document.documentElement.classList.remove('fg-enter'); }, gateCalm() ? 0 : 520);
+  }, left);
+}
+/** the app has drawn itself (or has nothing more to draw): the screen may lift */
+function flowGateReady() { GATE.ready = true; flowGateOpen(); }
+/** leaving through the menu's switch or today's list: the other language's colour floods in before the page changes. → ms to wait */
+function flowGateLeave(lang) {
+  flowSet('flow-chose', { t: Date.now(), lang });
+  if (!window.__FLOW_MERGED || gateAuto() || gateCalm() || GATE.el) return 150;
+  const g = GATE.el = gateBuild('leave', lang);
+  document.body.appendChild(g);
+  requestAnimationFrame(() => requestAnimationFrame(() => g.classList.add('picked')));
+  return 520;
+}
+/** Settings: ask each time the app opens, or go straight in (this device) */
+function wireGateSetting() {
+  const w = $('#setGateWrap'), c = $('#setGate'); if (!w || !c) return;
+  w.style.display = flowHere() ? 'flex' : 'none';
+  c.checked = !gateOff();
+  c.onchange = () => { try { if (c.checked) localStorage.removeItem('flow-gate'); else localStorage.setItem('flow-gate', 'off'); } catch (e) { /* private mode */ } toast(c.checked ? 'The opening screen is on' : 'The app opens straight into the language used last'); };
+}
+
+if (typeof module !== 'undefined') module.exports = { flowGateMode, flowGateLines, GATE_FRESH };
+else flowGateStart();                         // at once, over the app while it loads
+
+</script>
+<script>
 /* ================= Nihongo Flow — the app: shared state, start-up, saving, navigation =================
    S holds everything the app knows while it runs; every other file reads and writes it.
    boot() loads it from storage, the save helpers write it back, and go() switches pages.
@@ -27877,7 +28304,7 @@ async function boot() {
   // The computer build inlines the deck (fetch() is blocked on file:// URLs); the
   // developer copy fetches it; the phone version reads the pack imported on first run.
   const deck = await loadDeck();
-  if (!deck) { showPackScreen(); return; }
+  if (!deck) { showPackScreen(); flowGateReady(); return; }
   S.deck = deck.cards;
   indexAudioText(S.deck);
   S.deck.forEach(c => S.byId.set(c.id, c));
@@ -27914,6 +28341,7 @@ async function boot() {
   wireLanguageSwitch();
   renderAll();
   go(location.hash.slice(1) || 'dash');
+  flowGateReady();                       // the opening screen lifts, if it is up and a language has been chosen
   setInterval(flushTime, 30000);
   window.addEventListener('beforeunload', flushTime);
   renderNotices();
@@ -28048,6 +28476,7 @@ function go(p) {
   if (p === 'roadmap') renderRoadmap();
   if (p === 'settings') { renderBuildLine(); renderImmNote(); renderReviewCard(); renderSetupCard(); renderVoicePicker(); renderRecordingsCard(); renderDataCard(); renderSpeechStatus(); renderAiCard(); renderPackCard(); }
   laterFold($('#pg-' + p));                               // drills that wait for their week: the fold at the bottom stays true
+  FX.page(p, fresh);                                      // decoration only: cards below the edge rise in when scrolled to (core/effects.js)
 }
 
 </script>
@@ -29571,6 +30000,7 @@ function showPopup(word, ev, sentence, opt) {
       ${c.audio ? '<button class="btn ghost" id="pPlay">&#9654; Audio</button>' : ''}
       <button class="btn" id="pAdd">${!st || st.state === 0 ? 'Add to queue' : 'Reset to new'}</button>
       ${sentence ? '<button class="btn ghost" id="pDict">Save word</button>' : ''}
+      ${typeof lineApart === 'function' && opt && opt.x != null ? lineApart(sentence, c.ja).replace('<div class="p-act">', '').replace('</div>', '') : ''}
       ${aiOn() ? `<button class="btn ghost" data-ask="${esc(c.ja)}: ">Ask the tutor</button>` : ''}
     </div>`;
   pop.classList.add('on');
@@ -29630,6 +30060,8 @@ function wireSettings() {
   bind('#setSpeech', 'speechCheck', Boolean, renderSpeechStatus);
   bind('#setWordAudio', 'wordAudio', String);
   bind('#setKanaPace', 'kanaPace', Boolean, renderDash);
+  bind('#setAutoPace', 'autoPace', Boolean, renderDash);
+  { const ap = $('#setAutoPace'); if (ap) ap.checked = S.cfg.autoPace !== false; }      // on unless it was switched off
   bind('#setMeet', 'meetPlays', Number);
   if (S.cfg.otherShare == null) S.cfg.otherShare = FLOW_SHARE_DEFAULT;
   bind('#setOther', 'otherShare', Number, () => { if (DAYFLOW && !DAYFLOW.finished) buildChecklist(DAYFLOW.mode, DAYFLOW.blocks); renderDash(); });   // today's list is made again for the new share, ticks kept
